@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use App\Models\Account;
+use Illuminate\Support\Facades\Auth;
 
 // TODO Translations
 // TODO form rearrange
-// TODO Only admin and director register
 // TODO enums by role
 // TODO after register display new user logins
 class RegisterController extends Controller
@@ -25,7 +25,7 @@ class RegisterController extends Controller
         $request->validate([
             'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'role' => [Rule::enum(Role::class)],
+            'role' => [Rule::enum(Role::class)->when(Auth::user()->role == "administrator", fn ($rule) => $rule->only([Role::Client]))],
             'name' => ['required', 'regex:/^[\p{L} ]+$/u'],
             'surname' => ['required', 'regex:/^[\p{L} -]+$/u'],
             'pid' => ['required', 'integer', 'digits:11'],

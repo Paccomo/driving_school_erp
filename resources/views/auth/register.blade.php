@@ -46,23 +46,26 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Rolė') }}</label>
+                        @if(Auth::user()->role == "director")         
+                            <div class="row mb-3">
+                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Rolė') }}</label>
+                                <div class="col-md-6">
+                                    <select name="role" class="form-select @error('role') is-invalid @enderror" id="role" required>
+                                        @foreach ($roles as $value => $displayName)
+                                            <option value="{{ $value }}">{{ $displayName }}</option>
+                                        @endforeach
+                                    </select>
 
-                            <div class="col-md-6">
-                                <select name="role" class="form-select @error('role') is-invalid @enderror" id="role" required>
-                                    @foreach ($roles as $value => $displayName)
-                                        <option value="{{ $value }}">{{ $displayName }}</option>
-                                    @endforeach
-                                </select>
-
-                                @error('role')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                    @error('role')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
                             </div>
-                        </div>
+                        @else
+                            <input id="role" value="client" type="hidden" class="form-control" name="role">
+                        @endif
 
                         <div class="row mb-3">
                             <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
