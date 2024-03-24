@@ -14,8 +14,13 @@ use App\Models\Account;
 // TODO form rearrange
 // TODO Only admin and director register
 // TODO enums by role
+// TODO after register display new user logins
 class RegisterController extends Controller
 {
+    public function __construct() {
+        $this->middleware('role:administrator,director');
+    }
+
     public function register(Request $request) {
         $request->validate([
             'email' => ['required', 'string', 'email', 'max:255'],
