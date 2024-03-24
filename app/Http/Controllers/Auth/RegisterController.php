@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Auth;
 
 // TODO Translations
 // TODO form rearrange
-// TODO enums by role
 // TODO after register display new user logins
 class RegisterController extends Controller
 {

@@ -52,7 +52,7 @@
                                 <div class="col-md-6">
                                     <select name="role" class="form-select @error('role') is-invalid @enderror" id="role" required>
                                         @foreach ($roles as $value => $displayName)
-                                            <option value="{{ $value }}">{{ $displayName }}</option>
+                                            <option value="{{ $value }}">@lang('messages.' . $displayName)</option>
                                         @endforeach
                                     </select>
 
