@@ -11,8 +11,9 @@ use Illuminate\Http\Request;
 use App\Models\Account;
 use Illuminate\Support\Facades\Auth;
 
-// TODO Translations
 // TODO form rearrange
+// TODO password
+// TODO client or employee models
 // TODO after register display new user logins
 class RegisterController extends Controller
 {
@@ -55,6 +56,6 @@ class RegisterController extends Controller
 
     public function showRegistrationForm() {
         $roles = array_combine(array_column(Role::cases(), 'value'), array_column(Role::cases(), 'name'));
-        return view('auth.register', ['roles' => $roles]);
+        return view('auth.register', ['roles' => $roles, 'roleDirector' => Role::Director->value]);
     }
 }

@@ -5,13 +5,13 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+                <div class="card-header">{{ __('Registracija') }}</div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
 
                         <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('El. paštas') }}</label>
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
@@ -46,7 +46,7 @@
                             </div>
                         </div>
 
-                        @if(Auth::user()->role == "director")         
+                        @if(Auth::user()->role == $roleDirector)         
                             <div class="row mb-3">
                                 <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Rolė') }}</label>
                                 <div class="col-md-6">
@@ -68,7 +68,7 @@
                         @endif
 
                         <div class="row mb-3">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
+                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Vardas') }}</label>
 
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" required autocomplete="given-name">
@@ -82,7 +82,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="surname" class="col-md-4 col-form-label text-md-end">{{ __('Surame') }}</label>
+                            <label for="surname" class="col-md-4 col-form-label text-md-end">{{ __('Pavardė') }}</label>
 
                             <div class="col-md-6">
                                 <input id="surname" type="text" class="form-control @error('surname') is-invalid @enderror" name="surname" required autocomplete="family-name">
@@ -154,7 +154,7 @@
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
+                                    {{ __('Registruoti') }}
                                 </button>
                             </div>
                         </div>
