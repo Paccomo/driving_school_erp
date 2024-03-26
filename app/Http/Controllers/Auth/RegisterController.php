@@ -6,15 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Person;
 use App\Constants\Role;
 use Illuminate\Support\Facades\Hash;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use App\Models\Account;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
-// TODO form rearrange
-// TODO password
 // TODO client or employee models
-// TODO after register display new user logins
 class RegisterController extends Controller
 {
     public function __construct() {
@@ -24,7 +23,6 @@ class RegisterController extends Controller
     public function register(Request $request) {
         $request->validate([
             'email' => ['required', 'string', 'email', 'max:255'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
             'role' => [Rule::enum(Role::class)->when(Auth::user()->role == "administrator", fn ($rule) => $rule->only([Role::Client]))],
             'name' => ['required', 'regex:/^[\p{L} ]+$/u'],
             'surname' => ['required', 'regex:/^[\p{L} -]+$/u'],
@@ -34,9 +32,11 @@ class RegisterController extends Controller
             'phoneNum' => ['required', 'regex:/^(8|\+370)\s?6\s?\d(?:\s?\d){6}$/'],
         ]);
 
+        $password = Str::password(8, true, true, false, false);
+
         $account = Account::create([
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make($request->$password),
             'role' => $request->role,
         ]);
 
@@ -51,11 +51,26 @@ class RegisterController extends Controller
 
         // Create either client or employee
 
-        return redirect()->route('login');
+        return view('auth.display', [
+            'name' => "Tomas",
+            'surname' => "Pusddkunigis",
+            'email' => "tompusk@gmail.com",
+            'pw' => "iofgie",
+        ]);
     }
 
     public function showRegistrationForm() {
         $roles = array_combine(array_column(Role::cases(), 'value'), array_column(Role::cases(), 'name'));
         return view('auth.register', ['roles' => $roles, 'roleDirector' => Role::Director->value]);
+    }
+
+    public function UserPdf(Request $request) {
+        $pdf = Pdf::loadView('auth/displayPdf', [
+            'name' => $request->name,
+            'surname' => $request->surname,
+            'email' => $request->email,
+            'pw' => $request->pw,
+        ]);
+        return $pdf->download("credentials.pdf");
     }
 }

@@ -1,0 +1,9 @@
+@media print {
+    .no-print {
+        display: none;
+    }
+}
+
+.horizontal-table td:first-child {
+    width: 20%;
+}

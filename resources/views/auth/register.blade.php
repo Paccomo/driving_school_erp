@@ -11,63 +11,6 @@
                         @csrf
 
                         <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('El. paštas') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
-
-                        @if(Auth::user()->role == $roleDirector)         
-                            <div class="row mb-3">
-                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Rolė') }}</label>
-                                <div class="col-md-6">
-                                    <select name="role" class="form-select @error('role') is-invalid @enderror" id="role" required>
-                                        @foreach ($roles as $value => $displayName)
-                                            <option value="{{ $value }}">@lang('messages.' . $displayName)</option>
-                                        @endforeach
-                                    </select>
-
-                                    @error('role')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                        @else
-                            <input id="role" value="client" type="hidden" class="form-control" name="role">
-                        @endif
-
-                        <div class="row mb-3">
                             <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Vardas') }}</label>
 
                             <div class="col-md-6">
@@ -88,6 +31,20 @@
                                 <input id="surname" type="text" class="form-control @error('surname') is-invalid @enderror" name="surname" required autocomplete="family-name">
 
                                 @error('surname')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('El. paštas') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+
+                                @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -150,6 +107,27 @@
                                 @enderror
                             </div>
                         </div>
+
+                        @if(Auth::user()->role == $roleDirector)         
+                            <div class="row mb-3">
+                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Rolė') }}</label>
+                                <div class="col-md-6">
+                                    <select name="role" class="form-select @error('role') is-invalid @enderror" id="role" required>
+                                        @foreach ($roles as $value => $displayName)
+                                            <option value="{{ $value }}">@lang('messages.' . $displayName)</option>
+                                        @endforeach
+                                    </select>
+
+                                    @error('role')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        @else
+                            <input id="role" value="client" type="hidden" class="form-control" name="role">
+                        @endif
 
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
