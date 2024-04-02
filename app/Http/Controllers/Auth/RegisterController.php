@@ -28,7 +28,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 
-// TODO client or employee models
 class RegisterController extends Controller
 {
     public function __construct() {
