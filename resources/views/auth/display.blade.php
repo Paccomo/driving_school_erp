@@ -29,7 +29,7 @@
                             </tr>
                             <tr>
                                 <td style="border-bottom: 1px solid black;">Slaptžodis:</td>
-                                <td style="border-bottom: 1px solid black;">{{ $pw }}</td>
+                                <td data-original-text="{{ $pw }}" id="toggleCell" onclick="toggleVisibility('{{ $pw }}')" class="clickable" style="border-bottom: 1px solid black;">{{ $pw }}</td>
                             </tr>
                         </table>
                     </div>
@@ -53,4 +53,7 @@
             </div>
         </div>
     </div>
+    <script>
+        toggleVisibility('{{ $pw }}');
+    </script>
 @endsection
