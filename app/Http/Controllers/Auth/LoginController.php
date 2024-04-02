@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-
 class LoginController extends Controller
 {
     /**
@@ -35,7 +34,7 @@ class LoginController extends Controller
         }
  
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'email' => 'Naudotojas su nurodytu el. paštu nerastas.',
         ])->onlyInput('email');
     }
 

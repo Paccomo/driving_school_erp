@@ -1,0 +1,21 @@
+@media print {
+    .no-print {
+        display: none;
+    }
+
+    #toggleCell {
+        visibility: hidden;
+    }
+    #toggleCell::before {
+        content: attr(data-original-text);
+        visibility: visible;
+    }
+}
+
+.horizontal-table td:first-child {
+    width: 20%;
+}
+
+td.clickable {
+    cursor: pointer;
+}

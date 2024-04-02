@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EmployeeTimetable extends Model
+class TimetableTime extends Model
 {
-    protected $table = 'employee_timetable';
+    protected $table = 'timetable_time';
     public $timestamps = false;
     use HasFactory;
 }
