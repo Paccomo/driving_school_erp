@@ -13,6 +13,9 @@
     <!-- CSS -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
+    <!-- Icons -->
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v6.5.2/css/all.css">
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
@@ -76,12 +79,35 @@
                     </div>
                 </div>
             </nav>
-        </div>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
+            <div class="container-fluid">
+                <div class="row flex-nowrap">
+                    <div class="bg-secondary col-auto col-md-4 col-lg-3 min-vh-100 d-flex flex-column justify-content-between">
+                        <div class="bg-secondary p-2">
+                            <ul class="nav nav-pills flex-column mt-4" >
+                                <li class="nav-item py-2 py-sm-0">
+                                    <a href="{{ route('register') }}" class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
+                                        <i class="fs-5 fa fa-gauge"></i> <span class="fs-4 ms-2 d-none d-sm-inline">Dashboard</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item py-2 py-sm-0">
+                                    <a href="#" class="nav-link text-white">
+                                        <i class="fa fa-frog"></i><span class="fs-4 ms-2 d-none d-sm-inline">home</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <main class="col-md-8 col-sm-7 col-lg-9 py-3">
+                        @yield('content')
+                    </main>
+                </div>
+            </div>
+        </div>
     </div>
+    {{ request()->path() }}
+    {{ request()->is('register') }}
 </body>
 
 </html>
