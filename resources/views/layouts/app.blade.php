@@ -56,8 +56,9 @@
                                 @endif
                             @else
                                 <li class="nav-item dropdown">
-                                    <a id="navbarDropdown" class="nav-link dropdown-toggle text-white" href="#" role="button"
-                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <a id="navbarDropdown" class="nav-link dropdown-toggle text-white" href="#"
+                                        role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                        v-pre>
                                         {{ Auth::user()->name }}
                                     </a>
 
@@ -79,35 +80,38 @@
                     </div>
                 </div>
             </nav>
+        </div>
 
-            <div class="container-fluid">
-                <div class="row flex-nowrap">
-                    <div class="bg-secondary col-auto col-md-3 col-lg-3 col-xl-2 min-vh-100 d-flex flex-column justify-content-between">
-                        <div class="bg-secondary p-2">
-                            <ul class="nav nav-pills flex-column mt-4" >
-                                <li class="nav-item py-2 py-sm-0">
-                                    <a href="{{ route('register') }}" class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
-                                        <i class="fs-6 fa fa-gauge"></i> <span class="fs-6 ms-2 d-none d-sm-inline">Dashboard</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item py-2 py-sm-0">
-                                    <a href="#" class="nav-link text-white">
-                                        <i class="fs-6 fa fa-frog"></i><span class="fs-6 ms-2 d-none d-sm-inline">home</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+        <div class="container-fluid">
+            <div class="row flex-nowrap">
+                <div class="bg-secondary col-auto col-md-3 col-lg-3 col-xl-2 min-vh-100 d-flex flex-column justify-content-between">
+                    <div class="no-print">
+                    <div class="bg-secondary p-2">
+                        <ul class="nav nav-pills flex-column mt-4">
+                            <li class="nav-item py-2 py-sm-0">
+                                <a href="{{ route('register') }}"
+                                    class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
+                                    <i class="fs-6 fa fa-gauge"></i> <span
+                                        class="fs-6 ms-2 d-none d-sm-inline">Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="nav-item py-2 py-sm-0">
+                                <a href="#" class="nav-link text-white">
+                                    <i class="fs-6 fa fa-frog"></i><span
+                                        class="fs-6 ms-2 d-none d-sm-inline">home</span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
-
-                    <main class="col-md-8 col-sm-7 col-lg-9 py-3">
-                        @yield('content')
-                    </main>
+                    </div>
                 </div>
+
+                <main class="col-md-8 col-sm-7 col-lg-9 py-3">
+                    @yield('content')
+                </main>
             </div>
         </div>
     </div>
-    {{ request()->path() }}
-    {{ request()->is('register') }}
 </body>
 
 </html>
