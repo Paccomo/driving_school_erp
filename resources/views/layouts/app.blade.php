@@ -28,9 +28,9 @@
 <body>
     <div id="app">
         <div class="no-print">
-            <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+            <nav class="navbar navbar-expand-md navbar-light bg-secondary shadow">
                 <div class="container">
-                    <a class="navbar-brand" href="{{ url('/') }}">
+                    <a class="navbar-brand text-white" href="{{ url('/') }}">
                         {{ __('Vairavimo mokyklų ERP') }}
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -51,12 +51,12 @@
                             @guest
                                 @if (Route::has('login'))
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                        <a class="nav-link text-white" href="{{ route('login') }}">{{ __('Login') }}</a>
                                     </li>
                                 @endif
                             @else
                                 <li class="nav-item dropdown">
-                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                    <a id="navbarDropdown" class="nav-link dropdown-toggle text-white" href="#" role="button"
                                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                         {{ Auth::user()->name }}
                                     </a>
@@ -82,17 +82,17 @@
 
             <div class="container-fluid">
                 <div class="row flex-nowrap">
-                    <div class="bg-secondary col-auto col-md-4 col-lg-3 min-vh-100 d-flex flex-column justify-content-between">
+                    <div class="bg-secondary col-auto col-md-3 col-lg-3 col-xl-2 min-vh-100 d-flex flex-column justify-content-between">
                         <div class="bg-secondary p-2">
                             <ul class="nav nav-pills flex-column mt-4" >
                                 <li class="nav-item py-2 py-sm-0">
                                     <a href="{{ route('register') }}" class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
-                                        <i class="fs-5 fa fa-gauge"></i> <span class="fs-4 ms-2 d-none d-sm-inline">Dashboard</span>
+                                        <i class="fs-6 fa fa-gauge"></i> <span class="fs-6 ms-2 d-none d-sm-inline">Dashboard</span>
                                     </a>
                                 </li>
                                 <li class="nav-item py-2 py-sm-0">
                                     <a href="#" class="nav-link text-white">
-                                        <i class="fa fa-frog"></i><span class="fs-4 ms-2 d-none d-sm-inline">home</span>
+                                        <i class="fs-6 fa fa-frog"></i><span class="fs-6 ms-2 d-none d-sm-inline">home</span>
                                     </a>
                                 </li>
                             </ul>

@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Naujas prisijungimas') }}</div>
+                    <div class="card-header text-white bg-secondary">{{ __('Naujas prisijungimas') }}</div>
 
                     <div class="card-body">
                         <p>Naudotojas:</p>
