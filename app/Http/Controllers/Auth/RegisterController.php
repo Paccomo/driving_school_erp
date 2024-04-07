@@ -139,6 +139,7 @@ class RegisterController extends Controller
 
         $roles = array_combine(array_column(Role::cases(), 'value'), array_column(Role::cases(), 'name'));
         unset($roles[Role::Client->value]);
+        unset($roles[Role::ExaminationAccount->value]);
 
         return view('auth.register', [
             'roles' => $roles,
