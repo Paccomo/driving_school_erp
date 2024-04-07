@@ -84,25 +84,88 @@
 
         <div class="container-fluid">
             <div class="row flex-nowrap">
-                <div class="bg-secondary col-auto col-md-3 col-lg-3 col-xl-2 min-vh-100 d-flex flex-column justify-content-between">
+                <div
+                    class="bg-secondary col-auto col-md-3 col-lg-3 col-xl-2 min-vh-100 d-flex flex-column justify-content-between">
                     <div class="no-print">
-                    <div class="bg-secondary p-2">
-                        <ul class="nav nav-pills flex-column mt-4">
-                            <li class="nav-item py-2 py-sm-0">
-                                <a href="{{ route('register') }}"
-                                    class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
-                                    <i class="fs-6 fa fa-gauge"></i> <span
-                                        class="fs-6 ms-2 d-none d-sm-inline">Dashboard</span>
-                                </a>
-                            </li>
-                            <li class="nav-item py-2 py-sm-0">
-                                <a href="#" class="nav-link text-white">
-                                    <i class="fs-6 fa fa-frog"></i><span
-                                        class="fs-6 ms-2 d-none d-sm-inline">home</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                        <div class="bg-secondary p-2">
+                            <ul class="nav nav-pills flex-column mt-4">
+                                <li class="nav-item py-2 py-sm-0">
+                                    <a href="{{ route('register') }}" class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
+                                        <i class="fs-6 fa fa-building"></i> <span class="fs-6 ms-2 d-none d-sm-inline">Filialai?</span>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item py-2 py-sm-0">
+                                    <a href="{{ route('register') }}" class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
+                                        <i class="fs-6 fa fa-euro-sign"></i> <span class="fs-6 ms-2 d-none d-sm-inline">Kainos?</span>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item py-2 py-sm-0">
+                                    <a href="{{ route('register') }}" class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
+                                        <i class="fs-6 fa fa-car-side"></i> <span class="fs-6 ms-2 d-none d-sm-inline">Kursai?</span>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item py-2 py-sm-0">
+                                    <a href="{{ route('register') }}" class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
+                                        <i class="fs-6 fa fa-chalkboard-user"></i> <span class="fs-6 ms-2 d-none d-sm-inline">Instruktoriai?</span>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item py-2 py-sm-0">
+                                    <a href="{{ route('register') }}" class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
+                                        <i class="fs-6 fa fa-video"></i> <span class="fs-6 ms-2 d-none d-sm-inline">Vaizdo įrašai?</span>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item py-2 py-sm-0">
+                                    <a href="{{ route('register') }}" class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
+                                        <i class="fs-6 fa fa-link"></i> <span class="fs-6 ms-2 d-none d-sm-inline">Naudingos nuorodos?</span>
+                                    </a>
+                                </li>
+
+                                @Auth
+                                    @if (Auth::user()->role == 'client')
+                                        <li class="nav-item py-2 py-sm-0">
+                                            <a href="{{ route('register') }}" class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
+                                                <i class="fs-6 fa fa-file-contract"></i> <span class="fs-6 ms-2 d-none d-sm-inline">Sutartys?</span>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item py-2 py-sm-0">
+                                            <a href="{{ route('register') }}" class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
+                                                <i class="fs-6 fa fa-person-chalkboard"></i> <span class="fs-6 ms-2 d-none d-sm-inline">Paskaitos?</span>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item py-2 py-sm-0">
+                                            <a href="{{ route('register') }}" class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
+                                                <i class="fs-6 fa fa-road"></i> <span class="fs-6 ms-2 d-none d-sm-inline">Vairavimų pamokos?</span>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item py-2 py-sm-0">
+                                            <a href="{{ route('register') }}" class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
+                                                <i class="fs-6 fa fa-credit-card"></i> <span class="fs-6 ms-2 d-none d-sm-inline">Apmokėjimai?</span>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item py-2 py-sm-0">
+                                            <a href="{{ route('register') }}" class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
+                                                <i class="fs-6 fa fa-clipboard-question"></i> <span class="fs-6 ms-2 d-none d-sm-inline">Teorijos testai?</span>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item py-2 py-sm-0">
+                                            <a href="{{ route('register') }}" class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
+                                                <i class="fs-6 fa fa-file-import"></i> <span class="fs-6 ms-2 d-none d-sm-inline">Dokumentų pateikimas?</span>
+                                            </a>
+                                        </li>
+                                    @endif
+                                @endauth
+                            </ul>
+                        </div>
                     </div>
                 </div>
 
