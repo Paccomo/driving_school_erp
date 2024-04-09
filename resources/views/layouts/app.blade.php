@@ -23,6 +23,7 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <script src="{{ asset('js/newUserDisplay.js') }}"></script>
+    <script src="{{ asset('js/cardsListHeightNormalization.js') }}"></script>
 </head>
 
 <body>
@@ -51,7 +52,7 @@
                             @guest
                                 @if (Route::has('login'))
                                     <li class="nav-item">
-                                        <a class="nav-link text-white" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                        <a class="nav-link text-white" href="{{ route('login') }}">{{ __('Prisijungti') }}</a>
                                     </li>
                                 @endif
                             @else
@@ -66,7 +67,7 @@
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                            {{ __('Logout') }}
+                                            {{ __('Atsijungti') }}
                                         </a>
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST"
@@ -90,8 +91,8 @@
                         <div class="bg-secondary p-2">
                             <ul class="nav nav-pills flex-column mt-4">
                                 <li class="nav-item py-2 py-sm-0">
-                                    <a href="{{ route('register') }}" class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
-                                        <i class="fs-6 fa fa-building"></i> <span class="fs-6 ms-2 d-none d-sm-inline">Filialai?</span>
+                                    <a href="{{ route('branch.list') }}" class="nav-link text-white {{ request()->is('branch') == 1 ? 'active' : '' }}">
+                                        <i class="fs-6 fa fa-building"></i> <span class="fs-6 ms-2 d-none d-sm-inline">Filialai</span>
                                     </a>
                                 </li>
 
