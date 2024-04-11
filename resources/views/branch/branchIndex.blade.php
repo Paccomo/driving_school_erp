@@ -74,14 +74,18 @@
                 @foreach ($branch->categoricalCourses as $course)
                     <li class="list-group-item">
                         {{ $course->name }} Kategorija
-                        <button class="btn btn-sm btn-secondary" style="position: absolute; right: 0">Registruotis</button>
+                        @guest
+                            <button class="btn btn-sm btn-secondary" style="position: absolute; right: 0">Registruotis</button>
+                        @endguest
                     </li>
                 @endforeach
 
                 @foreach ($branch->competenceCourses as $course)
                     <li class="list-group-item">
                         {{ $course->name }}
-                        <button class="btn btn-sm btn-secondary" style="position: absolute; right: 0">Registruotis</button>
+                        @guest
+                            <button class="btn btn-sm btn-secondary" style="position: absolute; right: 0">Registruotis</button>
+                        @endguest
                     </li>
                 @endforeach
             </ul>
