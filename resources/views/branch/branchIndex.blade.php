@@ -3,19 +3,21 @@
 @section('content')
     <div style="margin: 0.5cm">
         <div style="margin-bottom: 1cm;">
-            <div class="d-flex align-items-left"> <!-- Use flexbox -->
-                    <h4 style="margin-right: 0.4cm">{{ $branch->address }}</h4>
+            <div class="d-flex align-items-left">
+                <h4 style="margin-right: 0.4cm">{{ $branch->address }}</h4>
                 @if (Auth()->check() && Auth::user()->role == $roleDirector)
-                        <a style="margin-right: 0.4cm" href="{{ route('branch.edit', $branch->id) }}" class="btn btn-warning">Redaguoti</a>
-                        <form action="{{ route('branch.destroy', $branch) }}" method="POST" style="display: inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this entity?')">Pašalinti</button>
-                        </form>
+                    <a style="margin-right: 0.4cm" href="{{ route('branch.edit', $branch->id) }}"
+                        class="btn btn-warning">Redaguoti</a>
+                    <form action="{{ route('branch.destroy', $branch) }}" method="POST" style="display: inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger"
+                            onclick="return confirm('Are you sure you want to delete this entity?')">Pašalinti</button>
+                    </form>
                 @endif
             </div>
         </div>
-        
+
         <div class="row">
             <div class="col{{ $branch->image !== null ? '-7' : '' }}">
                 @if ($branch->phone_number !== null || $branch->email !== null)
