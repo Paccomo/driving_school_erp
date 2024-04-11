@@ -13,3 +13,5 @@ Route::post("/newUserPdf", [RegisterController::class, "UserPdf"])->name('user.c
 // Branch
 Route::get("/branch", [BranchController::class, "list"])->name("branch.list");
 Route::get("/branch/{id}", [BranchController::class, "index"])->name("branch.index");
+Route::delete("/branch/{id}", [BranchController::class, "destroy"])->name("branch.destroy");
+Route::get("/branch/{id}/edit", [BranchController::class, "edit"])->name("branch.edit");
