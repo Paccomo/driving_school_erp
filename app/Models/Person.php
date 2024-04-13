@@ -10,4 +10,14 @@ class Person extends Model
     protected $table = 'person';
     public $timestamps = false;
     use HasFactory;
+
+    public function getNameAttribute($value)
+    {
+        return $value ? decrypt($value) : null;
+    }
+
+    public function getSurnameAttribute($value)
+    {
+        return $value ? decrypt($value) : null;
+    }
 }

@@ -1,7 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 style="padding: 0.2cm 0.4cm 1cm 0.4cm">Filialai</h1>
+    <div style="padding: 0.2cm 0.4cm 1cm 0.4cm" class="d-flex align-items-left">
+        <h1 style="margin-right: 0.4cm">Filialai</h1>
+        @if (Auth()->check() && Auth::user()->role == $roleDirector)
+            <a style="margin-right: 1.5rem;" href="{{ route('branch.add') }}"
+                class="btn btn-primary btn-sm h-25 fs-6">Pridėti filialą</a>
+        @endif
+    </div>
     <div class="row list-card-row">
         @foreach ($branches as $branch)
             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">

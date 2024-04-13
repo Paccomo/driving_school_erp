@@ -27,4 +27,9 @@ class Account extends Authenticatable
     protected $casts = [
         'password' => 'hashed',
     ];
+
+    public function person()
+    {
+        return $this->hasOne(Person::class, 'id');
+    }
 }

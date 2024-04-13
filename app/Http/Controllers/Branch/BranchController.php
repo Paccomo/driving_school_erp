@@ -7,10 +7,14 @@ use App\Constants\WeekDay;
 use App\Constants\Role;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
+use App\Models\CategoricalCourse;
+use App\Models\CompetenceCourse;
 use App\Models\TimetableTime;
+use Illuminate\Http\Response;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 //TODO branch index redirect to course registration
 class BranchController extends Controller
@@ -24,7 +28,7 @@ class BranchController extends Controller
                 $branch->image = url('storage/branchImages/'.$branch->image);
             }
         }
-        return view('branch.branchList', ["branches" => $branches]);
+        return view('branch.branchList', ["branches" => $branches, 'roleDirector' => Role::Director->value]);
     }
 
     public function index(Request $request) {
@@ -55,8 +59,31 @@ class BranchController extends Controller
         return view('branch.branchIndex', ["branch" => $branch, "weekdays" => $weekdays, 'roleDirector' => Role::Director->value]);
     }
 
-    public function edit() {
+    public function edit(Request $request) {
+        if (Auth::user()->role != Role::Director->value)
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
         
+    }
+
+    public function add() {
+        if (Auth::user()->role != Role::Director->value)
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+
+        $catCourses = CategoricalCourse::leftJoin('course', 'categorical_course.id', '=', 'course.id')->get();
+        $compCourses = CompetenceCourse::leftJoin('course', 'competence_course.id', '=', 'course.id')->get();
+
+        return view('branch.branchForm', [ "catCourses" => $catCourses, "compCourses" => $compCourses]);
+    }
+
+    public function destroy(Request $request) {
+        if (Auth::user()->role != Role::Director->value)
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+    }
+
+    public function save(Request $request) {
+        if (Auth::user()->role != Role::Director->value)
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+
     }
 
     private function generateTimetable(int $branchID, array $days): array {
@@ -89,7 +116,6 @@ class BranchController extends Controller
                     break;
             }
         }
-        $a = "a";
         return $timings;
     }
 }
