@@ -17,8 +17,12 @@
                             style="height: 200px; width: 100%; object-fit: cover;" alt="Filialo nuotrauka">
                         <div class="card-body">
                             <p class="card-text">{{ $branch->address }}</p>
-                            <p class="card-text">Tel: {{ $branch->phone_number }}</p>
-                            <p class="card-text">{{ $branch->email }}</p>
+                            @if ($branch->phone_number != null)
+                                <p class="card-text">Tel: {{ $branch->phone_number }}</p>
+                            @endif
+                            @if ($branch->email != null)
+                                <p class="card-text">{{ $branch->email }}</p>
+                            @endif
                         </div>
                     </div>
                 </a>

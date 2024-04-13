@@ -34,4 +34,8 @@ return [
     ],
     'exists' => 'Pateikta neegzistuojanti reikšmė.',
     'numeric' => 'Reikšmė turi būti skaičius.',
+    'image' => 'Pateikiamas failas privalo būti paveikslėlis',
+    'array' => 'Laukas :attribute turi būti elemntų grupės formatas.',
+    'date_format' => 'Laukas :attribute turi atitikti :format struktūrą.',
+    'after' => 'Lauko reikšmė yra per anksti.',
 ];

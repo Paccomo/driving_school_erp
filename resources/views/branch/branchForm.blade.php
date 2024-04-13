@@ -8,7 +8,7 @@
                     <div class="card-header text-white bg-secondary">
                         {{ isset($branch) ? 'Redaguoti filialą' : 'Naujas filialas' }}</div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('branch.save') }}">
+                        <form method="POST" action="{{ route('branch.save') }}" enctype="multipart/form-data">
                             @csrf
                             @if (isset($branch))
                                 @method('PUT')
@@ -18,7 +18,8 @@
 
                             <div class="row mb-3">
                                 <label for="address"
-                                    class="col-md-3 col-form-label text-md-end">{{ __('Filialo adresas') }}<span class="text-danger">*</span></label>
+                                    class="col-md-3 col-form-label text-md-end">{{ __('Filialo adresas') }}<span
+                                        class="text-danger">*</span></label>
 
                                 <div class="col-md-6">
                                     <input id="address" type="text"
@@ -34,8 +35,8 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="city"
-                                    class="col-md-3 col-form-label text-md-end">{{ __('Miestas') }}<span class="text-danger">*</span></label>
+                                <label for="city" class="col-md-3 col-form-label text-md-end">{{ __('Miestas') }}<span
+                                        class="text-danger">*</span></label>
 
                                 <div class="col-md-6">
                                     <input id="city" type="text"
@@ -108,7 +109,8 @@
 
                             <div class="row mb-3">
                                 <label for="groupSize"
-                                    class="col-md-3 col-form-label text-md-end">{{ __('Maksimalus mokymo grupės dydis') }}<span class="text-danger">*</span></label>
+                                    class="col-md-3 col-form-label text-md-end">{{ __('Maksimalus mokymo grupės dydis') }}<span
+                                        class="text-danger">*</span></label>
 
                                 <div class="col-md-6">
                                     <input id="groupSize" type="number" step="1" min="1"
@@ -166,11 +168,11 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="monday_lunch">{{ __('Pietų pertrauka') }}</label>
-                                    <input type="time" id="monday_lunch" name="monday_lunch"
-                                        value="{{ isset($branch) ? $branch->monday_lunch : old('monday_lunch') }}"
-                                        class="form-control @error('monday_lunch') is-invalid @enderror">
-                                    @error('monday_lunch')
+                                    <label for="monday_break">{{ __('Pietų pertrauka') }}</label>
+                                    <input type="time" id="monday_break" name="monday_break"
+                                        value="{{ isset($branch) ? $branch->monday_break : old('monday_break') }}"
+                                        class="form-control @error('monday_break') is-invalid @enderror">
+                                    @error('monday_break')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -204,11 +206,11 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="tuesday_lunch">{{ __('Pietų pertrauka') }}</label>
-                                    <input type="time" id="tuesday_lunch" name="tuesday_lunch"
-                                        value="{{ isset($branch) ? $branch->tuesday_lunch : old('tuesday_lunch') }}"
-                                        class="form-control @error('tuesday_lunch') is-invalid @enderror">
-                                    @error('tuesday_lunch')
+                                    <label for="tuesday_break">{{ __('Pietų pertrauka') }}</label>
+                                    <input type="time" id="tuesday_break" name="tuesday_break"
+                                        value="{{ isset($branch) ? $branch->tuesday_break : old('tuesday_break') }}"
+                                        class="form-control @error('tuesday_break') is-invalid @enderror">
+                                    @error('tuesday_break')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -242,11 +244,11 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="wednesday_lunch">{{ __('Pietų pertrauka') }}</label>
-                                    <input type="time" id="wednesday_lunch" name="wednesday_lunch"
-                                        value="{{ isset($branch) ? $branch->wednesday_lunch : old('wednesday_lunch') }}"
-                                        class="form-control @error('wednesday_lunch') is-invalid @enderror">
-                                    @error('wednesday_lunch')
+                                    <label for="wednesday_break">{{ __('Pietų pertrauka') }}</label>
+                                    <input type="time" id="wednesday_break" name="wednesday_break"
+                                        value="{{ isset($branch) ? $branch->wednesday_break : old('wednesday_break') }}"
+                                        class="form-control @error('wednesday_break') is-invalid @enderror">
+                                    @error('wednesday_break')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -280,11 +282,11 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="thursday_lunch">{{ __('Pietų pertrauka') }}</label>
-                                    <input type="time" id="thursday_lunch" name="thursday_lunch"
-                                        value="{{ isset($branch) ? $branch->thursday_lunch : old('thursday_lunch') }}"
-                                        class="form-control @error('thursday_lunch') is-invalid @enderror">
-                                    @error('thursday_lunch')
+                                    <label for="thursday_break">{{ __('Pietų pertrauka') }}</label>
+                                    <input type="time" id="thursday_break" name="thursday_break"
+                                        value="{{ isset($branch) ? $branch->thursday_break : old('thursday_break') }}"
+                                        class="form-control @error('thursday_break') is-invalid @enderror">
+                                    @error('thursday_break')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -318,11 +320,11 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="friday_lunch">{{ __('Pietų pertrauka') }}</label>
-                                    <input type="time" id="friday_lunch" name="friday_lunch"
-                                        value="{{ isset($branch) ? $branch->friday_lunch : old('friday_lunch') }}"
-                                        class="form-control @error('friday_lunch') is-invalid @enderror">
-                                    @error('friday_lunch')
+                                    <label for="friday_break">{{ __('Pietų pertrauka') }}</label>
+                                    <input type="time" id="friday_break" name="friday_break"
+                                        value="{{ isset($branch) ? $branch->friday_break : old('friday_break') }}"
+                                        class="form-control @error('friday_break') is-invalid @enderror">
+                                    @error('friday_break')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -356,11 +358,11 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="saturday_lunch">{{ __('Pietų pertrauka') }}</label>
-                                    <input type="time" id="saturday_lunch" name="saturday_lunch"
-                                        value="{{ isset($branch) ? $branch->saturday_lunch : old('saturday_lunch') }}"
-                                        class="form-control @error('saturday_lunch') is-invalid @enderror">
-                                    @error('saturday_lunch')
+                                    <label for="saturday_break">{{ __('Pietų pertrauka') }}</label>
+                                    <input type="time" id="saturday_break" name="saturday_break"
+                                        value="{{ isset($branch) ? $branch->saturday_break : old('saturday_break') }}"
+                                        class="form-control @error('saturday_break') is-invalid @enderror">
+                                    @error('saturday_break')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -394,11 +396,11 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="sunday_lunch">{{ __('Pietų pertrauka') }}</label>
-                                    <input type="time" id="sunday_lunch" name="sunday_lunch"
-                                        value="{{ isset($branch) ? $branch->sunday_lunch : old('sunday_lunch') }}"
-                                        class="form-control @error('sunday_lunch') is-invalid @enderror">
-                                    @error('sunday_lunch')
+                                    <label for="sunday_break">{{ __('Pietų pertrauka') }}</label>
+                                    <input type="time" id="sunday_break" name="sunday_break"
+                                        value="{{ isset($branch) ? $branch->sunday_break : old('sunday_break') }}"
+                                        class="form-control @error('sunday_break') is-invalid @enderror">
+                                    @error('sunday_break')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -411,23 +413,63 @@
                                     class="col-md-3 col-form-label text-md-end">{{ __('Vykdomi kursai') }}</label>
                                 <div class="col-md-6">
                                     @foreach ($catCourses as $course)
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox"
-                                                id="course{{ $course->id }}" name="courses[]"
-                                                value="{{ $course->id }}" role="switch"
-                                                @if (isset($branch) && in_array($course->id, $branchCourses)) checked @endif>
-                                            <label class="form-check-label"
-                                                for="course{{ $course->id }}">{{ $course->name }}</label>
+                                        <div class="row align-items-center mb-2">
+                                            <div class="col">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="course{{ $course->id }}" name="courses[]"
+                                                        value="{{ $course->id }}" role="switch"
+                                                        @if (isset($branch) && in_array($course->id, $branchCourses)) checked @endif>
+                                                    <label class="form-check-label"
+                                                        for="course{{ $course->id }}">{{ $course->name }}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col additional-inputs">
+                                                <label
+                                                    for="course{{ $course->id }}_theory">{{ __('Teorijos kaina') }}</label>
+                                                <input type="number" min="1" step="1" id="course{{ $course->id }}_theory"
+                                                    name="course{{ $course->id }}_theory"
+                                                    value="{{ isset($branch) && isset($coursePrices[$course->id]['theory']) ? $coursePrices[$course->id]['theory'] : old('course'.$course->id.'_theory') }}"
+                                                    class="form-control form-control-sm  @error('course'.$course->id.'_theory') is-invalid @enderror">
+                                            </div>
+                                            <div class="col additional-inputs">
+                                                <label
+                                                    for="course{{ $course->id }}_practice">{{ __('Praktikos kaina') }}</label>
+                                                <input type="number" min="1" step="1"  id="course{{ $course->id }}_practice"
+                                                    name="course{{ $course->id }}_practice"
+                                                    value="{{ isset($branch) && isset($coursePrices[$course->id]['practice']) ? $coursePrices[$course->id]['practice'] : old('course'.$course->id.'_practice') }}"
+                                                    class="form-control form-control-sm  @error('course'.$course->id.'_practice') is-invalid @enderror">
+                                            </div>
+                                            <div class="col additional-inputs">
+                                                <label
+                                                    for="course{{ $course->id }}_lesson">{{ __('Papildomas važiavimas') }}</label>
+                                                <input type="number" min="1" step="1"  id="course{{ $course->id }}_theory"
+                                                    name="course{{ $course->id }}_lesson"
+                                                    value="{{ isset($branch) && isset($coursePrices[$course->id]['lesson']) ? $coursePrices[$course->id]['lesson'] : old('course'.$course->id.'_lesson') }}"
+                                                    class="form-control form-control-sm  @error('course'.$course->id.'_lesson') is-invalid @enderror">
+                                            </div>
                                         </div>
                                     @endforeach
                                     @foreach ($compCourses as $course)
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox"
-                                                id="course{{ $course->id }}" name="courses[]"
-                                                value="{{ $course->id }}" role="switch"
-                                                @if (isset($branch) && in_array($course->id, $branchCourses)) checked @endif>
-                                            <label class="form-check-label"
-                                                for="course{{ $course->id }}">{{ $course->name }}</label>
+                                        <div class="row align-items-center mb-2">
+                                            <div class="col">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="course{{ $course->id }}" name="courses[]"
+                                                        value="{{ $course->id }}" role="switch"
+                                                        @if (isset($branch) && in_array($course->id, $branchCourses)) checked @endif>
+                                                    <label class="form-check-label"
+                                                        for="course{{ $course->id }}">{{ $course->name }}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col additional-inputs">
+                                                <label
+                                                    for="course{{ $course->id }}_lesson">{{ __('Kaina') }}</label>
+                                                <input type="number" min="1" step="1"  id="course{{ $course->id }}_price"
+                                                    name="course{{ $course->id }}_price"
+                                                    value="{{ isset($branch) && isset($coursePrices[$course->id]['price']) ? $coursePrices[$course->id]['price'] : old('course'.$course->id.'_price') }}"
+                                                    class="form-control form-control-sm  @error('course'.$course->id.'_price') is-invalid @enderror">
+                                            </div>
                                         </div>
                                     @endforeach
                                     @error('courses')
@@ -451,4 +493,24 @@
             </div>
         </div>
     </div>
+    <script>
+        var checkboxes = document.querySelectorAll('.form-check-input');
+        checkboxes.forEach(function(checkbox) {
+            checkbox.addEventListener('change', function() {
+                courseInputsToggle(checkbox);
+            });
+        });
+
+        function courseInputsToggle(checkbox) {
+            var row = checkbox.closest('.row');
+            var additionalInputs = row.querySelectorAll('.additional-inputs');
+            additionalInputs.forEach(function(input) {
+                input.style.display = checkbox.checked ? 'block' : 'none';
+            });
+        }
+
+        checkboxes.forEach(function(checkbox) {
+            courseInputsToggle(checkbox);
+        });
+    </script>
 @endsection
