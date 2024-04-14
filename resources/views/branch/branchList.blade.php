@@ -6,6 +6,11 @@
             {{ session('success') }}
         </div>
     @endif
+    @if(session('fail'))
+        <div class="alert alert-danger auto-dismiss">
+            {{ session('fail') }}
+        </div>
+    @endif
 
     <div style="padding: 0.2cm 0.4cm 1cm 0.4cm" class="d-flex align-items-left">
         <h1 style="margin-right: 0.4cm">Filialai</h1>

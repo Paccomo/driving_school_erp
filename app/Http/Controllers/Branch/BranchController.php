@@ -10,10 +10,12 @@ use App\Models\Branch;
 use App\Models\BranchCategoricalCourse;
 use App\Models\BranchCompetenceCourse;
 use App\Models\CategoricalCourse;
+use App\Models\Client;
 use App\Models\CompetenceCourse;
+use App\Models\ContractRequest;
+use App\Models\Employee;
 use App\Models\TimetableTime;
 use App\Rules\timeAfter;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Database\Eloquent\Collection;
@@ -120,6 +122,28 @@ class BranchController extends Controller
     {
         if (Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+
+        $branch = Branch::find($request->id);
+        if ($branch != null) {
+            Employee::where('fk_BRANCHid', $request->id)->delete();
+            TimetableTime::where('fk_BRANCHid', $request->id)->delete();
+            BranchCategoricalCourse::where('fk_BRANCHid', $request->id)->delete();
+            BranchCompetenceCourse::where('fk_BRANCHid', $request->id)->delete();
+            $clients = Client::where('fk_BRANCHid', $request->id)->get();
+            foreach ($clients as $client) {
+                $client->fk_BRANCHid = null;
+                $client->save();
+            }
+            $contractRequests = ContractRequest::where('fk_BRANCHid', $request->id)->get();
+            foreach ($contractRequests as $contractRequest) {
+                $contractRequest->fk_BRANCHid = null;
+                $contractRequest->save();
+            }
+
+            $branch->delete();
+            return redirect()->route('branch.list')->with('success', 'Filialas sėkmingai ištrintas!');
+        }
+        return redirect()->route('branch.list')->with('fail', 'Norimas ištrinti filialas buvo nerastas');
     }
 
     public function save(Request $request)

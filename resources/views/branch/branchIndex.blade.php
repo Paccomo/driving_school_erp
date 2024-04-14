@@ -12,7 +12,7 @@
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger"
-                            onclick="return confirm('Are you sure you want to delete this entity?')">Pašalinti</button>
+                            onclick="return confirm('Ar tikrai norite pašalinti šį filialą? Šiuo veiksmu bus pašalinti ir filialio darbuotojai!')">Pašalinti</button>
                     </form>
                 @endif
             </div>
