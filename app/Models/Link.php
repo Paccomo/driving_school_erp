@@ -10,4 +10,8 @@ class Link extends Model
     protected $table = 'link';
     public $timestamps = false;
     use HasFactory;
+
+    protected $fillable = [
+        'id'
+    ];
 }

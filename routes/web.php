@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Branch\BranchController;
 use App\Http\Controllers\Course\PricingController;
 use App\Http\Controllers\Employee\InstructorController;
+use App\Http\Controllers\References\LinksController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 
@@ -28,3 +29,11 @@ Route::put("/pricing/new", [PricingController::class, "save"])->name("pricing.sa
 
 //Instructor
 Route::get("/instructor", [InstructorController::class, "list"])->name("instructor.list");
+
+//Useful links
+Route::get("/information", [LinksController::class, "list"])->name("link.list");
+Route::get("/information/new", [LinksController::class, "add"])->name("link.add");
+Route::post("/information/new", [LinksController::class, "save"])->name("link.save");
+Route::put("/information/new", [LinksController::class, "save"])->name("link.save");
+Route::delete("/information/{id}", [LinksController::class, "destroy"])->name("link.destroy");
+Route::get("/information/{id}/edit", [LinksController::class, "edit"])->name("link.edit");
