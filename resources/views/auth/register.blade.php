@@ -151,14 +151,9 @@
                             @if ($employeeForm && Auth::user()->role == $roleDirector)
                             <div class="row mb-3">
                                 <label for="image"
-                                    class="col-md-3 col-form-label text-md-end">{{ __('Filialo nuotrauka') }}</label>
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Filialo nuotrauka') }}</label>
 
                                 <div class="col-md-6">
-                                    @if (isset($branch) && $branch->image)
-                                        <img src="{{ $branch->image }}" alt="Filialo nuotrauka"
-                                            style="max-width: 200px;">
-                                    @endif
-
                                     <input type="file" class="form-control @error('image') is-invalid @enderror"
                                         id="image" name="image" accept="image/*">
 

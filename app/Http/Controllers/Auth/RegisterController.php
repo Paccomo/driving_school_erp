@@ -191,12 +191,12 @@ class RegisterController extends Controller
         if ($image != null) {
             $imageName = $image->getClientOriginalName();
 
-            if (file_exists(storage_path('app/public/branchImages/' . $imageName))) {
+            if (file_exists(storage_path('app/public/employees/' . $imageName))) {
                 $extension = $image->getClientOriginalExtension();
                 $imageName = uniqid() . '.' . $extension;
             }
 
-            $image->storeAs('public/branchImages/', $imageName);
+            $image->storeAs('public/employees/', $imageName);
             $employee->image = $imageName;
         }
         $employee->save();
