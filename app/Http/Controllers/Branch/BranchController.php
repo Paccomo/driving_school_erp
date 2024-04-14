@@ -269,7 +269,7 @@ class BranchController extends Controller
             ->where('fk_BRANCHid', $branch->id)
             ->delete();
 
-        return Redirect::route('branch.list')->with('success', 'Duomenys sėkmingai išsaugoti');;
+        return Redirect::route('branch.list')->with('success', 'Duomenys sėkmingai išsaugoti');
     }
 
     private function generateTimetable(int $branchID, array $days): array
