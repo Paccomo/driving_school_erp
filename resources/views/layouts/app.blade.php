@@ -24,6 +24,7 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <script src="{{ asset('js/newUserDisplay.js') }}"></script>
     <script src="{{ asset('js/cardsListHeightNormalization.js') }}"></script>
+    <script src="{{ asset('js/alertDismiss.js') }}"></script>
 </head>
 
 <body>

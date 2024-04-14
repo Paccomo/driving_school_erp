@@ -13,6 +13,7 @@ use App\Models\CategoricalCourse;
 use App\Models\CompetenceCourse;
 use App\Models\TimetableTime;
 use App\Rules\timeAfter;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Database\Eloquent\Collection;
@@ -27,11 +28,7 @@ class BranchController extends Controller
     {
         $branches = Branch::all();
         foreach ($branches as $branch) {
-            if ($branch->image === null) {
-                $branch->image = url('storage/nophoto.webp');
-            } else {
-                $branch->image = url('storage/branchImages/' . $branch->image);
-            }
+            $branch->image = $this->getImage($branch->image);
         }
         return view('branch.branchList', ["branches" => $branches, 'roleDirector' => Role::Director->value]);
     }
@@ -70,6 +67,42 @@ class BranchController extends Controller
         if (Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
+        $branch = Branch::find($request->id);
+        $fullAddress = explode(", ", $branch->address);
+        $branch->address = $fullAddress[0];
+        $branch->city = $fullAddress[1];
+        if (isset($branch->image)) {
+            $branch->image = $this->getImage($branch->image);
+        }
+        $weekdays = array_combine(array_column(WeekDay::cases(), 'value'), array_column(WeekDay::cases(), 'name'));
+        $branchTimetable = $this->generateTimetable($branch->id, $weekdays);
+        $branch = $this->appendTimetable($branch, $branchTimetable);
+
+        $catCourses = CategoricalCourse::leftJoin('course', 'categorical_course.id', '=', 'course.id')->get();
+        $compCourses = CompetenceCourse::leftJoin('course', 'competence_course.id', '=', 'course.id')->get();
+
+        $branchCatCourses = BranchCategoricalCourse::where('fk_BRANCHid', $branch->id)->get()->toArray();
+        $branchCompCourses = BranchCompetenceCourse::where('fk_BRANCHid', $branch->id)->get()->toArray();
+        $branchCourseIds = array_merge(array_column($branchCatCourses, 'fk_CATEGORICAL_COURSEid'), array_column($branchCompCourses, 'fk_COMPETENCE_COURSEid'));
+        $coursePrices = [];
+        foreach ($branchCatCourses as $course) {
+            $coursePrices[$course['fk_CATEGORICAL_COURSEid']] = [];
+            $coursePrices[$course['fk_CATEGORICAL_COURSEid']]['theory'] = $course['theoretical_course_price'];
+            $coursePrices[$course['fk_CATEGORICAL_COURSEid']]['practice'] = $course['practical_course_price'];
+            $coursePrices[$course['fk_CATEGORICAL_COURSEid']]['lesson'] =  $course['additional_lesson_price'];
+        }
+        foreach ($branchCompCourses as $course) {
+            $coursePrices[$course['fk_COMPETENCE_COURSEid']] = [];
+            $coursePrices[$course['fk_COMPETENCE_COURSEid']]['price'] = $course['price'];
+        }
+
+        return view('branch.branchForm', [
+            "catCourses" => $catCourses, 
+            "compCourses" => $compCourses, 
+            'branch' => $branch, 
+            'coursePrices' => $coursePrices,
+            'branchCourses' => $branchCourseIds
+        ]);
     }
 
     public function add()
@@ -159,7 +192,7 @@ class BranchController extends Controller
                     });
 
                     if ($branchTime !== null) {
-                        $branchTime->time = $request->$weekday . '_' . $type;
+                        $branchTime->time = $request->get($weekday . '_' . $type);
                     } else {
                         $branchTime = new TimetableTime();
                         $branchTime->week_day = $weekday;
@@ -192,16 +225,16 @@ class BranchController extends Controller
                     'fk_BRANCHid' => $branch->id,
                     'fk_COMPETENCE_COURSEid' => $courseID,
                 ]);
-                $branchCourse->price = 111;
+                $branchCourse->price = $request->get('course'.$courseId.'_price');
                 $branchCourse->save();
             } else if ($catCourse != null) {
                 $branchCourse = BranchCategoricalCourse::firstOrCreate([
                     'fk_BRANCHid' => $branch->id,
                     'fk_CATEGORICAL_COURSEid' => $courseID,
                 ]);
-                $branchCourse->theoretical_course_price = 100;
-                $branchCourse->practical_course_price = 200;
-                $branchCourse->additional_lesson_price = 25;
+                $branchCourse->theoretical_course_price = $request->get('course'.$courseID.'_theory');
+                $branchCourse->practical_course_price = $request->get('course'.$courseID.'_practice');
+                $branchCourse->additional_lesson_price = $request->get('course'.$courseID.'_lesson');
                 $branchCourse->save();
             }
         }
@@ -212,7 +245,7 @@ class BranchController extends Controller
             ->where('fk_BRANCHid', $branch->id)
             ->delete();
 
-        return Redirect::route('branch.list');
+        return Redirect::route('branch.list')->with('success', 'Duomenys sėkmingai išsaugoti');;
     }
 
     private function generateTimetable(int $branchID, array $days): array
@@ -248,5 +281,22 @@ class BranchController extends Controller
             }
         }
         return $timings;
+    }
+
+    private function appendTimetable(Branch $branch, array $timetable): Branch {
+        foreach ($timetable as $weekday => $times) {
+            foreach ($times as $type => $time) {
+                $fieldName = $weekday . "_" . $type;
+                $branch->$fieldName = substr($time, 0, 5);
+            }
+        }
+        return $branch;
+    }
+
+    private function getImage($imageName): string {
+        if ($imageName != null && file_exists(storage_path('app/public/branchImages/' . $imageName))) {
+            return url('storage/branchImages/' . $imageName);
+        }
+        return url('storage/nophoto.webp');
     }
 }

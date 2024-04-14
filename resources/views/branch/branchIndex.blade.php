@@ -70,6 +70,15 @@
             @endif
         </div>
 
+        @if (isset($branch->description))
+            <div class="card border-light" style="margin-top: 1.4cm;">
+                <h5 class="card-header" style="font-weight: bold;">Aprašymas</h5>
+                <div class="card-body">
+                  <p class="card-text">{{ $branch->description }}</p>
+                </div>
+            </div>
+        @endif
+
         @if ($branch->competenceCourses->isNotEmpty() || $branch->categoricalCourses->isNotEmpty())
             <h5 style="margin-top: 1.4cm; font-weight: bold;">Organizuojami kursai</h5>
             <ul class="list-group list-group-flush">

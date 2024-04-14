@@ -91,9 +91,8 @@
 
                                 <div class="col-md-6">
                                     @if (isset($branch) && $branch->image)
-                                        <img src="{{ asset('path/to/your/images/' . $branch->image) }}" alt="Branch Image"
+                                        <img src="{{ $branch->image }}" alt="Filialo nuotrauka"
                                             style="max-width: 200px;">
-                                        <p>Current Image</p>
                                     @endif
 
                                     <input type="file" class="form-control @error('image') is-invalid @enderror"
@@ -131,8 +130,7 @@
                                     class="col-md-3 col-form-label text-md-end">{{ __('Trumpas filialo aprašymas') }}</label>
 
                                 <div class="col-md-6">
-                                    <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description"
-                                        value="{{ isset($branch) ? $branch->description : old('description') }}" rows="5"></textarea>
+                                    <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="5">{{ isset($branch) ? $branch->description : old('description') }}</textarea>
 
                                     @error('description')
                                         <span class="invalid-feedback" role="alert">
@@ -427,7 +425,7 @@
                                             <div class="col additional-inputs">
                                                 <label
                                                     for="course{{ $course->id }}_theory">{{ __('Teorijos kaina') }}</label>
-                                                <input type="number" min="1" step="1" id="course{{ $course->id }}_theory"
+                                                <input type="number" min="1" step="0.01" id="course{{ $course->id }}_theory"
                                                     name="course{{ $course->id }}_theory"
                                                     value="{{ isset($branch) && isset($coursePrices[$course->id]['theory']) ? $coursePrices[$course->id]['theory'] : old('course'.$course->id.'_theory') }}"
                                                     class="form-control form-control-sm  @error('course'.$course->id.'_theory') is-invalid @enderror">
@@ -435,7 +433,7 @@
                                             <div class="col additional-inputs">
                                                 <label
                                                     for="course{{ $course->id }}_practice">{{ __('Praktikos kaina') }}</label>
-                                                <input type="number" min="1" step="1"  id="course{{ $course->id }}_practice"
+                                                <input type="number" min="1" step="0.01"  id="course{{ $course->id }}_practice"
                                                     name="course{{ $course->id }}_practice"
                                                     value="{{ isset($branch) && isset($coursePrices[$course->id]['practice']) ? $coursePrices[$course->id]['practice'] : old('course'.$course->id.'_practice') }}"
                                                     class="form-control form-control-sm  @error('course'.$course->id.'_practice') is-invalid @enderror">
@@ -443,7 +441,7 @@
                                             <div class="col additional-inputs">
                                                 <label
                                                     for="course{{ $course->id }}_lesson">{{ __('Papildomas važiavimas') }}</label>
-                                                <input type="number" min="1" step="1"  id="course{{ $course->id }}_theory"
+                                                <input type="number" min="1" step="0.01"  id="course{{ $course->id }}_theory"
                                                     name="course{{ $course->id }}_lesson"
                                                     value="{{ isset($branch) && isset($coursePrices[$course->id]['lesson']) ? $coursePrices[$course->id]['lesson'] : old('course'.$course->id.'_lesson') }}"
                                                     class="form-control form-control-sm  @error('course'.$course->id.'_lesson') is-invalid @enderror">
@@ -465,7 +463,7 @@
                                             <div class="col additional-inputs">
                                                 <label
                                                     for="course{{ $course->id }}_lesson">{{ __('Kaina') }}</label>
-                                                <input type="number" min="1" step="1"  id="course{{ $course->id }}_price"
+                                                <input type="number" min="1" step="0.01"  id="course{{ $course->id }}_price"
                                                     name="course{{ $course->id }}_price"
                                                     value="{{ isset($branch) && isset($coursePrices[$course->id]['price']) ? $coursePrices[$course->id]['price'] : old('course'.$course->id.'_price') }}"
                                                     class="form-control form-control-sm  @error('course'.$course->id.'_price') is-invalid @enderror">

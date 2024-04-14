@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+    @if(session('success'))
+        <div class="alert alert-success auto-dismiss">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <div style="padding: 0.2cm 0.4cm 1cm 0.4cm" class="d-flex align-items-left">
         <h1 style="margin-right: 0.4cm">Filialai</h1>
         @if (Auth()->check() && Auth::user()->role == $roleDirector)
