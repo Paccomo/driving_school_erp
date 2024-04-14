@@ -68,11 +68,17 @@ class RegisterController extends Controller
         } else {
             $request->validate([
                 'employmentTime' => ['required', 'numeric',  'gte:0.5', 'lte:1'],
+                'image' => ['nullable', 'image'],
                 'salary' => ['required', 'numeric', 'gte:0'],
             ]);
 
             $createConcreteUser = function (Request $request, int $userID, int $branch) {
-                $this->createEmployee($userID, $branch, $request['salary'], $request['employmentTime']);
+                if ($request->hasFile('image')) {
+                    $image = $request->file('image');
+                } else {
+                    $image = null;
+                }
+                $this->createEmployee($userID, $branch, $request['salary'], $request['employmentTime'], $image);
             };
         }
 
@@ -175,13 +181,24 @@ class RegisterController extends Controller
         $client->save();
     }
 
-    private function createEmployee(int $userID, int $branchID, float $salary, float $employmentTime) : void {
+    private function createEmployee(int $userID, int $branchID, float $salary, float $employmentTime, $image = null) : void {
         $employee = new Employee();
         $employee->id = $userID;
         $employee->fk_BRANCHid = $branchID;
         $employee->monthly_salary = $salary;
         $employee->employment_time = $employmentTime;
         $employee->work_hours = $employmentTime * 40;
+        if ($image != null) {
+            $imageName = $image->getClientOriginalName();
+
+            if (file_exists(storage_path('app/public/employees/' . $imageName))) {
+                $extension = $image->getClientOriginalExtension();
+                $imageName = uniqid() . '.' . $extension;
+            }
+
+            $image->storeAs('public/employees/', $imageName);
+            $employee->image = $imageName;
+        }
         $employee->save();
     }
 

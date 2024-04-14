@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Branch\BranchController;
 use App\Http\Controllers\Course\PricingController;
+use App\Http\Controllers\Employee\InstructorController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 
@@ -24,3 +25,6 @@ Route::get("/branch/{id}/edit", [BranchController::class, "edit"])->name("branch
 Route::get("/pricing", [PricingController::class, "list"])->name("pricing.list");
 Route::get("/pricing/{courseid}/{branchid}/edit", [PricingController::class, "edit"])->name("pricing.edit");
 Route::put("/pricing/new", [PricingController::class, "save"])->name("pricing.save");
+
+//Instructor
+Route::get("/instructor", [InstructorController::class, "list"])->name("instructor.list");

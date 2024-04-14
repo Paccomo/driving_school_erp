@@ -121,10 +121,10 @@
                                 </li>
 
                                 <li class="nav-item py-2 py-sm-0">
-                                    <a href="{{ route('register') }}"
-                                        class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
+                                    <a href="{{ route('instructor.list') }}"
+                                        class="nav-link text-white {{ request()->is('instructor*') == 1 ? 'active' : '' }}">
                                         <i class="fs-6 fa fa-chalkboard-user"></i> <span
-                                            class="fs-6 ms-2 d-none d-sm-inline">Instruktoriai?</span>
+                                            class="fs-6 ms-2 d-none d-sm-inline">Instruktoriai</span>
                                     </a>
                                 </li>
 

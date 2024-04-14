@@ -20,4 +20,8 @@ class Person extends Model
     {
         return $value ? decrypt($value) : null;
     }
+
+    public function employee() {
+        return $this->hasOne(Employee::class, 'id');
+    }
 }
