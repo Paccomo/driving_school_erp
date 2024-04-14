@@ -16,6 +16,6 @@
     width: 20%;
 }
 
-td.clickable {
+.clickable {
     cursor: pointer;
 }

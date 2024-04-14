@@ -9,9 +9,18 @@ class Branch extends Model
 {
     protected $table = 'branch';
     public $timestamps = false;
-    // protected $fillable = [
-    //     // Add other fillable attributes here if needed
-    //     'monOpen',
-    // ];
+
+    public function timetableTime() {
+        return $this->hasMany(TimetableTime::class, 'fk_BRANCHid');
+    }
+
+    public function categoricalCourse() {
+        return $this->hasMany(BranchCategoricalCourse::class, 'fk_BRANCHid');
+    }
+
+    public function competenceCourse() {
+        return $this->hasMany(BranchCompetenceCourse::class, 'fk_BRANCHid');
+    }
+
     use HasFactory;
 }

@@ -10,4 +10,9 @@ class BranchCategoricalCourse extends Model
     protected $table = 'branch_categorical_course';
     public $timestamps = false;
     use HasFactory;
+
+    protected $fillable = [
+        'fk_BRANCHid',
+        'fk_CATEGORICAL_COURSEid'
+    ];
 }

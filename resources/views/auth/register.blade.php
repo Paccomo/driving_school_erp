@@ -11,7 +11,7 @@
                             @csrf
 
                             <div class="row mb-3">
-                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Vardas') }}</label>
+                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Vardas') }}<span class="text-danger">*</span></label>
 
                                 <div class="col-md-6">
                                     <input id="name" type="text"
@@ -28,7 +28,7 @@
 
                             <div class="row mb-3">
                                 <label for="surname"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Pavardė') }}</label>
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Pavardė') }}<span class="text-danger">*</span></label>
 
                                 <div class="col-md-6">
                                     <input id="surname" type="text"
@@ -45,7 +45,7 @@
 
                             <div class="row mb-3">
                                 <label for="email"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('El. paštas') }}</label>
+                                    class="col-md-4 col-form-label text-md-end">{{ __('El. paštas') }}<span class="text-danger">*</span></label>
 
                                 <div class="col-md-6">
                                     <input id="email" type="email"
@@ -62,7 +62,7 @@
 
                             <div class="row mb-3">
                                 <label for="pid"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Asmens kodas') }}</label>
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Asmens kodas') }}<span class="text-danger">*</span></label>
 
                                 <div class="col-md-6">
                                     <input id="pid" type="text"
@@ -78,7 +78,7 @@
 
                             <div class="row mb-3">
                                 <label for="address"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Adresas') }}</label>
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Adresas') }}<span class="text-danger">*</span></label>
 
                                 <div class="col-md-6">
                                     <input id="address" type="text"
@@ -95,7 +95,7 @@
 
                             <div class="row mb-3">
                                 <label for="city"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Miestas') }}</label>
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Miestas') }}<span class="text-danger">*</span></label>
 
                                 <div class="col-md-6">
                                     <input id="city" type="text"
@@ -112,7 +112,7 @@
 
                             <div class="row mb-3">
                                 <label for="phoneNum"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Tel. nr.') }}</label>
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Tel. nr.') }}<span class="text-danger">*</span></label>
 
                                 <div class="col-md-6">
                                     <input id="phoneNum" type="tel"
@@ -129,7 +129,7 @@
                             @if (Auth::user()->role == $roleDirector)
                                 <div class="row mb-3">
                                     <label for="branch"
-                                        class="col-md-4 col-form-label text-md-end">{{ __('Filialas') }}</label>
+                                        class="col-md-4 col-form-label text-md-end">{{ __('Filialas') }}<span class="text-danger">*</span></label>
                                     <div class="col-md-6">
                                         <select name="branch" id="branchSelect"
                                             class="form-select @error('branch') is-invalid @enderror" id="branch"
@@ -151,7 +151,7 @@
                             @if ($employeeForm && Auth::user()->role == $roleDirector)
                             <div class="row mb-3">
                                 <label for="employmentTime"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Etatas') }}</label>
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Etatas') }}<span class="text-danger">*</span></label>
                                 <div class="col-md-6">
                                     <select name="employmentTime" id="employmentTimeSelect"
                                         class="form-select @error('employmentTime') is-invalid @enderror" id="employmentTime"
@@ -171,7 +171,7 @@
 
                             <div class="row mb-3">
                                 <label for="salary"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Alga.') }}</label>
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Alga.') }}<span class="text-danger">*</span></label>
 
                                 <div class="col-md-6">
                                     <input id="salary" type="number" step="0.01" min="0"
@@ -188,7 +188,7 @@
 
                                 <div class="row mb-3">
                                     <label for="role"
-                                        class="col-md-4 col-form-label text-md-end">{{ __('Rolė') }}</label>
+                                        class="col-md-4 col-form-label text-md-end">{{ __('Rolė') }}<span class="text-danger">*</span></label>
                                     <div class="col-md-6">
                                         <select name="role" class="form-select @error('role') is-invalid @enderror"
                                             id="role" required>
@@ -207,7 +207,7 @@
                             @else
                                 <div class="row mb-3">
                                     <label for="course"
-                                        class="col-md-4 col-form-label text-md-end">{{ __('Mokymo kursas') }}</label>
+                                        class="col-md-4 col-form-label text-md-end">{{ __('Mokymo kursas') }}<span class="text-danger">*</span></label>
                                     <div class="col-md-6">
                                         <select name="course" class="form-select @error('course') is-invalid @enderror"
                                             id="courseSelect" required>
@@ -255,7 +255,7 @@
 
                                 <div class="row mb-3">
                                     <label for="prepaid"
-                                        class="col-md-4 col-form-label text-md-end">{{ __('Pirminis įnašas.') }}</label>
+                                        class="col-md-4 col-form-label text-md-end">{{ __('Pirminis įnašas.') }}<span class="text-danger">*</span></label>
 
                                     <div class="col-md-6">
                                         <input id="prepaid" type="number" step="0.01" min="0"
@@ -289,7 +289,6 @@
                                     </div>
                                 </div>
                             @endif
-
 
                             <div class="row mb-0">
                                 <div class="col-md-6 offset-md-4">
