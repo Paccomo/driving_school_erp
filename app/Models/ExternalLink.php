@@ -10,4 +10,12 @@ class ExternalLink extends Model
     protected $table = 'external_link';
     public $timestamps = false;
     use HasFactory;
+
+    protected $fillable = [
+        'id'
+    ];
+
+    public function link() {
+        return $this->belongsTo(Link::class, 'id');
+    }
 }

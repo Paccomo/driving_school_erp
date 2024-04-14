@@ -137,10 +137,10 @@
                                 </li>
 
                                 <li class="nav-item py-2 py-sm-0">
-                                    <a href="{{ route('register') }}"
-                                        class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
+                                    <a href="{{ route('link.list') }}"
+                                        class="nav-link text-white {{ request()->is('information*') == 1 ? 'active' : '' }}">
                                         <i class="fs-6 fa fa-link"></i> <span
-                                            class="fs-6 ms-2 d-none d-sm-inline">Naudingos nuorodos?</span>
+                                            class="fs-6 ms-2 d-none d-sm-inline">Naudinga informacija</span>
                                     </a>
                                 </li>
 
