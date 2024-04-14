@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header text-white bg-secondary">{{ __('Registracija') }}</div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('register') }}">
+                        <form method="POST" action="{{ route('register') }}"  enctype="multipart/form-data">
                             @csrf
 
                             <div class="row mb-3">
@@ -149,6 +149,27 @@
                             @endif
 
                             @if ($employeeForm && Auth::user()->role == $roleDirector)
+                            <div class="row mb-3">
+                                <label for="image"
+                                    class="col-md-3 col-form-label text-md-end">{{ __('Filialo nuotrauka') }}</label>
+
+                                <div class="col-md-6">
+                                    @if (isset($branch) && $branch->image)
+                                        <img src="{{ $branch->image }}" alt="Filialo nuotrauka"
+                                            style="max-width: 200px;">
+                                    @endif
+
+                                    <input type="file" class="form-control @error('image') is-invalid @enderror"
+                                        id="image" name="image" accept="image/*">
+
+                                    @error('image')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
                             <div class="row mb-3">
                                 <label for="employmentTime"
                                     class="col-md-4 col-form-label text-md-end">{{ __('Etatas') }}<span class="text-danger">*</span></label>
