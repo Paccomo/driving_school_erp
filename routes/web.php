@@ -42,6 +42,7 @@ Route::get("/information/{id}/edit", [LinksController::class, "edit"])->name("li
 // Videos
 Route::get("/video", [VideosController::class, "list"])->name("video.list");
 Route::get("/video/new", [VideosController::class, "add"])->name("video.add");
+Route::get("/video/link", [VideosController::class, "add"])->name("video.addLink");
 Route::post("/video/new", [VideosController::class, "save"])->name("video.save");
 Route::put("/video/new", [VideosController::class, "save"])->name("video.save");
 Route::delete("/video/{id}", [VideosController::class, "destroy"])->name("video.destroy");

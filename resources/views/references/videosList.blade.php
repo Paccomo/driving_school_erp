@@ -15,33 +15,50 @@
     <div style="padding: 0.2cm 0.4cm 1cm 0.4cm" class="d-flex align-items-left">
         <h1 style="margin-right: 0.4cm">Naudingi vaizdo įrašai</h1>
         @if (Auth()->check() && Auth::user()->role == $roleDirector)
-            <a style="margin-right: 1.5rem;" href="{{ route('video.add') }}" class="btn btn-primary btn-sm h-25 fs-6">Pridėti vaizdo įrašą</a>
+            <a style="margin-right: 1.5rem;" href="{{ route('video.add') }}" class="btn btn-primary btn-sm h-25 fs-6">Pridėti
+                vaizdo įrašą su failu</a>
+            <a style="margin-right: 1.5rem;" href="{{ route('video.addLink') }}" class="btn btn-primary btn-sm h-25 fs-6">Pridėti
+                vaizdo įrašą iš interneto</a>
         @endif
     </div>
 
     <div class="accordion accordion-flush" id="videoList">
         @foreach ($videos as $video)
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="video-{{ $video->id }}">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#video-{{ $video->id }}-prices" aria-expanded="false"
-                            aria-controls="video-{{ $video->id }}-prices">
-                            {{ $video->link->title }}
-                        </button>
-                    </h2>
-                    <div id="video-{{ $video->id }}-prices" class="accordion-collapse collapse"
-                        aria-labelledby="video-{{ $video->id }}" data-bs-parent="#videoList">
-                        <div class="accordion-body">
-                            @if ($video->isURL)
-                                <iframe width="560" height="315" src="{{$video->link->link}}" frameborder="0" allowfullscreen></iframe>
-                            @else
-                                <video width="560" height="315" controls>
-                                    <source src="{{$video->link->link}}" type="video/mp4">
-                                </video>                            
-                            @endif
-                        </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="video-{{ $video->id }}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#video-{{ $video->id }}-prices" aria-expanded="false"
+                        aria-controls="video-{{ $video->id }}-prices">
+                        {{ $video->link->title }}
+                    </button>
+                </h2>
+                <div id="video-{{ $video->id }}-prices" class="accordion-collapse collapse"
+                    aria-labelledby="video-{{ $video->id }}" data-bs-parent="#videoList">
+                    <div class="accordion-body">
+                        @if ($video->isURL)
+                            <iframe width="560" height="315" src="{{ $video->link->link }}" frameborder="0"
+                                allowfullscreen></iframe>
+                        @else
+                            <video width="560" height="315" controls>
+                                <source src="{{ $video->link->link }}" type="video/mp4">
+                            </video>
+                        @endif
+                        @if (Auth()->check() && Auth::user()->role == $roleDirector)
+                            <div class="d-flex">
+                                <a style="margin-left: 0.4cm; margin-right: 0.4cm;"
+                                    href="{{ route('video.edit', $video->id) }}" class="btn btn-warning">Redaguoti</a>
+                                <form action="{{ route('video.destroy', $video->id) }}" method="POST"
+                                    style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger"
+                                        onclick="return confirm('Ar tikrai norite pašalinti nuorodą {{ $video->link->title }}?')">Pašalinti</button>
+                                </form>
+                            </div>
+                        @endif
                     </div>
                 </div>
+            </div>
         @endforeach
     </div>
 @endsection
