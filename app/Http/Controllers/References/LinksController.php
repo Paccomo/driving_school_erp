@@ -85,6 +85,6 @@ class LinksController extends Controller
             Link::destroy($request->id);
             return redirect()->route('link.list')->with('success', 'Nuoroda sėkmingai ištrinta!');
         }
-        return redirect()->route('branch.list')->with('fail', 'Nepavyko rasti norimos ištrinti nuorodos');
+        return redirect()->route('link.list')->with('fail', 'Nepavyko rasti norimos ištrinti nuorodos');
     }
 }

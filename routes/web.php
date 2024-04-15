@@ -5,6 +5,7 @@ use App\Http\Controllers\Branch\BranchController;
 use App\Http\Controllers\Course\PricingController;
 use App\Http\Controllers\Employee\InstructorController;
 use App\Http\Controllers\References\LinksController;
+use App\Http\Controllers\References\VideosController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 
@@ -37,3 +38,12 @@ Route::post("/information/new", [LinksController::class, "save"])->name("link.sa
 Route::put("/information/new", [LinksController::class, "save"])->name("link.save");
 Route::delete("/information/{id}", [LinksController::class, "destroy"])->name("link.destroy");
 Route::get("/information/{id}/edit", [LinksController::class, "edit"])->name("link.edit");
+
+// Videos
+Route::get("/video", [VideosController::class, "list"])->name("video.list");
+Route::get("/video/new", [VideosController::class, "add"])->name("video.add");
+Route::get("/video/link", [VideosController::class, "add"])->name("video.addLink");
+Route::post("/video/new", [VideosController::class, "save"])->name("video.save");
+Route::put("/video/new", [VideosController::class, "save"])->name("video.save");
+Route::delete("/video/{id}", [VideosController::class, "destroy"])->name("video.destroy");
+Route::get("/video/{id}/edit", [VideosController::class, "edit"])->name("video.edit");
