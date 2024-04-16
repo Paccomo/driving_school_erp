@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Branch\BranchController;
+use App\Http\Controllers\Course\CourseController;
 use App\Http\Controllers\Course\PricingController;
 use App\Http\Controllers\Employee\InstructorController;
 use App\Http\Controllers\References\LinksController;
@@ -47,3 +48,13 @@ Route::post("/video/new", [VideosController::class, "save"])->name("video.save")
 Route::put("/video/new", [VideosController::class, "save"])->name("video.save");
 Route::delete("/video/{id}", [VideosController::class, "destroy"])->name("video.destroy");
 Route::get("/video/{id}/edit", [VideosController::class, "edit"])->name("video.edit");
+
+// Course
+Route::get("/course", [CourseController::class, "list"])->name("course.list");
+Route::get("/course/new", [CourseController::class, "add"])->name("course.add");
+Route::post("/course/new", [CourseController::class, "save"])->name("course.save");
+Route::put("/course/new", [CourseController::class, "save"])->name("course.save");
+Route::get('/course/register', [CourseController::class, 'register'])->name("course.register");
+Route::get("/course/{id}", [CourseController::class, "index"])->name("course.index");
+Route::delete("/course/{id}", [CourseController::class, "destroy"])->name("course.destroy");
+Route::get("/course/{id}/edit", [CourseController::class, "edit"])->name("course.edit");
