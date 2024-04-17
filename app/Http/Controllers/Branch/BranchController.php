@@ -14,6 +14,7 @@ use App\Models\Client;
 use App\Models\CompetenceCourse;
 use App\Models\ContractRequest;
 use App\Models\Employee;
+use App\Models\StudentsGroup;
 use App\Models\TimetableTime;
 use App\Rules\timeAfter;
 use Illuminate\Http\Response;
@@ -138,6 +139,11 @@ class BranchController extends Controller
             foreach ($contractRequests as $contractRequest) {
                 $contractRequest->fk_BRANCHid = null;
                 $contractRequest->save();
+            }
+            $studentsGroups = StudentsGroup::where('fk_BRANCHid', $request->id)->get();
+            foreach ($studentsGroups as $group) {
+                $group->fk_BRANCHid = null;
+                $group->save();
             }
 
             $branch->delete();

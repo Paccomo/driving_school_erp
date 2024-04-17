@@ -4,12 +4,20 @@ namespace App\Http\Controllers\Course;
 
 use App\Constants\Role;
 use App\Http\Controllers\Controller;
+use App\Models\BranchCategoricalCourse;
+use App\Models\BranchCompetenceCourse;
 use App\Models\CategoricalCourse;
+use App\Models\Client;
 use App\Models\CompetenceCourse;
+use App\Models\Course;
+use App\Models\CourseQuestion;
 use App\Models\Description;
+use App\Models\StudentsGroup;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class CourseController extends Controller
 {
@@ -45,6 +53,86 @@ class CourseController extends Controller
             'highlights' => $highlightedDescriptions,
             'info' => $regularDescriptions,
         ]);
+    }
+
+    public function add() {
+        if (Auth::user()->role != Role::Director->value)
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+        return view('course.courseForm');
+    }
+
+    public function edit(Request $request) {
+        if (Auth::user()->role != Role::Director->value)
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+
+        $validator = validator()->make([
+            'id' => $request->id,
+        ], [
+            'id' => ['required', 'integer', 'gte:0', 'exists:course,id'],
+        ]);
+        if ($validator->fails()) {
+            throw ValidationException::withMessages($validator->errors()->toArray());
+        }
+
+        $course = Course::find($request->id);
+        return view('course.courseForm', ['course' => $course]);
+    }
+
+    public function save(Request $request) {
+        if (Auth::user()->role != Role::Director->value)
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+
+        $request->validate([
+            'id' => ['integer', 'gt:0', 'exists:course,id'],
+            'name' => ['required', 'string'],
+            'description' => ['required', 'string'],
+        ]);
+
+        unset($courseType);
+        if ($request->has('id')) {
+            $course = Course::find($request->id);
+        } else {
+            $course = new Course();
+            $request->has('categorical') ? $courseType = new CategoricalCourse : $courseType = new CompetenceCourse;
+        }
+
+        $course->name = $request->name;
+        $course->main_description = $request->description;
+        $course->save();
+        if (isset($courseType) && $courseType !== null)  {
+            $courseType->id = $course->id;
+            $courseType->save();
+        }
+
+        return redirect()->route('course.list')->with('success', 'Duomenys sėkmingai išsaugoti');
+    }
+
+    public function destroy(Request $request) {
+        if (Auth::user()->role != Role::Director->value)
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+
+        $course = Course::find($request->id);
+        if ($course !== null) {
+            Description::where('fk_COURSEid', $request->id)->delete();
+            CourseQuestion::where('fk_COURSEid', $request->id)->delete();
+            BranchCategoricalCourse::where('fk_CATEGORICAL_COURSEid', $request->id)->delete();
+            BranchCompetenceCourse::where('fk_COMPETENCE_COURSEid', $request->id)->delete();
+            CategoricalCourse::where('id', $request->id)->delete();
+            CompetenceCourse::where('id', $request->id)->delete();
+            $studentsGroups = StudentsGroup::where('fk_COURSEid', $request->id)->get();
+            foreach ($studentsGroups as $group) {
+                $group->fk_COURSEid = null;
+                $group->save();
+            }
+            $clients = Client::where('fk_COURSEid', $request->id)->get();
+            foreach ($clients as $client) {
+                $client->fk_COURSEid = null;
+                $client->save();
+            }
+            $course->delete();
+            return redirect()->route('course.list')->with('success', 'Mokymo kursas sėkmingai ištrintas!');
+        }
+        return redirect()->route('course.list')->with('fail', 'Norimas ištrinti mokymo kursas buvo nerastas');
     }
 
     public function register() {
