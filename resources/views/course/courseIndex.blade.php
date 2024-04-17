@@ -14,6 +14,7 @@
                             onclick="return confirm('Ar tikrai norite pašalinti mokymo kursą &quot;{{ $course->course->name }}&quot;?')">Pašalinti</button>
                     </form>
                 </div>
+            </div>
         @endif
 
         <div class="jumbotron">
@@ -27,9 +28,41 @@
             <hr class="my-4">
             @guest
                 <p class="lead">
-                    <a class="btn btn-primary btn-lg" href="{{route('course.register')}}" role="button">Registruotis</a>
+                    <a class="btn btn-primary btn-lg" href="{{ route('course.register') }}" role="button">Registruotis</a>
                 </p>
             @endguest
         </div>
+
+        <div class="mt-5 mb-5">
+            @forelse($highlights as $highlight)
+                <div class="container">
+                    <div class="row">
+                        <div class="col-auto">
+                            <i class="fa-solid fa-circle-info fa-2x"></i>
+                        </div>
+                        <div class="col">
+                            <h4>{{ $highlight->title }}</h4>
+                            <p>{{ $highlight->description }}</p>
+                        </div>
+                    </div>
+                </div>
+            @empty
+            @endforelse
+        </div>
+
+        <div class="mt-5 mb-5">
+            @forelse($info as $desc)
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <h4>{{ $desc->title }}</h4>
+                            <p>{{ $desc->description }}</p>
+                        </div>
+                    </div>
+                </div>
+            @empty
+            @endforelse
+        </div>
+
     </div>
 @endsection
