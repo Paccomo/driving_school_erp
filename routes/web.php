@@ -58,3 +58,12 @@ Route::get('/course/register', [CourseController::class, 'register'])->name("cou
 Route::get("/course/{id}", [CourseController::class, "index"])->name("course.index");
 Route::delete("/course/{id}", [CourseController::class, "destroy"])->name("course.destroy");
 Route::get("/course/{id}/edit", [CourseController::class, "edit"])->name("course.edit");
+
+// Course descriptions
+Route::get("/description/{id}/list", [CourseController::class, "descList"])->name("description.list");
+Route::get("/description/new", [CourseController::class, "descAdd"])->name("description.add");
+Route::post("/description/new", [CourseController::class, "descSave"])->name("description.save");
+Route::put("/description/new", [CourseController::class, "descSave"])->name("description.save");
+Route::get("/description/{id}", [CourseController::class, "descIndex"])->name("description.index");
+Route::delete("/description/{id}", [CourseController::class, "descDestroy"])->name("description.destroy");
+Route::get("/description/{id}/edit", [CourseController::class, "descEdit"])->name("description.edit");

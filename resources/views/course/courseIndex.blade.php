@@ -5,6 +5,8 @@
         @if (Auth()->check() && Auth::user()->role == $roleDirector)
             <div style="margin-bottom: 1cm;">
                 <div class="d-flex align-items-left">
+                    <a style="margin-right: 0.4cm;" href="{{ route('description.list', $course->id) }}"
+                        class="btn btn-secondary btn-sm mr-2">Aprašymai</a>
                     <a style="margin-right: 0.4cm;" href="{{ route('course.edit', $course->id) }}"
                         class="btn btn-sm btn-warning">Redaguoti</a>
                     <form action="{{ route('course.destroy', $course->id) }}" method="POST" style="display: inline;">

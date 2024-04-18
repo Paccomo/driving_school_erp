@@ -139,6 +139,109 @@ class CourseController extends Controller
         return null;
     }
 
+    public function descList(Request $request) {
+        if (Auth::user()->role != Role::Director->value)
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+
+        $validator = validator()->make([
+            'id' => $request->id,
+        ], [
+            'id' => ['required', 'integer', 'gte:0', 'exists:course,id'],
+        ]);
+        if ($validator->fails()) {
+            throw ValidationException::withMessages($validator->errors()->toArray());
+        }
+
+        $courseName = Course::where('id', $request->id)->value('name');
+        $distinguished = $this->getDescriptions($request->id, true);
+        $regular = $this->getDescriptions($request->id, false);
+        return view('course.descList', ['distinguished' => $distinguished, 'regular' => $regular, 'courseName' => $courseName]);
+    }
+
+    public function descIndex(Request $request) {
+        if (Auth::user()->role != Role::Director->value)
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+
+        $validator = validator()->make([
+            'id' => $request->id,
+        ], [
+            'id' => ['required', 'integer', 'gte:0', 'exists:description,id'],
+        ]);
+        if ($validator->fails()) {
+            throw ValidationException::withMessages($validator->errors()->toArray());
+        }
+
+        $description = Description::find($request->id);
+        return view('course.descIndex', ['description' => $description]);
+    }
+
+    public function descAdd() {
+        if (Auth::user()->role != Role::Director->value)
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+
+        $courses = Course::all();
+
+        return view('course.descForm', ['courses' => $courses]);
+    }
+
+    public function descSave(Request $request) {
+        if (Auth::user()->role != Role::Director->value)
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+
+        $request->validate([
+            'id' => ['integer', 'gt:0', 'exists:description,id'],
+            'title' => ['required', 'string'],
+            'description' => ['required', 'string'],
+            'course' => ['required', 'integer', 'gt:0', 'exists:course,id']
+        ]);
+
+        if ($request->has('id'))
+            $desc = Description::find($request->id);
+        else 
+            $desc = new Description();
+
+        $desc->title = $request->title;
+        $desc->description = $request->description;
+        $desc->fk_COURSEid = $request->course;
+        if ($request->has('distinguished'))
+            $desc->is_distinguished = 1;
+        else
+            $desc->is_distinguished = 0;
+        $desc->save();
+
+        return redirect()->route('description.list', [$request->course])->with('success', 'Duomenys sėkmingai išsaugoti');
+    }
+
+    public function descEdit(Request $request) {
+        if (Auth::user()->role != Role::Director->value)
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+
+        $validator = validator()->make([
+            'id' => $request->id,
+        ], [
+            'id' => ['required', 'integer', 'gte:0', 'exists:description,id'],
+        ]);
+        if ($validator->fails()) {
+            throw ValidationException::withMessages($validator->errors()->toArray());
+        }
+
+        $description = Description::find($request->id);
+        return view('course.descForm', ['description' => $description]);
+    }
+
+    public function descDestroy(Request $request) {
+        if (Auth::user()->role != Role::Director->value)
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+
+        $desc = Description::find($request->id);
+        if ($desc !== null) {
+            $fk = $desc->fk_COURSEid;
+            $desc->delete();
+            return redirect()->route('description.list', [$fk])->with('success', 'Mokymo kurso aprašymas sėkmingai ištrintas!');
+        }
+        return redirect()->route('course.list')->with('fail', 'Norimas ištrinti mokymo kurso aprašymas buvo nerastas');
+    }
+
     private function getCourses(bool $currentlyActive = false) : array {
         $categoricalCourses = CategoricalCourse::with('course');
         $competenceCourses = CompetenceCourse::with('course');

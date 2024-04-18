@@ -26,6 +26,7 @@
                 <a href="{{ route('course.index', $course->id) }}">{{ $course->course->name }} Kategorija</a>
                 @if (Auth()->check() && Auth::user()->role == $roleDirector)
                     <div>
+                        <a href="{{ route('description.list', $course->id) }}" class="btn btn-secondary btn-sm mr-2">Aprašymai</a>
                         <a href="{{ route('course.edit', $course->id) }}" class="btn btn-warning btn-sm mr-2">Redaguoti</a>
                         <form action="{{ route('course.destroy', $course->id) }}" method="POST" style="display: inline;">
                             @csrf
@@ -46,6 +47,7 @@
                 <a href="{{ route('course.index', $course->id) }}">{{ $course->course->name }}</a>
                 @if (Auth()->check() && Auth::user()->role == $roleDirector)
                     <div>
+                        <a href="{{ route('description.list', $course->id) }}" class="btn btn-secondary btn-sm mr-2">Aprašymai</a>
                         <a href="{{ route('course.edit', $course->id) }}" class="btn btn-warning btn-sm mr-2">Redaguoti</a>
                         <form action="{{ route('course.destroy', $course->id) }}" method="POST" style="display: inline;">
                             @csrf
