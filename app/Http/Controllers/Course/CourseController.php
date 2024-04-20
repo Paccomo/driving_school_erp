@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Course;
 
 use App\Constants\Role;
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
 use App\Models\BranchCategoricalCourse;
 use App\Models\BranchCompetenceCourse;
 use App\Models\CategoricalCourse;
@@ -13,6 +14,7 @@ use App\Models\Course;
 use App\Models\CourseQuestion;
 use App\Models\Description;
 use App\Models\StudentsGroup;
+use App\Rules\branchCourseExists;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -135,8 +137,48 @@ class CourseController extends Controller
         return redirect()->route('course.list')->with('fail', 'Norimas ištrinti mokymo kursas buvo nerastas');
     }
 
-    public function register() {
-        return null;
+    public function register(Request $request) {
+        $validator = validator()->make([
+            'course' => $request->course,
+            'branch' => $request->branch
+        ], [
+            'course' => ['required', 'integer', 'gte:0', 'exists:course,id'],
+            'branch' => ['nullable', 'integer', 'gte:0', 'exists:branch,id', new branchCourseExists($request->course, $request->branch)],
+        ]);
+        if ($validator->fails()) {
+            $messages = $validator->messages();
+            if ($messages->has('branch')) {
+                $branchMessages = $messages->get('branch');
+                foreach ($branchMessages as $message) {
+                    if (str_contains($message, 'nėra ruošiama')) {
+                        return back()->with('fail', $message);
+                    }
+                }
+                return back()->with('fail', "Neįmanoma registruotis į mokymą neegzistuojančiame filiale");
+            }
+            return back()->with('fail', 'Neįmanoma užsiregistruoti į neegzistuojantį mokymą!');
+        }
+
+        $isCategorical = false;
+        if (CategoricalCourse::where('id', $request->course)->exists()) {
+            $course = CategoricalCourse::with('course')->find($request->course);
+            $course->name = $course->course->name . " Kategorija";
+            $isCategorical = true;
+        } else {
+            $course = CompetenceCourse::with('course')->find($request->course);
+            $course->name = $course->course->name;
+        }
+
+        if ($request->branch != null)
+            $branch = Branch::find($request->branch);
+        else {
+            if ($isCategorical)
+                $branch = BranchCategoricalCourse::with('branch')->where('fk_CATEGORICAL_COURSEid', $request->course)->get();
+            else 
+                $branch = BranchCompetenceCourse::with('branch')->where('fk_COMPETENCE_COURSEid', $request->course)->get();
+        }
+
+        return view('course.courseRegisterForm', ['course' => $course, 'branch' => $branch, 'isCategorical' => $isCategorical]);
     }
 
     public function descList(Request $request) {

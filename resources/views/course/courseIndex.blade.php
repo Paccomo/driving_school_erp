@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+    @if (session('fail'))
+        <div class="alert alert-danger auto-dismiss">
+            {{ session('fail') }}
+        </div>
+    @endif
     <div style="margin: 0.5cm">
         @if (Auth()->check() && Auth::user()->role == $roleDirector)
             <div style="margin-bottom: 1cm;">
@@ -30,7 +35,7 @@
             <hr class="my-4">
             @guest
                 <p class="lead">
-                    <a class="btn btn-primary btn-lg" href="{{ route('course.register') }}" role="button">Registruotis</a>
+                    <a class="btn btn-primary btn-lg" href="{{ route('course.register', ['course' => $course->id]) }}" role="button">Registruotis</a>
                 </p>
             @endguest
         </div>

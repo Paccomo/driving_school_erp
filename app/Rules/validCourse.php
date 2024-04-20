@@ -17,11 +17,6 @@ class validCourse implements ValidationRule
         $this->branchId = $branchId;
     }
 
-    /**
-     * Run the validation rule.
-     *
-     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
-     */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $catCourses = BranchCategoricalCourse::where([

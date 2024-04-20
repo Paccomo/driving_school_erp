@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+    @if (session('fail'))
+        <div class="alert alert-danger auto-dismiss">
+            {{ session('fail') }}
+        </div>
+    @endif
     <div style="margin: 0.5cm">
         <div style="margin-bottom: 1cm;">
             <div class="d-flex align-items-left">
@@ -74,7 +79,7 @@
             <div class="card border-light" style="margin-top: 1.4cm;">
                 <h5 class="card-header" style="font-weight: bold;">Aprašymas</h5>
                 <div class="card-body">
-                  <p class="card-text">{{ $branch->description }}</p>
+                    <p class="card-text">{{ $branch->description }}</p>
                 </div>
             </div>
         @endif
@@ -86,7 +91,7 @@
                     <li class="list-group-item">
                         {{ $course->name }} Kategorija
                         @guest
-                            <button class="btn btn-sm btn-secondary" style="position: absolute; right: 0">Registruotis</button>
+                            <a href="{{ route('course.register', ['course' => $course->id, 'branch' => $branch->id]) }}" class="btn btn-sm btn-secondary" style="position: absolute; right: 0">Registruotis</a>
                         @endguest
                     </li>
                 @endforeach
@@ -95,7 +100,7 @@
                     <li class="list-group-item">
                         {{ $course->name }}
                         @guest
-                            <button class="btn btn-sm btn-secondary" style="position: absolute; right: 0">Registruotis</button>
+                            <a href="{{ route('course.register', ['course' => $course->id, 'branch' => $branch->id]) }}" class="btn btn-sm btn-secondary" style="position: absolute; right: 0">Registruotis</a>
                         @endguest
                     </li>
                 @endforeach

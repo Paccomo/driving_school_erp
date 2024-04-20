@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Branch\BranchController;
+use App\Http\Controllers\Contract\ContractsController;
 use App\Http\Controllers\Course\CourseController;
 use App\Http\Controllers\Course\PricingController;
 use App\Http\Controllers\Employee\InstructorController;
@@ -54,7 +55,7 @@ Route::get("/course", [CourseController::class, "list"])->name("course.list");
 Route::get("/course/new", [CourseController::class, "add"])->name("course.add");
 Route::post("/course/new", [CourseController::class, "save"])->name("course.save");
 Route::put("/course/new", [CourseController::class, "save"])->name("course.save");
-Route::get('/course/register', [CourseController::class, 'register'])->name("course.register");
+Route::get('/course/register/{course}/{branch?}', [CourseController::class, 'register'])->name("course.register");
 Route::get("/course/{id}", [CourseController::class, "index"])->name("course.index");
 Route::delete("/course/{id}", [CourseController::class, "destroy"])->name("course.destroy");
 Route::get("/course/{id}/edit", [CourseController::class, "edit"])->name("course.edit");
@@ -67,3 +68,6 @@ Route::put("/description/new", [CourseController::class, "descSave"])->name("des
 Route::get("/description/{id}", [CourseController::class, "descIndex"])->name("description.index");
 Route::delete("/description/{id}", [CourseController::class, "descDestroy"])->name("description.destroy");
 Route::get("/description/{id}/edit", [CourseController::class, "descEdit"])->name("description.edit");
+
+//Contract
+Route::post('/contract/new', [ContractsController::class, "guestRequest"])->name('contract.joinCourse');

@@ -37,7 +37,7 @@
                     </div>
                 @endif
                 @guest
-                    <button class="btn btn-sm btn-secondary">Registruotis</button>
+                    <a class="btn btn-secondary btn-sm" href="{{ route('course.register', ['course' => $course->id]) }}" role="button">Registruotis</a>
                 @endguest
             </li>
         @endforeach
@@ -58,7 +58,7 @@
                     </div>
                 @endif
                 @guest
-                    <button class="btn btn-sm btn-secondary">Registruotis</button>
+                    <a class="btn btn-secondary btn-sm" href="{{ route('course.register', ['course' => $course->id]) }}" role="button">Registruotis</a>
                 @endguest
             </li>
         @endforeach
