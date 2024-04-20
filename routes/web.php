@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\PwController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Branch\BranchController;
 use App\Http\Controllers\Contract\ContractsController;
@@ -15,6 +16,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 Route::post("/newUserPdf", [RegisterController::class, "UserPdf"])->name('user.credentials.download');
+Route::get('/changePassword/{id?}', [PwController::class, "showForm"])->name('pw.form');
+Route::post('/changePassword/{id?}', [PwController::class, "save"])->name('pw.save');
 
 // Branch
 Route::get("/branch", [BranchController::class, "list"])->name("branch.list");
