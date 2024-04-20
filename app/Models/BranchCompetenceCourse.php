@@ -15,4 +15,9 @@ class BranchCompetenceCourse extends Model
         'fk_BRANCHid',
         'fk_COMPETENCE_COURSEid'
     ];
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'fk_BRANCHid');
+    }
 }

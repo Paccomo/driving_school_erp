@@ -14,6 +14,7 @@ use App\Models\Client;
 use App\Models\CompetenceCourse;
 use App\Models\ContractRequest;
 use App\Models\Employee;
+use App\Models\StudentsGroup;
 use App\Models\TimetableTime;
 use App\Rules\timeAfter;
 use Illuminate\Http\Response;
@@ -42,14 +43,14 @@ class BranchController extends Controller
         $categoricalCourses = DB::table('branch_categorical_course')
             ->join('course', 'branch_categorical_course.fk_CATEGORICAL_COURSEid', '=', 'course.id')
             ->where('branch_categorical_course.fk_BRANCHid', $branch->id)
-            ->select('course.name')
+            ->select('course.id', 'course.name')
             ->get();
         $branch->categoricalCourses = $categoricalCourses;
 
         $competenceCourses = DB::table('branch_competence_course')
             ->join('course', 'branch_competence_course.fk_COMPETENCE_COURSEid', '=', 'course.id')
             ->where('branch_competence_course.fk_BRANCHid', $branch->id)
-            ->select('course.name')
+            ->select('course.id','course.name')
             ->get();
         $branch->competenceCourses = $competenceCourses;
 
@@ -138,6 +139,11 @@ class BranchController extends Controller
             foreach ($contractRequests as $contractRequest) {
                 $contractRequest->fk_BRANCHid = null;
                 $contractRequest->save();
+            }
+            $studentsGroups = StudentsGroup::where('fk_BRANCHid', $request->id)->get();
+            foreach ($studentsGroups as $group) {
+                $group->fk_BRANCHid = null;
+                $group->save();
             }
 
             $branch->delete();

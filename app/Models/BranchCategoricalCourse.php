@@ -15,4 +15,9 @@ class BranchCategoricalCourse extends Model
         'fk_BRANCHid',
         'fk_CATEGORICAL_COURSEid'
     ];
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'fk_BRANCHid');
+    }
 }

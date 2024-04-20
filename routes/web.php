@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Branch\BranchController;
+use App\Http\Controllers\Contract\ContractsController;
+use App\Http\Controllers\Course\CourseController;
 use App\Http\Controllers\Course\PricingController;
 use App\Http\Controllers\Employee\InstructorController;
 use App\Http\Controllers\References\LinksController;
@@ -47,3 +49,25 @@ Route::post("/video/new", [VideosController::class, "save"])->name("video.save")
 Route::put("/video/new", [VideosController::class, "save"])->name("video.save");
 Route::delete("/video/{id}", [VideosController::class, "destroy"])->name("video.destroy");
 Route::get("/video/{id}/edit", [VideosController::class, "edit"])->name("video.edit");
+
+// Course
+Route::get("/course", [CourseController::class, "list"])->name("course.list");
+Route::get("/course/new", [CourseController::class, "add"])->name("course.add");
+Route::post("/course/new", [CourseController::class, "save"])->name("course.save");
+Route::put("/course/new", [CourseController::class, "save"])->name("course.save");
+Route::get('/course/register/{course}/{branch?}', [CourseController::class, 'register'])->name("course.register");
+Route::get("/course/{id}", [CourseController::class, "index"])->name("course.index");
+Route::delete("/course/{id}", [CourseController::class, "destroy"])->name("course.destroy");
+Route::get("/course/{id}/edit", [CourseController::class, "edit"])->name("course.edit");
+
+// Course descriptions
+Route::get("/description/{id}/list", [CourseController::class, "descList"])->name("description.list");
+Route::get("/description/new", [CourseController::class, "descAdd"])->name("description.add");
+Route::post("/description/new", [CourseController::class, "descSave"])->name("description.save");
+Route::put("/description/new", [CourseController::class, "descSave"])->name("description.save");
+Route::get("/description/{id}", [CourseController::class, "descIndex"])->name("description.index");
+Route::delete("/description/{id}", [CourseController::class, "descDestroy"])->name("description.destroy");
+Route::get("/description/{id}/edit", [CourseController::class, "descEdit"])->name("description.edit");
+
+//Contract
+Route::post('/contract/new', [ContractsController::class, "guestRequest"])->name('contract.joinCourse');
