@@ -9,6 +9,7 @@ use App\Http\Controllers\Course\PricingController;
 use App\Http\Controllers\Employee\EmployeeController;
 use App\Http\Controllers\Employee\InstructorController;
 use App\Http\Controllers\References\LinksController;
+use App\Http\Controllers\References\SlidesController;
 use App\Http\Controllers\References\VideosController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -84,3 +85,12 @@ Route::get("/employee/{id}", [EmployeeController::class, "index"])->name("employ
 Route::delete("/employee/{id}", [EmployeeController::class, "destroy"])->name("employee.destroy");
 Route::get("/employee/{id}/edit", [EmployeeController::class, "edit"])->name("employee.edit");
 Route::get("/employee/{id}/timetable", [EmployeeController::class, "timetableForm"])->name("employee.timetable.form");
+
+// Slides
+Route::get("/slide", [SlidesController::class, "list"])->name("slides.list");
+Route::get("/slide/new", [SlidesController::class, "add"])->name("slides.add");
+Route::post("/slide/new", [SlidesController::class, "save"])->name("video.save");
+Route::put("/slide/new", [SlidesController::class, "save"])->name("slides.save");
+Route::delete("/slide/{id}", [SlidesController::class, "destroy"])->name("slides.destroy");
+Route::get("/slide/{id}", [SlidesController::class, "index"])->name("slides.index");
+Route::get("/slide/{id}/edit", [SlidesController::class, "edit"])->name("slides.edit");
