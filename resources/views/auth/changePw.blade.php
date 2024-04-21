@@ -16,23 +16,24 @@
                                 @isset($account->name)
                                     <h5 class="card-title mb-4">{{ $account->name }}</h5>
                                 @endisset
-                            @endif
-                            <div class="row mb-3">
-                                <label for="old"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Senas slaptažodis') }}</label>
+                            @else
+                                <div class="row mb-3">
+                                    <label for="old"
+                                        class="col-md-4 col-form-label text-md-end">{{ __('Senas slaptažodis') }}</label>
 
-                                <div class="col-md-6">
-                                    <input id="old" type="password"
-                                        class="form-control @error('old') is-invalid @enderror" name="old" required
-                                        autocomplete="current-password">
+                                    <div class="col-md-6">
+                                        <input id="old" type="password"
+                                            class="form-control @error('old') is-invalid @enderror" name="old" required
+                                            autocomplete="current-password">
 
-                                    @error('old')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                                        @error('old')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
 
                             <div class="row mb-3">
                                 <label for="new"
