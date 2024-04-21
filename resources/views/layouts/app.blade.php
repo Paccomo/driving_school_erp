@@ -197,6 +197,14 @@
                                                     class="fs-6 ms-2 d-none d-sm-inline">Dokumentų pateikimas?</span>
                                             </a>
                                         </li>
+                                    @elseif (Auth::user()->role == 'director')
+                                        <li class="nav-item py-2 py-sm-0">
+                                            <a href="{{ route('employee.list') }}"
+                                                class="nav-link text-white {{ request()->is('employee*') == 1 ? 'active' : '' }}">
+                                                <i class="fa fa-user-tie"></i> <span
+                                                    class="fs-6 ms-2 d-none d-sm-inline">Darbuotojai</span>
+                                            </a>
+                                        </li>
                                     @endif
                                 @endauth
                             </ul>

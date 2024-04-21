@@ -77,7 +77,7 @@
 
         @if (isset($branch->description))
             <div class="card border-light" style="margin-top: 1.4cm;">
-                <h5 class="card-header" style="font-weight: bold;">Aprašymas</h5>
+                <h5 class="card-header" style="font-weight: bold;">Apie filialą</h5>
                 <div class="card-body">
                     <p class="card-text">{{ $branch->description }}</p>
                 </div>
