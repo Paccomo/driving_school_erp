@@ -24,7 +24,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
-//TODO branch index redirect to course registration
 class BranchController extends Controller
 {
     public function list()
@@ -99,12 +98,17 @@ class BranchController extends Controller
             $coursePrices[$course['fk_COMPETENCE_COURSEid']]['price'] = $course['price'];
         }
 
+        $weekdays = array_column(WeekDay::cases(), 'value');
+        $timeType = array_column(TimetableTimeType::cases(), 'value');
+
         return view('branch.branchForm', [
             "catCourses" => $catCourses, 
             "compCourses" => $compCourses, 
             'branch' => $branch, 
             'coursePrices' => $coursePrices,
-            'branchCourses' => $branchCourseIds
+            'branchCourses' => $branchCourseIds,
+            'weekdays' => $weekdays,
+            'types' => $timeType,
         ]);
     }
 
@@ -113,10 +117,18 @@ class BranchController extends Controller
         if (Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
+        $weekdays = array_column(WeekDay::cases(), 'value');
+        $timeType = array_column(TimetableTimeType::cases(), 'value');    
+
         $catCourses = CategoricalCourse::leftJoin('course', 'categorical_course.id', '=', 'course.id')->get();
         $compCourses = CompetenceCourse::leftJoin('course', 'competence_course.id', '=', 'course.id')->get();
 
-        return view('branch.branchForm', ["catCourses" => $catCourses, "compCourses" => $compCourses]);
+        return view('branch.branchForm', [
+            "catCourses" => $catCourses,
+            "compCourses" => $compCourses,
+            'weekdays' => $weekdays,
+            'types' => $timeType,
+        ]);
     }
 
     public function destroy(Request $request)

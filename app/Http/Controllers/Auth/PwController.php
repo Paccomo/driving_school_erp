@@ -44,7 +44,7 @@ class PwController extends Controller
 
         $request->validate([
             'id' => ['integer', 'gt:0', 'exists:account,id'],
-            'old' => ['required'],
+            'old' => ['string'],
             'new' => ['required','min:6','confirmed']
         ]);
         $userID = $request->has('id') ? $request->id : Auth::user()->id;
@@ -64,8 +64,8 @@ class PwController extends Controller
         else if($acc->role == Role::Client->value)
             $routeToReturn = 'home';
         else
-            $routeToReturn = 'home';
+            $routeToReturn = 'employee.list';
 
-        return redirect()->route('home')->with('success', 'Slaptažodis sėkmingai pakeistas');
+        return redirect()->route($routeToReturn)->with('success', 'Slaptažodis sėkmingai pakeistas');
     }
 }

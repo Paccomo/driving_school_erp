@@ -1,4 +1,3 @@
-
 <?php
 
 return [
@@ -9,6 +8,13 @@ return [
     'ExaminationAccount' => "Egzaminavimo paskyra",
     'Client' => "Klientas",
     'Other' => "Kita",
+    'director' => "direktorius",
+    'administrator' => "administratorius",
+    'instructor' => "instruktorius",
+    'accountant' => "buhalteris",
+    'examinationaccount' => "egzaminavimo paskyra",
+    'client' => "klientas",
+    'other' => "kita",
     'Monday' => "Pirmadienis",
     'Tuesday' => "Antradienis",
     'Wednesday' => "Trečiadienis",
@@ -16,4 +22,14 @@ return [
     'Friday' => "Penktadienis",
     'Saturday' => "Šeštadienis",
     'Sunday' => "Sekmadienis",
+    'monday' => "Pirmadienis",
+    'tuesday' => "Antradienis",
+    'wednesday' => "Trečiadienis",
+    'thursday' => "Ketvirtadienis",
+    'friday' => "Penktadienis",
+    'saturday' => "Šeštadienis",
+    'sunday' => "Sekmadienis",
+    'open' => "Darbo pradžia",
+    'break' => "Pertrauka",
+    'close' => "Darbo pabaiga",
 ];
