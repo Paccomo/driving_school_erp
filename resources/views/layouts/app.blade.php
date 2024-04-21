@@ -22,6 +22,7 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="{{ asset('js/newUserDisplay.js') }}"></script>
     <script src="{{ asset('js/cardsListHeightNormalization.js') }}"></script>
     <script src="{{ asset('js/alertDismiss.js') }}"></script>
@@ -197,12 +198,22 @@
                                                     class="fs-6 ms-2 d-none d-sm-inline">Dokumentų pateikimas?</span>
                                             </a>
                                         </li>
-                                    @elseif (Auth::user()->role == 'director')
+                                    @endif
+                                    @if (Auth::user()->role == 'director')
                                         <li class="nav-item py-2 py-sm-0">
                                             <a href="{{ route('employee.list') }}"
                                                 class="nav-link text-white {{ request()->is('employee*') == 1 ? 'active' : '' }}">
                                                 <i class="fa fa-user-tie"></i> <span
                                                     class="fs-6 ms-2 d-none d-sm-inline">Darbuotojai</span>
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if (Auth::user()->role == 'director')
+                                        <li class="nav-item py-2 py-sm-0">
+                                            <a href="{{ route('slides.list') }}"
+                                                class="nav-link text-white {{ request()->is('slide*') == 1 ? 'active' : '' }}">
+                                                <i class="fa-regular fa-file-powerpoint"></i><span
+                                                    class="fs-6 ms-2 d-none d-sm-inline">Teorijos skaidrės</span>
                                             </a>
                                         </li>
                                     @endif
