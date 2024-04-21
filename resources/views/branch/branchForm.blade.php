@@ -150,7 +150,7 @@
                                             <label for="{{ $weekday . '_' . $type }}">@lang('messages.' . $type)</label>
                                             <input type="time" id="{{ $weekday . '_' . $type }}"
                                                 name="{{ $weekday . '_' . $type }}"
-                                                value="{{isset($branch) ? $branch->{$weekday. "_" . $type} : old($weekday . '_' . $type) }}"
+                                                value="{{ isset($branch) ? $branch->{$weekday . '_' . $type} : old($weekday . '_' . $type) }}"
                                                 class="form-control @error($weekday . '_' . $type) is-invalid @enderror">
 
                                             @error($weekday . '_' . $type)
@@ -221,8 +221,7 @@
                                                 </div>
                                             </div>
                                             <div class="col additional-inputs">
-                                                <label
-                                                    for="course{{ $course->id }}_lesson">{{ __('Kaina') }}</label>
+                                                <label for="course{{ $course->id }}_lesson">{{ __('Kaina') }}</label>
                                                 <input type="number" min="1" step="0.01"
                                                     id="course{{ $course->id }}_price"
                                                     name="course{{ $course->id }}_price"

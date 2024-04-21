@@ -13,8 +13,8 @@
                     <button type="submit" class="btn btn-danger"
                         onclick="return confirm('Ar tikrai norite pašalinti darbuotoją &quot;{{ $employee->person->name . ' ' . $employee->person->surname }}&quot;?')">Pašalinti</button>
                 </form>
-                {{-- <a style="margin-left: 0.4cm" href="{{ route('employee.timetable.form', $employee->id) }}"
-                    class="btn btn-secondary">Koreguoti tvarkaraštį</a> --}}
+                <a style="margin-left: 0.4cm" href="{{ route('employee.timetable.form', $employee->id) }}"
+                    class="btn btn-secondary">Koreguoti tvarkaraštį</a>
                 <a style="margin-left: 0.4cm" href="{{ route('pw.form', $employee->id) }}"
                     class="btn btn-outline-secondary">Pakeisti slaptažodį</a>
             </div>

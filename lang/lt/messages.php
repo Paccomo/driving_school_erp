@@ -29,4 +29,7 @@ return [
     'friday' => "Penktadienis",
     'saturday' => "Šeštadienis",
     'sunday' => "Sekmadienis",
+    'open' => "Darbo pradžia",
+    'break' => "Pertrauka",
+    'close' => "Darbo pabaiga",
 ];

@@ -13,7 +13,9 @@ use App\Models\Employee;
 use App\Models\InformationTemplate;
 use App\Models\Person;
 use App\Models\TimetableTime;
+use App\Rules\timeAfter;
 use Auth;
+use DateTime;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -124,6 +126,87 @@ class EmployeeController extends Controller
         return redirect()->route('employee.list')->with('fail', 'Norimas ištrinti darbuotojas buvo nerastas');
     }
 
+    public function timetableForm(Request $request) {
+        $this->validateLocally($request->id);
+        $employee = Employee::with(['account', 'person'])->find($request->id);
+        $timetable = $this->getTimetable($request->id);
+        $weekdays = array_column(WeekDay::cases(), 'value');
+        $timeType = array_column(TimetableTimeType::cases(), 'value');
+        return view('employee.timetable', [
+            'employee' => $employee,
+            'timetable' => $timetable,
+            'weekdays' => $weekdays,
+            'types' => $timeType,
+        ]);
+    }
+
+    public function timetableSave(Request $request) {
+        $request->validate([
+            'id' => ['required', 'integer', 'gt:0', 'exists:employee,id'],
+        ]);
+        foreach (array_column(WeekDay::cases(), 'value') as $weekday) {
+            $request->validate([
+                $weekday . "_" . TimetableTimeType::Open->value => ['nullable', 'date_format:H:i'],
+                $weekday . "_" . TimetableTimeType::Break->value => ['nullable', 'date_format:H:i', new timeAfter($request, $weekday, 'Pertrauka')],
+                $weekday . "_" . TimetableTimeType::Close->value => ['nullable', 'date_format:H:i', new timeAfter($request, $weekday, 'Uždarymo laikas'),
+                    'after:' . $weekday . "_" . TimetableTimeType::Break->value]
+            ]);
+        }
+
+        $employee = Employee::find($request->id);
+        if (!$this->validateHoursSum($employee, $request)) {
+            return redirect()->back()->with('fail', 'Netinkamas darbuotojo valandų kiekis! Reikiamas valandų kiekis pateiktas virš įvesčių!');
+        }
+
+        $employeeTimetable = TimetableTime::where('fk_EMPLOYEEid', $request->id)->get();
+        $editedTimes = [];
+        foreach (array_column(WeekDay::cases(), 'value') as $weekday) {
+            foreach (array_column(TimetableTimeType::cases(), 'value') as $type) {
+                if ($request->has($weekday . '_' . $type) && $request->get($weekday . '_' . $type) != null) {
+                    $employeeTime = $employeeTimetable->first(function ($timetableValue) use ($weekday, $type) {
+                        return $timetableValue->week_day == $weekday && $timetableValue->time_type == $type;
+                    });
+
+                    if ($employeeTime !== null) {
+                        $employeeTime->time = $request->get($weekday . '_' . $type);
+                    } else {
+                        $employeeTime = new TimetableTime();
+                        $employeeTime->week_day = $weekday;
+                        $employeeTime->time_type = $type;
+                        $employeeTime->time = $request->get($weekday . '_' . $type);
+                        $employeeTime->fk_EMPLOYEEid = $request->id;
+                    }
+                    $employeeTime->save();
+                    $editedTimes[] = $employeeTime;
+                }
+            }
+        }
+        $timesToDelete = $employeeTimetable->diff($editedTimes);
+        foreach($timesToDelete as $time) {
+            $time->delete();
+        }
+        return redirect()->route('employee.list')->with('success', 'Darbuotojo tvarkaraštis sėkmingai pakeistas!');
+    }
+
+    private function validateHoursSum(Employee $employee, Request $request) {
+        $hours = (int)$employee->work_hours;
+        $assignedHours = 0;
+        foreach(array_column(WeekDay::cases(), 'value') as $weekday) {
+            $requestKey = $weekday . '_' . TimetableTimeType::Open->value;
+            if ($request->has($requestKey) && $request->get($requestKey)) {
+                $start = new DateTime($request->get($requestKey));
+                $end = new DateTime($request->get($weekday . '_' . TimetableTimeType::Close->value));
+                $interval = $start->diff($end);
+                $assignedHours += $interval->h + ($interval->i / 60);
+                $requestKey = $weekday . '_' . TimetableTimeType::Break->value;
+                if ($request->has($requestKey) && $request->get($requestKey) != null) {
+                    $assignedHours -= 1;
+                }
+            }
+        }
+        return $hours == $assignedHours;
+    }
+
     private function getEmployeeImage(?String $image, bool $getEmptyPhoto = false) {
         if ($image != null && file_exists(storage_path('app/public/employees/' . $image))) {
             $image = url('storage/employees/' . $image);
@@ -134,7 +217,7 @@ class EmployeeController extends Controller
         return $image;
     }
 
-    private function validateLocally($id) {
+    private function validateLocally($id): void {
         $validator = validator()->make([
             'id' => $id,
         ], [
@@ -145,7 +228,7 @@ class EmployeeController extends Controller
         }
     }
 
-    private function decypherPerson(Employee &$person) {
+    private function decypherPerson(Employee &$person): void {
         $person->person->pid = decrypt($person->person->pid);
         $person->person->address = decrypt($person->person->address);
         $person->person->phone_number = decrypt($person->person->phone_number);
@@ -173,13 +256,13 @@ class EmployeeController extends Controller
         foreach ($timetableValues as $value) {
             switch ($value->time_type) {
                 case TimetableTimeType::Open->value:
-                    $timings[TimetableTimeType::Open->value] = $value->time;
+                    $timings[TimetableTimeType::Open->value] = substr($value->time, 0, 5);;
                     break;
                 case TimetableTimeType::Close->value:
-                    $timings[TimetableTimeType::Close->value] = $value->time;
+                    $timings[TimetableTimeType::Close->value] = substr($value->time, 0, 5);;
                     break;
                 case TimetableTimeType::Break ->value:
-                    $timings[TimetableTimeType::Break ->value] = $value->time;
+                    $timings[TimetableTimeType::Break ->value] = substr($value->time, 0, 5);
                     break;
             }
         }

@@ -79,6 +79,8 @@ Route::post('/contract/new', [ContractsController::class, "guestRequest"])->name
 // Employee
 Route::get("/employee", [EmployeeController::class, "list"])->name("employee.list");
 Route::put("/employee/save", [EmployeeController::class, "save"])->name("employee.save");
+Route::put("/employee/timetable", [EmployeeController::class, "timetableSave"])->name("employee.timetable.save");
 Route::get("/employee/{id}", [EmployeeController::class, "index"])->name("employee.index");
 Route::delete("/employee/{id}", [EmployeeController::class, "destroy"])->name("employee.destroy");
 Route::get("/employee/{id}/edit", [EmployeeController::class, "edit"])->name("employee.edit");
+Route::get("/employee/{id}/timetable", [EmployeeController::class, "timetableForm"])->name("employee.timetable.form");
