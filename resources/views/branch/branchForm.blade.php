@@ -91,8 +91,7 @@
 
                                 <div class="col-md-6">
                                     @if (isset($branch) && $branch->image)
-                                        <img src="{{ $branch->image }}" alt="Filialo nuotrauka"
-                                            style="max-width: 200px;">
+                                        <img src="{{ $branch->image }}" alt="Filialo nuotrauka" style="max-width: 200px;">
                                     @endif
 
                                     <input type="file" class="form-control @error('image') is-invalid @enderror"
@@ -130,7 +129,8 @@
                                     class="col-md-3 col-form-label text-md-end">{{ __('Trumpas filialo aprašymas') }}</label>
 
                                 <div class="col-md-6">
-                                    <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="5">{{ isset($branch) ? $branch->description : old('description') }}</textarea>
+                                    <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description"
+                                        rows="5">{{ isset($branch) ? $branch->description : old('description') }}</textarea>
 
                                     @error('description')
                                         <span class="invalid-feedback" role="alert">
@@ -140,271 +140,28 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-3">
-                                <label for="monday"
-                                    class="col-md-3 col-form-label align-self-end text-md-end">{{ __('Pirmadienis') }}</label>
-                                <div class="col-md-3">
-                                    <label for="monday_open">{{ __('Atidaroma') }}</label>
-                                    <input type="time" id="monday_open" name="monday_open"
-                                        value="{{ isset($branch) ? $branch->monday_open : old('monday_open') }}"
-                                        class="form-control @error('monday_open') is-invalid @enderror">
-                                    @error('monday_open')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="monday_close">{{ __('Uždaroma') }}</label>
-                                    <input type="time" id="monday_close" name="monday_close"
-                                        value="{{ isset($branch) ? $branch->monday_close : old('monday_close') }}"
-                                        class="form-control @error('monday_close') is-invalid @enderror">
-                                    @error('monday_close')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="monday_break">{{ __('Pietų pertrauka') }}</label>
-                                    <input type="time" id="monday_break" name="monday_break"
-                                        value="{{ isset($branch) ? $branch->monday_break : old('monday_break') }}"
-                                        class="form-control @error('monday_break') is-invalid @enderror">
-                                    @error('monday_break')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
+                            @foreach ($weekdays as $weekday)
+                                <div class="row mb-3">
+                                    <label for="{{ $weekday }}"
+                                        class="col-md-3 col-form-label align-self-end text-md-end">@lang('messages.' . $weekday)</label>
 
-                            <div class="row mb-3">
-                                <label for="tuesday"
-                                    class="col-md-3 col-form-label align-self-end text-md-end">{{ __('Antradienis') }}</label>
-                                <div class="col-md-3">
-                                    <label for="tuesday_open">{{ __('Atidaroma') }}</label>
-                                    <input type="time" id="tuesday_open" name="tuesday_open"
-                                        value="{{ isset($branch) ? $branch->tuesday_open : old('tuesday_open') }}"
-                                        class="form-control @error('tuesday_open') is-invalid @enderror">
-                                    @error('tuesday_open')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="tuesday_close">{{ __('Uždaroma') }}</label>
-                                    <input type="time" id="tuesday_close" name="tuesday_close"
-                                        value="{{ isset($branch) ? $branch->tuesday_close : old('tuesday_close') }}"
-                                        class="form-control @error('tuesday_close') is-invalid @enderror">
-                                    @error('tuesday_close')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="tuesday_break">{{ __('Pietų pertrauka') }}</label>
-                                    <input type="time" id="tuesday_break" name="tuesday_break"
-                                        value="{{ isset($branch) ? $branch->tuesday_break : old('tuesday_break') }}"
-                                        class="form-control @error('tuesday_break') is-invalid @enderror">
-                                    @error('tuesday_break')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
+                                    @foreach ($types as $type)
+                                        <div class="col-md-3">
+                                            <label for="{{ $weekday . '_' . $type }}">@lang('messages.' . $type)</label>
+                                            <input type="time" id="{{ $weekday . '_' . $type }}"
+                                                name="{{ $weekday . '_' . $type }}"
+                                                value="{{isset($branch) ? $branch->{$weekday. "_" . $type} : old($weekday . '_' . $type) }}"
+                                                class="form-control @error($weekday . '_' . $type) is-invalid @enderror">
 
-                            <div class="row mb-3">
-                                <label for="wednesday"
-                                    class="col-md-3 col-form-label align-self-end text-md-end">{{ __('Trečiadienis') }}</label>
-                                <div class="col-md-3">
-                                    <label for="wednesday_open">{{ __('Atidaroma') }}</label>
-                                    <input type="time" id="wednesday_open" name="wednesday_open"
-                                        value="{{ isset($branch) ? $branch->wednesday_open : old('wednesday_open') }}"
-                                        class="form-control @error('wednesday_open') is-invalid @enderror">
-                                    @error('wednesday_open')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                                            @error($weekday . '_' . $type)
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    @endforeach
                                 </div>
-                                <div class="col-md-3">
-                                    <label for="wednesday_close">{{ __('Uždaroma') }}</label>
-                                    <input type="time" id="wednesday_close" name="wednesday_close"
-                                        value="{{ isset($branch) ? $branch->wednesday_close : old('wednesday_close') }}"
-                                        class="form-control @error('wednesday_close') is-invalid @enderror">
-                                    @error('wednesday_close')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="wednesday_break">{{ __('Pietų pertrauka') }}</label>
-                                    <input type="time" id="wednesday_break" name="wednesday_break"
-                                        value="{{ isset($branch) ? $branch->wednesday_break : old('wednesday_break') }}"
-                                        class="form-control @error('wednesday_break') is-invalid @enderror">
-                                    @error('wednesday_break')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label for="thursday"
-                                    class="col-md-3 col-form-label align-self-end text-md-end">{{ __('Ketvirtadienis') }}</label>
-                                <div class="col-md-3">
-                                    <label for="thursday_open">{{ __('Atidaroma') }}</label>
-                                    <input type="time" id="thursday_open" name="thursday_open"
-                                        value="{{ isset($branch) ? $branch->thursday_open : old('thursday_open') }}"
-                                        class="form-control @error('thursday_open') is-invalid @enderror">
-                                    @error('thursday_open')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="thursday_close">{{ __('Uždaroma') }}</label>
-                                    <input type="time" id="thursday_close" name="thursday_close"
-                                        value="{{ isset($branch) ? $branch->thursday_close : old('thursday_close') }}"
-                                        class="form-control @error('thursday_close') is-invalid @enderror">
-                                    @error('thursday_close')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="thursday_break">{{ __('Pietų pertrauka') }}</label>
-                                    <input type="time" id="thursday_break" name="thursday_break"
-                                        value="{{ isset($branch) ? $branch->thursday_break : old('thursday_break') }}"
-                                        class="form-control @error('thursday_break') is-invalid @enderror">
-                                    @error('thursday_break')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label for="friday"
-                                    class="col-md-3 col-form-label align-self-end text-md-end">{{ __('Penktadienis') }}</label>
-                                <div class="col-md-3">
-                                    <label for="friday_open">{{ __('Atidaroma') }}</label>
-                                    <input type="time" id="friday_open" name="friday_open"
-                                        value="{{ isset($branch) ? $branch->friday_open : old('friday_open') }}"
-                                        class="form-control @error('friday_open') is-invalid @enderror">
-                                    @error('friday_open')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="friday_close">{{ __('Uždaroma') }}</label>
-                                    <input type="time" id="friday_close" name="friday_close"
-                                        value="{{ isset($branch) ? $branch->friday_close : old('friday_close') }}"
-                                        class="form-control @error('friday_close') is-invalid @enderror">
-                                    @error('friday_close')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="friday_break">{{ __('Pietų pertrauka') }}</label>
-                                    <input type="time" id="friday_break" name="friday_break"
-                                        value="{{ isset($branch) ? $branch->friday_break : old('friday_break') }}"
-                                        class="form-control @error('friday_break') is-invalid @enderror">
-                                    @error('friday_break')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label for="saturday"
-                                    class="col-md-3 col-form-label align-self-end text-md-end">{{ __('Šeštadienis') }}</label>
-                                <div class="col-md-3">
-                                    <label for="saturday_open">{{ __('Atidaroma') }}</label>
-                                    <input type="time" id="saturday_open" name="saturday_open"
-                                        value="{{ isset($branch) ? $branch->saturday_open : old('saturday_open') }}"
-                                        class="form-control @error('saturday_open') is-invalid @enderror">
-                                    @error('saturday_open')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="saturday_close">{{ __('Uždaroma') }}</label>
-                                    <input type="time" id="saturday_close" name="saturday_close"
-                                        value="{{ isset($branch) ? $branch->saturday_close : old('saturday_close') }}"
-                                        class="form-control @error('saturday_close') is-invalid @enderror">
-                                    @error('saturday_close')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="saturday_break">{{ __('Pietų pertrauka') }}</label>
-                                    <input type="time" id="saturday_break" name="saturday_break"
-                                        value="{{ isset($branch) ? $branch->saturday_break : old('saturday_break') }}"
-                                        class="form-control @error('saturday_break') is-invalid @enderror">
-                                    @error('saturday_break')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label for="sunday"
-                                    class="col-md-3 col-form-label align-self-end text-md-end">{{ __('Sekmadienis') }}</label>
-                                <div class="col-md-3">
-                                    <label for="sunday_open">{{ __('Atidaroma') }}</label>
-                                    <input type="time" id="sunday_open" name="sunday_open"
-                                        value="{{ isset($branch) ? $branch->sunday_open : old('sunday_open') }}"
-                                        class="form-control @error('sunday_open') is-invalid @enderror">
-                                    @error('sunday_open')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="sunday_close">{{ __('Uždaroma') }}</label>
-                                    <input type="time" id="sunday_close" name="sunday_close"
-                                        value="{{ isset($branch) ? $branch->sunday_close : old('sunday_close') }}"
-                                        class="form-control @error('sunday_close') is-invalid @enderror">
-                                    @error('sunday_close')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="sunday_break">{{ __('Pietų pertrauka') }}</label>
-                                    <input type="time" id="sunday_break" name="sunday_break"
-                                        value="{{ isset($branch) ? $branch->sunday_break : old('sunday_break') }}"
-                                        class="form-control @error('sunday_break') is-invalid @enderror">
-                                    @error('sunday_break')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
+                            @endforeach
 
                             <div class="row mb-3">
                                 <label for="courses"
@@ -425,26 +182,29 @@
                                             <div class="col additional-inputs">
                                                 <label
                                                     for="course{{ $course->id }}_theory">{{ __('Teorijos kaina') }}</label>
-                                                <input type="number" min="1" step="0.01" id="course{{ $course->id }}_theory"
+                                                <input type="number" min="1" step="0.01"
+                                                    id="course{{ $course->id }}_theory"
                                                     name="course{{ $course->id }}_theory"
-                                                    value="{{ isset($branch) && isset($coursePrices[$course->id]['theory']) ? $coursePrices[$course->id]['theory'] : old('course'.$course->id.'_theory') }}"
-                                                    class="form-control form-control-sm  @error('course'.$course->id.'_theory') is-invalid @enderror">
+                                                    value="{{ isset($branch) && isset($coursePrices[$course->id]['theory']) ? $coursePrices[$course->id]['theory'] : old('course' . $course->id . '_theory') }}"
+                                                    class="form-control form-control-sm  @error('course' . $course->id . '_theory') is-invalid @enderror">
                                             </div>
                                             <div class="col additional-inputs">
                                                 <label
                                                     for="course{{ $course->id }}_practice">{{ __('Praktikos kaina') }}</label>
-                                                <input type="number" min="1" step="0.01"  id="course{{ $course->id }}_practice"
+                                                <input type="number" min="1" step="0.01"
+                                                    id="course{{ $course->id }}_practice"
                                                     name="course{{ $course->id }}_practice"
-                                                    value="{{ isset($branch) && isset($coursePrices[$course->id]['practice']) ? $coursePrices[$course->id]['practice'] : old('course'.$course->id.'_practice') }}"
-                                                    class="form-control form-control-sm  @error('course'.$course->id.'_practice') is-invalid @enderror">
+                                                    value="{{ isset($branch) && isset($coursePrices[$course->id]['practice']) ? $coursePrices[$course->id]['practice'] : old('course' . $course->id . '_practice') }}"
+                                                    class="form-control form-control-sm  @error('course' . $course->id . '_practice') is-invalid @enderror">
                                             </div>
                                             <div class="col additional-inputs">
                                                 <label
                                                     for="course{{ $course->id }}_lesson">{{ __('Papildomas važiavimas') }}</label>
-                                                <input type="number" min="1" step="0.01"  id="course{{ $course->id }}_theory"
+                                                <input type="number" min="1" step="0.01"
+                                                    id="course{{ $course->id }}_theory"
                                                     name="course{{ $course->id }}_lesson"
-                                                    value="{{ isset($branch) && isset($coursePrices[$course->id]['lesson']) ? $coursePrices[$course->id]['lesson'] : old('course'.$course->id.'_lesson') }}"
-                                                    class="form-control form-control-sm  @error('course'.$course->id.'_lesson') is-invalid @enderror">
+                                                    value="{{ isset($branch) && isset($coursePrices[$course->id]['lesson']) ? $coursePrices[$course->id]['lesson'] : old('course' . $course->id . '_lesson') }}"
+                                                    class="form-control form-control-sm  @error('course' . $course->id . '_lesson') is-invalid @enderror">
                                             </div>
                                         </div>
                                     @endforeach
@@ -463,10 +223,11 @@
                                             <div class="col additional-inputs">
                                                 <label
                                                     for="course{{ $course->id }}_lesson">{{ __('Kaina') }}</label>
-                                                <input type="number" min="1" step="0.01"  id="course{{ $course->id }}_price"
+                                                <input type="number" min="1" step="0.01"
+                                                    id="course{{ $course->id }}_price"
                                                     name="course{{ $course->id }}_price"
-                                                    value="{{ isset($branch) && isset($coursePrices[$course->id]['price']) ? $coursePrices[$course->id]['price'] : old('course'.$course->id.'_price') }}"
-                                                    class="form-control form-control-sm  @error('course'.$course->id.'_price') is-invalid @enderror">
+                                                    value="{{ isset($branch) && isset($coursePrices[$course->id]['price']) ? $coursePrices[$course->id]['price'] : old('course' . $course->id . '_price') }}"
+                                                    class="form-control form-control-sm  @error('course' . $course->id . '_price') is-invalid @enderror">
                                             </div>
                                         </div>
                                     @endforeach
