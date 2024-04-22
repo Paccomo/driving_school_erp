@@ -59,10 +59,10 @@ class PwController extends Controller
         $acc->password = Hash::make($request->new);
         $acc->save();
 
-        if ($acc->id == Auth::user()->id)//TODO add correct routes
+        if ($acc->id == Auth::user()->id)
             $routeToReturn = 'home';
         else if($acc->role == Role::Client->value)
-            $routeToReturn = 'home';
+            $routeToReturn = 'client.list';
         else
             $routeToReturn = 'employee.list';
 

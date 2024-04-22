@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\PwController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Branch\BranchController;
+use App\Http\Controllers\Clients\ClientsController;
 use App\Http\Controllers\Contract\ContractsController;
 use App\Http\Controllers\Course\CourseController;
 use App\Http\Controllers\Course\PricingController;
@@ -94,3 +95,12 @@ Route::put("/slide/new", [SlidesController::class, "save"])->name("slides.save")
 Route::delete("/slide/{id}", [SlidesController::class, "destroy"])->name("slides.destroy");
 Route::get("/slide/{id}", [SlidesController::class, "index"])->name("slides.index");
 Route::get("/slide/{id}/edit", [SlidesController::class, "edit"])->name("slides.edit");
+
+// Clients
+Route::get("/client/all", [ClientsController::class, "list"])->name("client.all");
+Route::get("/client/find", [ClientsController::class, "search"])->name("client.find");
+Route::get("/client/endStudies/{id}", [ClientsController::class, "endStudy"])->name("client.end");
+Route::get("/client", [ClientsController::class, "list"])->name("client.list");
+Route::put("/client/save", [ClientsController::class, "save"])->name("client.save");
+Route::get("/client/view/{id}", [ClientsController::class, "index"])->name("client.index");
+Route::get("/client/{id}/edit", [ClientsController::class, "edit"])->name("client.edit");

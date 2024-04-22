@@ -208,12 +208,21 @@
                                             </a>
                                         </li>
                                     @endif
-                                    @if (Auth::user()->role == 'director')
+                                    @if (Auth::user()->role == 'director' || Auth::user()->role == 'instructor')
                                         <li class="nav-item py-2 py-sm-0">
                                             <a href="{{ route('slides.list') }}"
                                                 class="nav-link text-white {{ request()->is('slide*') == 1 ? 'active' : '' }}">
                                                 <i class="fa-regular fa-file-powerpoint"></i><span
                                                     class="fs-6 ms-2 d-none d-sm-inline">Teorijos skaidrės</span>
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if (Auth::user()->role == 'director' || Auth::user()->role == 'administrator')
+                                        <li class="nav-item py-2 py-sm-0">
+                                            <a href="{{ route('client.list') }}"
+                                                class="nav-link text-white {{ request()->is('client*') == 1 ? 'active' : '' }}">
+                                                <i class="fa-solid fa-graduation-cap"></i><span
+                                                    class="fs-6 ms-2 d-none d-sm-inline">Mokiniai</span>
                                             </a>
                                         </li>
                                     @endif
