@@ -20,7 +20,6 @@
                             </tr>
                         </table>
 
-
                         <p>Prisijungimo informacija:</p>
                         <table class="table table-borderless horizontal-table">
                             <tr>

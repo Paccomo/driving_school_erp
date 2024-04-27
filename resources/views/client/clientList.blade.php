@@ -34,13 +34,13 @@
                     style="text-decoration: none; color: black; padding: 4px; border-radius: 5px;"
                     onmouseover="this.style.backgroundColor='rgba(108, 117, 125, 0.6)';"
                     onmouseout="this.style.backgroundColor='';">
-                    {{ $client->person->name }} {{ $client->person->name }}
+                    {{ $client->person->name }} {{ $client->person->surname }}
                     @if (Auth::user()->role == $roleDirector)
                         ({{ $client->branch->address }})
                     @endif
                 </a>
                 <div>
-                    <a href="{{ route('client.end', $client->id) }}" class="btn btn-danger btn-sm mr-2">Užbaigti mokymą</a>
+                    <a href="{{ route('client.end', $client->id) }}" class="btn btn-danger btn-sm mr-2 @if ($client->currently_studying != 1) disabled @endif">Užbaigti mokymą</a>
                     <a href="{{ route('client.edit', $client->id) }}" class="btn btn-warning btn-sm mr-2">Redaguoti asmens
                         duomenis</a>
                 </div>

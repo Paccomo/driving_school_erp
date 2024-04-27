@@ -1,17 +1,24 @@
 @extends('layouts.app')
 
 @section('content')
+    @if (session('success'))
+        <div class="alert alert-success auto-dismiss">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if (session('fail'))
+        <div class="alert alert-danger auto-dismiss">
+            {{ session('fail') }}
+        </div>
+    @endif
     <div style="margin: 0.5cm">
         <div style="margin-bottom: 1cm;">
             <div class="d-flex align-items-left">
                 <h4 style="margin-right: 0.4cm">{{ $client->person->name . ' ' . $client->person->surname }}</h4>
-                <a style="margin-right: 0.4cm" href="{{ route('client.end', $client->id) }}"
-                    class="btn btn-danger btn-sm">Užbaigti mokymą</a>
-                <a style="margin-right: 0.4cm" href="{{ route('client.edit', $client->id) }}"
-                    class="btn btn-warning btn-sm">Redaguoti asmens
-                    duomenis</a>
             </div>
         </div>
+
+        <h5 style="font-weight: bold;">Instruktorius: {{ $instructor }}</h5>
 
         <h5 style="font-weight: bold;">Asmeninė informacija</h5>
         <div class="row">
@@ -87,23 +94,47 @@
         <div class="row">
             <div class="col">
                 <a style="margin-right: 0.4cm; margin-bottom: 0.2cm; font-size: 14px"
-                    href="{{ route('client.end', $client->id) }}" class="btn btn-danger btn-sm btnResize">Užbaigti mokymą</a>
+                    href="{{ route('client.edit', $client->id) }}" class="btn btn-warning btn-sm btnResize">Redaguoti
+                    asmens duomenis</a>
             </div>
             <div class="col">
                 <a style="margin-right: 0.4cm; margin-bottom: 0.2cm; font-size: 14px"
-                    href="{{ route('client.edit', $client->id) }}" class="btn btn-warning btn-sm btnResize">Redaguoti asmens duomenis</a>
+                    href="{{ route('client.end', $client->id) }}"
+                    class="btn btn-danger btn-sm btnResize @if ($client->currently_studying != 1) disabled @endif">Užbaigti
+                    mokymą</a>
             </div>
             <div class="col">
                 <a style="margin-right: 0.4cm; margin-bottom: 0.2cm; font-size: 14px"
-                    href="{{ route('register', $client->id) }}" class="btn btn-secondary btn-sm btnResize">Leisti praktiką</a>
+                    href="{{ route('client.practice', $client->id) }}"
+                    class="btn @if ($client->practical_lessons_permission != 1) btn-secondary @else btn-danger @endif btn-sm btnResize
+                    @if ($client->currently_studying != 1) disabled @endif">
+
+                    @if ($client->practical_lessons_permission != 1)
+                        Leisti praktiką
+                    @else
+                        Uždrausti praktiką
+                    @endif
+                </a>
             </div>
             <div class="col">
                 <a style="margin-right: 0.4cm; margin-bottom: 0.2cm; font-size: 14px"
-                    href="{{ route('register', $client->id) }}" class="btn btn-secondary btn-sm btnResize">Priimti apmokėjimą</a>
+                    href="{{ route('client.insert.payment', $client->id) }}"
+                    class="btn btn-secondary btn-sm btnResize @if ($client->currently_studying != 1) disabled @endif">Priimti
+                    apmokėjimą</a>
             </div>
             <div class="col">
                 <a style="margin-right: 0.4cm; margin-bottom: 0.2cm; font-size: 14px"
-                    href="{{ route('register', $client->id) }}" class="btn btn-secondary btn-sm btnResize">Įvesti mokyklinės teorijos įvertį</a>
+                    href="{{ route('client.insert.grade', $client->id) }}"
+                    class="btn btn-secondary btn-sm btnResize
+                    @if ($client->currently_studying != 1) disabled @endif">
+                    Įvesti mokyklinės teorijos įvertį</a>
+            </div>
+            <div class="col">
+                <a style="margin-right: 0.4cm; margin-bottom: 0.2cm; font-size: 14px"
+                    href="{{ route('client.driveForm', $client->id) }}"
+                    class="btn btn-secondary btn-sm btnResize
+                    @if ($client->currently_studying != 1 || $client->practical_lessons_permission != 1) disabled @endif">
+                    Įšrašyti mokymo lapą</a>
             </div>
         </div>
     </div>

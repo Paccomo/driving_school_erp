@@ -100,7 +100,15 @@ Route::get("/slide/{id}/edit", [SlidesController::class, "edit"])->name("slides.
 Route::get("/client/all", [ClientsController::class, "list"])->name("client.all");
 Route::get("/client/find", [ClientsController::class, "search"])->name("client.find");
 Route::get("/client/endStudies/{id}", [ClientsController::class, "endStudy"])->name("client.end");
+Route::get("/client/practice/{id}", [ClientsController::class, "togglePracticalLessons"])->name("client.practice");
+Route::get("/client/grade/{id}", [ClientsController::class, "grade"])->name("client.insert.grade");
+Route::post("/client/grade", [ClientsController::class, "saveGrade"])->name("client.grade");
+Route::get("/client/payment/{id}", [ClientsController::class, "payment"])->name("client.insert.payment");
+Route::post("/client/payment", [ClientsController::class, "savePayment"])->name("client.payment");
 Route::get("/client", [ClientsController::class, "list"])->name("client.list");
 Route::put("/client/save", [ClientsController::class, "save"])->name("client.save");
 Route::get("/client/view/{id}", [ClientsController::class, "index"])->name("client.index");
 Route::get("/client/{id}/edit", [ClientsController::class, "edit"])->name("client.edit");
+Route::post('/client/downloadReciept', [ClientsController::class, "receipt"])->name("client.receipt");
+Route::get('/client/driveDocument/{id}', [ClientsController::class, "driveDocForm"])->name("client.driveForm");
+Route::post('/client/driveDocument', [ClientsController::class, "driveDoc"])->name("client.drive");
