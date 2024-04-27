@@ -63,7 +63,7 @@ class RegisterController extends Controller
             ]);
 
             $createConcreteUser = function (Request $request, int $userID, int $branch) {
-                $this->createClient($userID, $request['prepaid'], $branch, $request['course'], $request['noTheory'] !== null, $request['group']);
+                $this->createClient($userID, $request['prepaid'], $branch, $request['course'], $request['noTheory'] !== null, $request['group'], $request['extension'] !== null);
             };
         } else {
             $request->validate([
@@ -168,12 +168,12 @@ class RegisterController extends Controller
         return $pdf->download("credentials.pdf");
     }
 
-    private function createClient(int $userID, float $prepaid, int $branchID, int $courseID, bool $withoutTheory = false, int $chosenGroupID = null): void {
+    private function createClient(int $userID, float $prepaid, int $branchID, int $courseID, bool $withoutTheory = false, int $chosenGroupID = null, bool $extension): void {
         $client = new Client();
         $client->id = $userID;
         $client->practical_lessons_permission = false;
         $client->currently_studying = true;
-        $client->to_pay = $this->calculateCoursePrice($branchID, $courseID, $withoutTheory) - $prepaid;
+        $client->to_pay = $this->calculateCoursePrice($branchID, $courseID, $withoutTheory, $extension) - $prepaid;
         $client->fk_COURSEid = $courseID;
         $client->fk_BRANCHid = $branchID;
         if (!$withoutTheory)
@@ -202,7 +202,10 @@ class RegisterController extends Controller
         $employee->save();
     }
 
-    private function calculateCoursePrice(int $branchID, int $courseID, bool $withoutTheory): float {
+    private function calculateCoursePrice(int $branchID, int $courseID, bool $withoutTheory, bool $extensionContract): float {
+        if ($extensionContract)
+            return 0;
+        
         if (CategoricalCourse::find($courseID) !== null) {
             $courseClass = BranchCategoricalCourse::class;
             $courseColumn = "fk_CATEGORICAL_COURSEid";

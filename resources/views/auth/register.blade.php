@@ -304,6 +304,25 @@
                                         @enderror
                                     </div>
                                 </div>
+
+                                <div class="row mb-3">
+                                    <label for="extension"
+                                        class="col-md-4 form-check-label text-md-end">{{ __('Tobulinimosi sutartis') }}</label>
+
+                                    <div class="col-md-6 ">
+                                        <div class="form-check form-switch">
+                                            <input id="extension" type="checkbox" value="true"
+                                                class="form-check-input" role="switch"
+                                                @error('extension') class="is-invalid @enderror" name="extension">
+                                        </div>
+
+                                        @error('extension')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
                             @endif
 
                             <div class="row mb-0">
