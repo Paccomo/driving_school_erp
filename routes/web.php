@@ -112,3 +112,4 @@ Route::get("/client/{id}/edit", [ClientsController::class, "edit"])->name("clien
 Route::post('/client/downloadReciept', [ClientsController::class, "receipt"])->name("client.receipt");
 Route::get('/client/driveDocument/{id}', [ClientsController::class, "driveDocForm"])->name("client.driveForm");
 Route::post('/client/driveDocument', [ClientsController::class, "driveDoc"])->name("client.drive");
+Route::post('/client/instructor', [ClientsController::class, "instructor"])->name("client.instructor");

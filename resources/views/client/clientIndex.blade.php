@@ -19,8 +19,20 @@
         </div>
 
         <h5 style="font-weight: bold;">Instruktorius: {{ $instructor }}</h5>
+        <div class="row">
+            <div class="col">
+                <form method="POST" action="{{ route('client.instructor') }}">
+                    <select name="inst" id="instSelect" class="form-select" required>
+                        @foreach ($allInstructors as $inst)
+                            <option value="{{ $inst->id }}">
+                                {{ $inst->person->name . ' ' . $inst->person->surname }}</option>
+                        @endforeach
+                    </select>
+                </form>
+            </div>
+        </div>
 
-        <h5 style="font-weight: bold;">Asmeninė informacija</h5>
+        <h5 style="margin-top: 0.5cm; font-weight: bold;">Asmeninė informacija</h5>
         <div class="row">
             <div class="col">
                 <span style="font-weight: bold">Vardas:</span>

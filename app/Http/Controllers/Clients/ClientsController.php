@@ -91,7 +91,6 @@ class ClientsController extends Controller
     }
 
     // TODO ensure lecture attendance info display
-    // TODO ensure instructor display
     public function index(Request $request) { //TODO ensure document and contract functionality, once it is done
         $client = Client::with(['person', 'branch', 'account', 'course'])->find($request->id);
         if ($client == null)
@@ -102,6 +101,12 @@ class ClientsController extends Controller
 
         $this->decypherPerson($client);
 
+        $allInstructors  = Employee::with('account')->where([
+            ['fk_BRANCHid', $client->fk_BRANCHid],
+        ])->whereHas('account', function ($query) {
+            $query->where('role', Role::Instructor->value);
+        })->get();
+
         if($client->fk_instructor != null) {
             $instructor = Employee::find($client->fk_instructor);
             $instructor = $instructor->person->name . " " . $instructor->person->surname;
@@ -109,7 +114,7 @@ class ClientsController extends Controller
             $instructor = "--";
         }
 
-        return view('client.clientIndex', ['client' => $client, 'instructor' => $instructor]);
+        return view('client.clientIndex', ['client' => $client, 'instructor' => $instructor, 'allInstructors' => $allInstructors]);
     }
 
     public function TogglePracticalLessons(Request $request) {
