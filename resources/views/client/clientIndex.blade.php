@@ -149,6 +149,21 @@
                     Įšrašyti mokymo lapą</a>
             </div>
         </div>
+
+        <h5 style="margin-top: 0.5cm; font-weight: bold;">Sutartys</h5>
+        <div class="row">
+            @foreach ($contracts as $c)
+            <div class="col">
+                <a href="{{ route('contract.download', [$c->id]) }}" target="_blank" class="btn btn-secondary">
+                    @if ($c->contractRequest != null)
+                        @lang('messages.' . $c->contractRequest->type) <i class="fa-solid fa-download"></i>
+                    @else
+                        {{ $c->name }} <i class="fa-solid fa-download"></i>
+                    @endif
+                </a>
+            </div>
+            @endforeach
+        </div>
     </div>
 
     <script>

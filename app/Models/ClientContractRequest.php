@@ -10,4 +10,8 @@ class ClientContractRequest extends Model
     protected $table = 'client_contract_request';
     public $timestamps = false;
     use HasFactory;
+
+    public function client() {
+        return $this->belongsTo(Client::class, "fk_CLIENTid");
+    }
 }

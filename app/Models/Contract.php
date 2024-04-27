@@ -12,6 +12,6 @@ class Contract extends Model
     use HasFactory;
 
     public function contractRequest() {
-        return $this->belongsTo(ContractRequest::class, 'fk_CONTRACTid');
+        return $this->belongsTo(ContractRequest::class, 'fk_CONTRACT_REQUESTid');
     }
 }

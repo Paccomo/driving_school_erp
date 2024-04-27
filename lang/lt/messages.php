@@ -32,4 +32,11 @@ return [
     'open' => "Darbo pradžia",
     'break' => "Pertrauka",
     'close' => "Darbo pabaiga",
+    'approved' => 'Priimta',
+    'denied' => 'Atmesta',
+    'unconfirmed' => 'Laukiama atsakymo',
+    'teaching_contract' => 'Mokymo sutartis',
+    'improvement_contract' => 'Tobulinimo sutartis',
+    'teaching_contract_termination' => 'Mokymosi sutarties nutraukimas',
+    'teaching_contract_extension' => 'Mokymosi sutarties pratęsimas',
 ];

@@ -225,6 +225,22 @@
                                                     class="fs-6 ms-2 d-none d-sm-inline">Mokiniai</span>
                                             </a>
                                         </li>
+
+                                        <li class="nav-item py-2 py-sm-0">
+                                            <a href="{{ route('contract.list') }}"
+                                                class="nav-link text-white {{ request()->is('contract*') == 1 ? 'active' : '' }}">
+                                                <i class="fa-solid fa-file-contract"></i><span
+                                                    class="fs-6 ms-2 d-none d-sm-inline">Sutarčių užklausos</span>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item py-2 py-sm-0">
+                                            <a href="{{ route('contract.requestless') }}"
+                                                class="nav-link text-white {{ request()->is('add/contract') == 1 ? 'active' : '' }}">
+                                                <i class="fa-solid fa-file-arrow-up"></i><span
+                                                    class="fs-6 ms-2 d-none d-sm-inline">Įkelti sutartį be užklausos</span>
+                                            </a>
+                                        </li>
                                     @endif
                                 @endauth
                             </ul>

@@ -9,6 +9,7 @@ use App\Models\Branch;
 use App\Models\BranchCategoricalCourse;
 use App\Models\BranchCompetenceCourse;
 use App\Models\Client;
+use App\Models\Contract;
 use App\Models\Course;
 use App\Models\Employee;
 use App\Models\Income;
@@ -38,7 +39,7 @@ class ClientsController extends Controller
             $clientsQuery->where('currently_studying', 1);
         }
         if (Auth::user()->role == Role::Administrator->value) {
-            $clientsQuery->where('fk_BRANCHid', Employee::find(Auth::user()->id));
+            $clientsQuery->where('fk_BRANCHid', Employee::find(Auth::user()->id)->fk_BRANCHid);
         } 
         $clientsQuery->chunk(100, function ($chunkClients) use (&$clients) {
             $clients = $clients->concat($chunkClients);
@@ -59,7 +60,7 @@ class ClientsController extends Controller
         $clients = collect();
         $clientsQuery = Client::with(['person', 'branch']);
         if (Auth::user()->role == Role::Administrator->value) {
-            $clientsQuery->where('fk_BRANCHid', Employee::find(Auth::user()->id));
+            $clientsQuery->where('fk_BRANCHid', Employee::find(Auth::user()->id)->fk_BRANCHid);
         }
         $clientsQuery->chunk(100, function ($chunkClients) use (&$clients, $keywords) {
             foreach ($chunkClients as $client) {
@@ -91,7 +92,7 @@ class ClientsController extends Controller
     }
 
     // TODO ensure lecture attendance info display
-    public function index(Request $request) { //TODO ensure document and contract functionality, once it is done
+    public function index(Request $request) { //TODO ensure document functionality, once it is done
         $client = Client::with(['person', 'branch', 'account', 'course'])->find($request->id);
         if ($client == null)
             return redirect()->route('client.list')->with('fail', 'Mokinys nerastas');
@@ -114,7 +115,14 @@ class ClientsController extends Controller
             $instructor = "--";
         }
 
-        return view('client.clientIndex', ['client' => $client, 'instructor' => $instructor, 'allInstructors' => $allInstructors]);
+        $contracts = Contract::with('contractRequest')->where('fk_CLIENTid', $request->id)->get();
+
+        return view('client.clientIndex', [
+            'client' => $client,
+            'instructor' => $instructor,
+            'allInstructors' => $allInstructors,
+            'contracts' => $contracts
+        ]);
     }
 
     public function TogglePracticalLessons(Request $request) {

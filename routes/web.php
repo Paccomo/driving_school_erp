@@ -77,6 +77,18 @@ Route::get("/description/{id}/edit", [CourseController::class, "descEdit"])->nam
 
 //Contract
 Route::post('/contract/new', [ContractsController::class, "guestRequest"])->name('contract.joinCourse');
+Route::get('/contract', [ContractsController::class, "list"])->name('contract.list');
+Route::get('/contract/download/{id}', [ContractsController::class, "download"])->name('contract.download');
+Route::get('/contract/accepted', [ContractsController::class, "list"])->name('contract.accepted');
+Route::get('/contract/denied', [ContractsController::class, "list"])->name('contract.denied');
+Route::get('/contract/all', [ContractsController::class, "list"])->name('contract.all');
+Route::get('/add/contract', [ContractsController::class, "addWithoutRequest"])->name('contract.requestless');
+Route::post('/add/contract', [ContractsController::class, "saveWithoutRequest"])->name('contract.saveRequestless');
+Route::get('/contract/{id}', [ContractsController::class, "index"])->name('contract.index');
+Route::get('/contract/{id}/approve', [ContractsController::class, "approve"])->name('contract.approve');
+Route::get('/contract/{id}/deny', [ContractsController::class, "deny"])->name('contract.deny');
+Route::get('/contract/{id}/addContract', [ContractsController::class, "add"])->name('contract.add');
+Route::post('/contract/save', [ContractsController::class, "save"])->name('contract.save');
 
 // Employee
 Route::get("/employee", [EmployeeController::class, "list"])->name("employee.list");
