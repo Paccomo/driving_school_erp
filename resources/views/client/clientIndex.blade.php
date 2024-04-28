@@ -18,16 +18,23 @@
             </div>
         </div>
 
-        <h5 style="font-weight: bold;">Instruktorius: {{ $instructor }}</h5>
         <div class="row">
             <div class="col">
-                <form method="POST" action="{{ route('client.instructor') }}">
-                    <select name="inst" id="instSelect" class="form-select" required>
-                        @foreach ($allInstructors as $inst)
-                            <option value="{{ $inst->id }}">
-                                {{ $inst->person->name . ' ' . $inst->person->surname }}</option>
-                        @endforeach
-                    </select>
+                <h5 style="font-weight: bold;">Instruktorius: {{ $instructor }}</h5>
+                <form method="POST" action="{{ route('client.instructor') }}" class="row align-items-center">
+                    @csrf
+                    <input type="hidden" name="client" value="{{ $client->id }}" />
+                    <div class="col-auto">
+                        <select name="inst" id="instSelect" class="form-select" required>
+                            @foreach ($allInstructors as $inst)
+                                <option value="{{ $inst->id }}">
+                                    {{ $inst->person->name . ' ' . $inst->person->surname }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-outline-secondary">Pakeisti instruktorių</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -111,6 +118,11 @@
             </div>
             <div class="col">
                 <a style="margin-right: 0.4cm; margin-bottom: 0.2cm; font-size: 14px"
+                    href="{{ route('pw.form', $client->id) }}"
+                    class="btn btn-danger btn-sm btnResize @if ($client->currently_studying != 1) disabled @endif">Pakeisti slaptažodį</a>
+            </div>
+            <div class="col">
+                <a style="margin-right: 0.4cm; margin-bottom: 0.2cm; font-size: 14px"
                     href="{{ route('client.end', $client->id) }}"
                     class="btn btn-danger btn-sm btnResize @if ($client->currently_studying != 1) disabled @endif">Užbaigti
                     mokymą</a>
@@ -150,20 +162,38 @@
             </div>
         </div>
 
-        <h5 style="margin-top: 0.5cm; font-weight: bold;">Sutartys</h5>
-        <div class="row">
-            @foreach ($contracts as $c)
-            <div class="col">
-                <a href="{{ route('contract.download', [$c->id]) }}" target="_blank" class="btn btn-secondary">
-                    @if ($c->contractRequest != null)
-                        @lang('messages.' . $c->contractRequest->type) <i class="fa-solid fa-download"></i>
-                    @else
-                        {{ $c->name }} <i class="fa-solid fa-download"></i>
-                    @endif
-                </a>
+        @if ($contracts->isNotEmpty())
+            <h5 style="margin-top: 0.5cm; font-weight: bold;">Sutartys</h5>
+            <div class="row">
+                @foreach ($contracts as $c)
+                    <div class="col">
+                        <a href="{{ route('contract.download', [$c->id]) }}" target="_blank" class="btn btn-secondary">
+                            @if ($c->contractRequest != null)
+                                @lang('messages.' . $c->contractRequest->type) <i class="fa-solid fa-download"></i>
+                            @else
+                                {{ $c->name }} <i class="fa-solid fa-download"></i>
+                            @endif
+                        </a>
+                    </div>
+                @endforeach
             </div>
+        @endif
+
+        @if ($documents->isNotEmpty())
+            <h5 style="margin-top: 0.5cm; font-weight: bold;">Dokumentai</h5>
+            @foreach ($documents as $d)
+                <div style="margin-top: 0.5cm" class="row">
+                    <div class="col">
+                        <a href="{{ route('documents.download', [$d->id]) }}" target="_blank" class="btn btn-secondary">
+                            @lang('messages.' . $d->type) <i class="fa-solid fa-download"></i>
+                        </a>
+                        <a href="{{ route('documents.destroy', [$d->id]) }}" target="_blank" class="btn btn-danger">
+                            Pašalinti dokumentą
+                        </a>
+                    </div>
+                </div>
             @endforeach
-        </div>
+        @endif
     </div>
 
     <script>

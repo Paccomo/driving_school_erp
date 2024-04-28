@@ -39,4 +39,6 @@ return [
     'improvement_contract' => 'Tobulinimo sutartis',
     'teaching_contract_termination' => 'Mokymosi sutarties nutraukimas',
     'teaching_contract_extension' => 'Mokymosi sutarties pratęsimas',
+    'medical_certificate' => "Sveikatos pažyma",
+    'theory_exam' => "Valstybinis teorijos egzaminas",
 ];

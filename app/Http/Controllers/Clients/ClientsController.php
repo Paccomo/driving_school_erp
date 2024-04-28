@@ -11,10 +11,12 @@ use App\Models\BranchCompetenceCourse;
 use App\Models\Client;
 use App\Models\Contract;
 use App\Models\Course;
+use App\Models\Document;
 use App\Models\Employee;
 use App\Models\Income;
 use App\Models\Payment;
 use Auth;
+use Carbon\Carbon;
 use DB;
 use Exception;
 use Illuminate\Support\Collection;
@@ -91,8 +93,7 @@ class ClientsController extends Controller
         return redirect()->route('client.list')->with('success', 'Mokinio kursai pažymėti kaip "baigti"');
     }
 
-    // TODO ensure lecture attendance info display
-    public function index(Request $request) { //TODO ensure document functionality, once it is done
+    public function index(Request $request) {
         $client = Client::with(['person', 'branch', 'account', 'course'])->find($request->id);
         if ($client == null)
             return redirect()->route('client.list')->with('fail', 'Mokinys nerastas');
@@ -116,13 +117,30 @@ class ClientsController extends Controller
         }
 
         $contracts = Contract::with('contractRequest')->where('fk_CLIENTid', $request->id)->get();
+        $documents = Document::where([
+            ['fk_CLIENTid', $request->id],
+            ['valid_until', '>', Carbon::today()]
+        ])->get();
 
         return view('client.clientIndex', [
             'client' => $client,
             'instructor' => $instructor,
             'allInstructors' => $allInstructors,
-            'contracts' => $contracts
+            'contracts' => $contracts,
+            'documents' => $documents,
         ]);
+    }
+
+    public function instructor(Request $request) {
+        $request->validate([
+            'client' => ['required', 'integer', 'exists:client,id'],
+            'inst' => ['required', 'integer', 'exists:employee,id']
+        ]);
+
+        $client = Client::find($request->client);
+        $client->fk_instructor = (int)$request->inst;
+        $client->save();
+        return redirect()->route('client.index', [$request->client])->with('success', 'Instruktorius priskirtas');
     }
 
     public function TogglePracticalLessons(Request $request) {

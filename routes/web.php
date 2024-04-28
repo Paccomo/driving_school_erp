@@ -7,6 +7,7 @@ use App\Http\Controllers\Clients\ClientsController;
 use App\Http\Controllers\Contract\ContractsController;
 use App\Http\Controllers\Course\CourseController;
 use App\Http\Controllers\Course\PricingController;
+use App\Http\Controllers\Documents\DocumentController;
 use App\Http\Controllers\Employee\EmployeeController;
 use App\Http\Controllers\Employee\InstructorController;
 use App\Http\Controllers\References\LinksController;
@@ -125,3 +126,11 @@ Route::post('/client/downloadReciept', [ClientsController::class, "receipt"])->n
 Route::get('/client/driveDocument/{id}', [ClientsController::class, "driveDocForm"])->name("client.driveForm");
 Route::post('/client/driveDocument', [ClientsController::class, "driveDoc"])->name("client.drive");
 Route::post('/client/instructor', [ClientsController::class, "instructor"])->name("client.instructor");
+
+// Documents
+Route::get('/documents', [DocumentController::class, 'document'])->name('documents');
+Route::get('/documents/addMed', [DocumentController::class, 'add'])->name('documents.addMed');
+Route::get('/documents/addTheory', [DocumentController::class, 'add'])->name('documents.addTheory');
+Route::get('/documents/download/{id}', [DocumentController::class, "download"])->name('documents.download');
+Route::get('/documents/destroy/{id}', [DocumentController::class, "destroy"])->name('documents.destroy');
+Route::post('/documents/save', [DocumentController::class, 'save'])->name('documents.save');

@@ -29,7 +29,7 @@ class LoginController extends Controller
         }
  
         return back()->withErrors([
-            'email' => 'Naudotojas su nurodytu el. paštu nerastas.',
+            'email' => 'Neteisingi duomenys.',
         ])->onlyInput('email');
     }
 
