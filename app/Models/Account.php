@@ -37,4 +37,9 @@ class Account extends Authenticatable
     {
         return $this->hasOne(Employee::class, 'id');
     }
+
+    public function client()
+    {
+        return $this->hasOne(Client::class, 'id');
+    }
 }

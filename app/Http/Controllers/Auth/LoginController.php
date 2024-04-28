@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Account;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -21,6 +22,13 @@ class LoginController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
+
+        $account = Account::with('client')->where('email', $credentials['email'])->first();
+        if ($account != null && $account->client != null && $account->client->currently_studying != 1) {
+            return back()->withErrors([
+                'email' => 'Ši paskyra pažymėta kaip pabaigusi kursus. Jei manote, kad tai klaida - susisiekite su savo kursų filialu.',
+            ]);
+        }
  
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
