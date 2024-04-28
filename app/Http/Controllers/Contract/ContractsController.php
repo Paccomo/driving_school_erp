@@ -41,9 +41,12 @@ class ContractsController extends Controller
         $contractR->fk_COURSEid = $request->course;
         $contractR->fk_BRANCHid = $request->branch;
 
-        $comment = "";
         if ($request->improvement != null)
-            $comment .= "--TOBULINIMOSI SUTARTIS--\n";
+            $contractR->type = ContractType::ImprovementContract->value;
+        else
+            $contractR->type = ContractType::TeachingContract->value;
+
+        $comment = "";
         if ($request->noTheory != null)
             $comment .= "--EKSTERNU--\n";
         if ($request->comment != null) 
