@@ -152,10 +152,10 @@
                                 @Auth
                                     @if (Auth::user()->role == 'client')
                                         <li class="nav-item py-2 py-sm-0">
-                                            <a href="{{ route('register') }}"
-                                                class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
+                                            <a href="{{ route('contract.client') }}"
+                                                class="nav-link text-white {{ request()->is('contracts*') == 1 ? 'active' : '' }}">
                                                 <i class="fs-6 fa fa-file-contract"></i> <span
-                                                    class="fs-6 ms-2 d-none d-sm-inline">Sutartys?</span>
+                                                    class="fs-6 ms-2 d-none d-sm-inline">Sutartys</span>
                                             </a>
                                         </li>
 

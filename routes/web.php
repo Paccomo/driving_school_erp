@@ -78,6 +78,9 @@ Route::get("/description/{id}/edit", [CourseController::class, "descEdit"])->nam
 
 //Contract
 Route::post('/contract/new', [ContractsController::class, "guestRequest"])->name('contract.joinCourse');
+Route::get('/contracts/termination', [ContractsController::class, "clientRequest"])->name('contract.termination');
+Route::get('/contracts/extension', [ContractsController::class, "clientRequest"])->name('contract.extension');
+Route::post('/contracts/save', [ContractsController::class, "clientReqSave"])->name('contract.client.save');
 Route::get('/contract', [ContractsController::class, "list"])->name('contract.list');
 Route::get('/contract/download/{id}', [ContractsController::class, "download"])->name('contract.download');
 Route::get('/contract/accepted', [ContractsController::class, "list"])->name('contract.accepted');
@@ -90,6 +93,7 @@ Route::get('/contract/{id}/approve', [ContractsController::class, "approve"])->n
 Route::get('/contract/{id}/deny', [ContractsController::class, "deny"])->name('contract.deny');
 Route::get('/contract/{id}/addContract', [ContractsController::class, "add"])->name('contract.add');
 Route::post('/contract/save', [ContractsController::class, "save"])->name('contract.save');
+Route::get('/contracts', [ContractsController::class, "clientContracts"])->name('contract.client');
 
 // Employee
 Route::get("/employee", [EmployeeController::class, "list"])->name("employee.list");

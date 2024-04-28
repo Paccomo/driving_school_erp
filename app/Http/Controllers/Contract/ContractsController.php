@@ -8,6 +8,7 @@ use App\Constants\Role;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Client;
+use App\Models\ClientContractRequest;
 use App\Models\Contract;
 use App\Models\ContractRequest;
 use App\Models\Course;
@@ -16,9 +17,11 @@ use App\Models\GuestContractRequest;
 use Auth;
 use DateTime;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Validation\Rule;
 use Route;
 
 class ContractsController extends Controller
@@ -37,7 +40,6 @@ class ContractsController extends Controller
         $contractR = new ContractRequest();
         $contractR->requested_on = new DateTime();
         $contractR->status = RequestStatus::Unconfirmed->value;
-        $contractR->type = ContractType::TeachingContract->value;
         $contractR->fk_COURSEid = $request->course;
         $contractR->fk_BRANCHid = $request->branch;
 
@@ -62,6 +64,61 @@ class ContractsController extends Controller
         $guestReq->email = $request->email;
         $guestReq->save();
         return redirect()->route('course.list')->with('success', "Užklausa užsirašymui į mokymus pateikta sėkmingai!");
+    }
+
+    public function clientReqSave(Request $request) {
+        if (Auth::user()->role != Role::Client->value)
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+        $request->validate([
+            'type' => ['required', Rule::enum(ContractType::class)],
+            'comment' => ['nullable', 'string']
+        ]);
+
+        $contractR = new ContractRequest();
+        $contractR->requested_on = new DateTime();
+        $contractR->status = RequestStatus::Unconfirmed->value;
+        $contractR->type = $request->type;
+        $contractR->comment = $request->comment;
+
+        $client = Client::find(Auth::user()->id);
+        $contractR->fk_COURSEid = $client->fk_COURSEid;
+        $contractR->fk_BRANCHid = $client->fk_BRANCHid;
+
+        $contractR->save();
+        $clientR = new ClientContractRequest();
+        $clientR->id = $contractR->id;
+        $clientR->fk_CLIENTid = Auth::user()->id;
+        $clientR->save();
+        return redirect()->route('contract.client')->with('success', 'Užklausa nusiųsta');
+    }
+
+    public function clientContracts() {
+        if (Auth::user()->role != Role::Client->value)
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+        $contracts = Contract::with('contractRequest')->where('fk_CLIENTid', Auth::user()->id)->get();
+        $currentlyImprovement = false;
+        foreach ($contracts as $c) {
+            if (($c->contractRequest != null && $c->contractRequest->type == ContractType::ImprovementContract->value) || Str::contains($c->name, "Tobulinimo" || Str::contains($c->name, "tobulinimo"))) {
+                $currentlyImprovement = true;
+                break;
+            }
+        }
+        return view('contract.clientContracts', ['contracts' => $contracts, 'currentlyImprovement' => $currentlyImprovement, 'types' => $this->getContractTypeNames()]);
+    }
+
+    public function clientRequest() {
+        if (Auth::user()->role != Role::Client->value)
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+
+        if (Route::is('contract.termination')) {
+            $type = ContractType::Termination->value;
+            $title = "Mokymo sutarties nutraukimas";
+        } else { 
+            $type = ContractType::Extension->value;
+            $title = "Mokymo sutarties pratęsimas";
+        }
+
+        return view('contract.clientRequest', ['type' => $type, 'title' => $title]);
     }
 
     public function list() {
@@ -228,12 +285,22 @@ class ContractsController extends Controller
     }
 
     public function download(Request $request){
-        $this->authCheck();
+        if (Auth::user()->role == Role::Client->value)
+            return $this->clientDownload($request->id);
 
+        $this->authCheck();
         $contract = Contract::find($request->id);
         if ($contract == null) 
-            return redirect()->route('contract.list')->with('fail', 'Sutarties užklausa nerasta');
+            return redirect()->route('contract.list')->with('fail', 'Sutartis nerasta');
 
+        $path =  storage_path('app/contracts/' . $contract->link);
+        return response()->download($path, null, [], null);
+    }
+
+    private function clientDownload($contractID) {
+        $contract = Contract::find($contractID);
+        if ($contract == null || $contract->fk_CLIENTid != Auth::user()->id) 
+            return redirect()->route('contract.client')->with('fail', 'Sutartis nerasta!');
         $path =  storage_path('app/contracts/' . $contract->link);
         return response()->download($path, null, [], null);
     }
@@ -260,6 +327,15 @@ class ContractsController extends Controller
             ContractType::ImprovementContract->value => "Tobulinimosi sutarties užklausa",
             ContractType::Termination->value => "Sutarties nutraukimo užklausa",
             ContractType::Extension->value => "Sutarties pratęsimo užklausa",
+        ];
+    }
+
+    private function getContractTypeNames() {
+        return [
+            ContractType::TeachingContract->value => "Mokymosi sutartis",
+            ContractType::ImprovementContract->value => "Tobulinimosi sutartis",
+            ContractType::Termination->value => "Mokymosi sutarties nutraukimas",
+            ContractType::Extension->value => "Mokymosi sutarties pratęsimas",
         ];
     }
 }
