@@ -23,6 +23,7 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    
     <script src="{{ asset('js/newUserDisplay.js') }}"></script>
     <script src="{{ asset('js/cardsListHeightNormalization.js') }}"></script>
     <script src="{{ asset('js/alertDismiss.js') }}"></script>
@@ -168,10 +169,10 @@
                                         </li>
 
                                         <li class="nav-item py-2 py-sm-0">
-                                            <a href="{{ route('register') }}"
-                                                class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
+                                            <a href="{{ route('lesson') }}"
+                                                class="nav-link text-white {{ request()->is('lesson*') == 1 ? 'active' : '' }}">
                                                 <i class="fs-6 fa fa-road"></i> <span
-                                                    class="fs-6 ms-2 d-none d-sm-inline">Vairavimų pamokos?</span>
+                                                    class="fs-6 ms-2 d-none d-sm-inline">Vairavimų pamokos</span>
                                             </a>
                                         </li>
 

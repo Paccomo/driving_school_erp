@@ -10,6 +10,7 @@ use App\Http\Controllers\Course\PricingController;
 use App\Http\Controllers\Documents\DocumentController;
 use App\Http\Controllers\Employee\EmployeeController;
 use App\Http\Controllers\Employee\InstructorController;
+use App\Http\Controllers\Lessons\LessonController;
 use App\Http\Controllers\References\LinksController;
 use App\Http\Controllers\References\SlidesController;
 use App\Http\Controllers\References\VideosController;
@@ -138,3 +139,10 @@ Route::get('/documents/addTheory', [DocumentController::class, 'add'])->name('do
 Route::get('/documents/download/{id}', [DocumentController::class, "download"])->name('documents.download');
 Route::get('/documents/destroy/{id}', [DocumentController::class, "destroy"])->name('documents.destroy');
 Route::post('/documents/save', [DocumentController::class, 'save'])->name('documents.save');
+
+// Lessons
+Route::get('/lessons', [LessonController::class, 'clientLessons'])->name('lesson');
+Route::get('/lessons/reservation', [LessonController::class, 'reservation'])->name('lesson.reservation');
+Route::post('/lessons/reservation', [LessonController::class, 'reservationSave'])->name('lesson.reservation.save');
+Route::post('/lessons/instructor', [LessonController::class, 'assignInstructor'])->name('lesson.instructor');
+Route::post('/lessons/cancel/{id}', [LessonController::class, 'cancel'])->name('lesson.cancel');

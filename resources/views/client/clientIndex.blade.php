@@ -78,6 +78,10 @@
                 <p>{{ $client->course->name }}</p>
             </div>
             <div class="col">
+                <span style="font-weight: bold">Liko sumokėti:</span>
+                <p>{{ $client->to_pay }}€</p>
+            </div>
+            <div class="col">
                 <span style="font-weight: bold">Pabaigęs kursus:</span>
                 <p>
                     @if ($client->currently_studying == 1)
