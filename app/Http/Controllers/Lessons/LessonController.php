@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Models\DrivingLesson;
 use App\Models\Employee;
+use App\Models\instructorReservedTime;
 use App\Models\Person;
 use App\Models\TimetableTime;
 use Auth;
@@ -102,6 +103,16 @@ class LessonController extends Controller
             }
         }
 
+        $irt = instructorReservedTime::where('fk_instructor', $self->fk_instructor)->get();
+        foreach($irt as $i) {
+            foreach($possibleTimes[$i->day] as $index => $pt) {
+                if ((strtotime($i->from) >= strtotime($pt[0]) && strtotime($i->from) < strtotime($pt[1]))
+                || (strtotime($i->to) >= strtotime($pt[0]) && strtotime($i->to) < strtotime($pt[1]))) {
+                    unset($possibleTimes[$i->day][$index]);
+                }
+            }
+        }
+
         $reservations = [];
         $currentDateTime = Carbon::now();
         $instructorLessons = DrivingLesson::where('fk_EMPLOYEEid', $self->fk_instructor)
@@ -122,8 +133,8 @@ class LessonController extends Controller
                 $start = DateTime::createFromFormat('H:i', $pt[0]);
                 $end = DateTime::createFromFormat('H:i', $pt[1]);
 
-                if ((strtotime($timeStart) >= strtotime($pt[0]) && strtotime($timeStart) <= strtotime($pt[1]))
-                || (strtotime($timeEnd) >= strtotime($pt[0]) && strtotime($timeEnd) <= strtotime($pt[1]))) {
+                if ((strtotime($timeStart) >= strtotime($pt[0]) && strtotime($timeStart) < strtotime($pt[1]))
+                || (strtotime($timeEnd) >= strtotime($pt[0]) && strtotime($timeEnd) < strtotime($pt[1]))) {
                     $reservations[] =  $dateTime->format('Y-m-d\TH:i:s');
                 }
             }
