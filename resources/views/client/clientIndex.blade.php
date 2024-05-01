@@ -186,6 +186,24 @@
                     Įšrašyti mokymo lapą</a>
             </div>
         </div>
+        @if ($isCat)
+        <div style="margin-top: 0.5cm" class="row">
+            <form method="POST" action="{{ route('client.lessons.add') }}" class="row align-items-center">
+                @csrf
+                <input type="hidden" name="client" value="{{ $client->id }}" />
+                <div class="col-auto">
+                    <label for="amount" class="form-label">Papildomų vairavimų kiekis</label>
+                </div>
+                <div class="col-auto">
+                    <input type="number" id="amount" name="amount" class="form-control" min="1"
+                        step="1">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-outline-secondary">Pridėti pamokas</button>
+                </div>
+            </form>
+        </div>
+        @endif
 
         @if ($contracts->isNotEmpty())
             <h5 style="margin-top: 0.5cm; font-weight: bold;">Sutartys</h5>

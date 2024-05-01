@@ -117,6 +117,15 @@ class ClientsController extends Controller
             $instructor = "--";
         }
 
+        $catCourse = BranchCategoricalCourse::where([
+            ['fk_CATEGORICAL_COURSEid', $client->fk_COURSEid],
+            ['fk_BRANCHid', $client->fk_BRANCHid]
+        ])->first();
+        if ($catCourse == null)
+            $isCat = false;
+        else
+            $isCat = true;
+
         $contracts = Contract::with('contractRequest')->where('fk_CLIENTid', $request->id)->get();
         $documents = Document::where([
             ['fk_CLIENTid', $request->id],
@@ -135,6 +144,7 @@ class ClientsController extends Controller
             'contracts' => $contracts,
             'documents' => $documents,
             'grades' => $grades,
+            'isCat' =>  $isCat,
         ]);
     }
 
@@ -148,6 +158,36 @@ class ClientsController extends Controller
         $client->fk_instructor = (int)$request->inst;
         $client->save();
         return redirect()->route('client.index', [$request->client])->with('success', 'Instruktorius priskirtas');
+    }
+
+    public function addLessons(Request $request) {
+        $request->validate([
+            'client' => ['required', 'integer', 'exists:client,id'],
+            'amount' => ['required', 'integer', 'gt:0']
+        ]);
+
+        $client = Client::find($request->client);
+        $course = BranchCategoricalCourse::where([
+            ['fk_CATEGORICAL_COURSEid', $client->fk_COURSEid],
+            ['fk_BRANCHid', $client->fk_BRANCHid]
+        ])->first();
+
+        if ($course != null) {
+            $price = (float)$course->additional_lesson_price;
+            $lessonCount = (int)$client->lessons;
+            $lessonToAdd =  (int)$request->amount;
+            $toPay = (float)$client->to_pay;
+
+            $toPay += $lessonToAdd * $price;
+            $lessonCount += $lessonToAdd;
+
+            $client->lessons = $lessonCount;
+            $client->to_pay = $toPay;
+            $client->save();
+            
+            return redirect()->route('client.index', [$request->client])->with('success', 'Papildomos pamokos pridėtos');
+        }
+        return redirect()->route('client.index', [$request->client])->with('fail', 'Papildomos vairavimo pamokos leistinos tik kategoriniams kursams');
     }
 
     public function TogglePracticalLessons(Request $request) {

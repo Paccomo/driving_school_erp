@@ -131,6 +131,7 @@ Route::post('/client/downloadReciept', [ClientsController::class, "receipt"])->n
 Route::get('/client/driveDocument/{id}', [ClientsController::class, "driveDocForm"])->name("client.driveForm");
 Route::post('/client/driveDocument', [ClientsController::class, "driveDoc"])->name("client.drive");
 Route::post('/client/instructor', [ClientsController::class, "instructor"])->name("client.instructor");
+Route::post('/client/additionalLessons', [ClientsController::class, "addLessons"])->name("client.lessons.add");
 
 // Documents
 Route::get('/documents', [DocumentController::class, 'document'])->name('documents');
