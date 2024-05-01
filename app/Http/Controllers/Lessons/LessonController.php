@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Models\DrivingLesson;
 use App\Models\Employee;
+use App\Models\Person;
 use App\Models\TimetableTime;
 use Auth;
 use Carbon\Carbon;
@@ -41,7 +42,7 @@ class LessonController extends Controller
             ->get();
         }
 
-        $currentDateTime = Carbon::now();
+        $currentDateTime = Carbon::now('Europe/Vilnius');
         $lessons = DrivingLesson::with('employee')
         ->where('fk_CLIENTid', $self->id)
         ->where('status', DrivingStatus::Reservation->value)
@@ -102,7 +103,9 @@ class LessonController extends Controller
         $reservations = [];
         $currentDateTime = Carbon::now();
         $instructorLessons = DrivingLesson::where('fk_EMPLOYEEid', $self->fk_instructor)
-        ->where('date', '>', $currentDateTime)->get();
+        ->where('date', '>', $currentDateTime)
+        ->where('status', '!=', DrivingStatus::Cancel->value)
+        ->get();
 
         foreach($instructorLessons as $i) {
             $dateTime = new DateTime($i->date);
@@ -142,8 +145,9 @@ class LessonController extends Controller
 
         $resDate = new DateTime($request->start);
         $resEnd = clone $resDate;
-        $resEnd->modify('+2 hours');
+        $resEnd->modify('+1 hour 50 minutes');
         $earlierReservations = DrivingLesson::where('fk_EMPLOYEEid', $self->fk_instructor)
+        ->where('status', '!=', DrivingStatus::Cancel->value)
         ->whereBetween('date', [$resDate->format('Y-m-d H:i:s'), $resEnd->format('Y-m-d H:i:s')])->get();
 
         if ($earlierReservations->isEmpty()) {
@@ -158,6 +162,118 @@ class LessonController extends Controller
         } else {
             return redirect()->route('lesson')->with('fail', 'Nurodytu laiku instruktorius jau turi kitą rezervaciją');
         }
+    }
+
+    public function cancel(Request $request) {
+        $lesson = DrivingLesson::find($request->id);
+        if ($lesson == null)
+            abort(Response::HTTP_NOT_FOUND,"Vairavimo pamoka nerasta");
+
+        if ((Auth::user()->role == Role::Client->value && $lesson->fk_CLIENTid != Auth::user()->id) || 
+            (Auth::user()->role == Role::Instructor->value && $lesson->fk_EMPLOYEEid != Auth::user()->id))
+        {
+            abort(Response::HTTP_FORBIDDEN,"Access denied");
+        }
+
+        $datetimeCancel = Carbon::parse($lesson->date);
+        $datetimeCancel = $datetimeCancel->subDay()->toDateString();
+        if ($lesson->status != DrivingStatus::Reservation->value || strtotime(date('Y-m-d')) >= strtotime($datetimeCancel))
+            return redirect()->back()->with('fail', "Nepavyko atšaukti vairavimo pamokos");
+
+        $lesson->status = DrivingStatus::Cancel->value;
+        $lesson->save();
+        return redirect()->back()->with('success', "Rezervacija atšaukta sėkmingai");
+    }
+
+    public function instLessons() {
+        if (Auth::user()->role != Role::Instructor->value)
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+
+        $currentDateTime = Carbon::now('Europe/Vilnius');
+        $lessons = DrivingLesson::where([
+            ['fk_EMPLOYEEid', Auth::user()->id],
+            ['status', DrivingStatus::Reservation->value],
+            ['date', '>', $currentDateTime]
+        ])->get();
+        $clientIds = $lessons->pluck('fk_CLIENTid')->unique()->toArray();
+        $clients = Person::whereIn('id', $clientIds)->get()->keyBy('id')->toArray();
+        $lessonsAsEvents = $this->convertLessonsAsFullCalendarEvents($lessons, $clients);
+        return view('lesson.timetable', ['events' => $lessonsAsEvents]);
+    }
+
+    public function gradeForm() {
+        if (Auth::user()->role != Role::Instructor->value)
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+
+        $currentDateTime = Carbon::now('Europe/Vilnius');
+        $lessons = DrivingLesson::with('client')
+            ->where([
+            ['fk_EMPLOYEEid', Auth::user()->id],
+            ['status', DrivingStatus::Reservation->value],
+            ['date', '<=', $currentDateTime]
+        ])->get();
+
+        return view('lesson.grade', ['lessons' => $lessons]);
+    }
+
+    public function grade(Request $request) {
+        if (Auth::user()->role != Role::Instructor->value)
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+
+        $noShows = [];
+        $grades = [];
+
+        foreach ($request->except('_token') as $inputName => $value) {
+            if (strpos($inputName, 'noShow') === 0) {
+                $lessonId = substr($inputName, strlen('noShow'));
+                if ($value == "true")
+                    $noShows[$lessonId] = $lessonId;
+            } elseif (strpos($inputName, 'grade') === 0) {
+                $lessonId = substr($inputName, strlen('grade'));
+                $grades[] = ['lesson' => $lessonId, 'grade' => $value];
+            }
+        }
+
+        foreach ($noShows as $ns) {
+            $lesson = DrivingLesson::find($ns);
+            if ($lesson != null && $lesson->fk_EMPLOYEEid == Auth::user()->id) {
+                $lesson->status = DrivingStatus::Miss->value;
+                $lesson->save();
+            }
+        }
+
+        foreach ($grades as $g) {
+            $lesson = DrivingLesson::find($g['lesson']);
+            if ($lesson != null && $lesson->fk_EMPLOYEEid == Auth::user()->id && ctype_digit($g['grade']) && $g['grade'] >= 1 && $g['grade'] <= 10) {
+                $lesson->status = DrivingStatus::Evaluated->value;
+                $lesson->grade = $g['grade'];
+                $lesson->save();
+            }
+        }
+
+        return redirect()->route('home')->with('success', "Įvertinimai surašyti");
+    }
+
+    private function convertLessonsAsFullCalendarEvents($lessons, $clients) {
+        $eventStruct = [];
+        foreach ($lessons as $key => $l)  {
+            $lesson = $l->date;
+            $lesson = Carbon::parse($lesson);
+            $lessonStart = $lesson->format('Y-m-d\TH:i:s');
+            $lesson->addHours(1)->addMinutes(30);
+            $lessonEnd = $lesson->format('Y-m-d\TH:i:s');
+            $client = $clients[$l->fk_CLIENTid]['name'] . " " . $clients[$l->fk_CLIENTid]['surname'];
+
+            $eventStruct[] = [
+                'title' => $client,
+                'start' => $lessonStart,
+                'end' => $lessonEnd,
+                'backgroundColor' => '#757575',
+                'borderColor' => 'transparent'
+            ];
+        }
+
+        return $eventStruct;
     }
 
     private function getReservationsForFullCalendar($reservedTimes, $timeOptions) {

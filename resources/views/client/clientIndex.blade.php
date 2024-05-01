@@ -27,7 +27,7 @@
                     <div class="col-auto">
                         <select name="inst" id="instSelect" class="form-select" required>
                             @foreach ($allInstructors as $inst)
-                                <option value="{{ $inst->id }}">
+                                <option @if($client->fk_instructor == $inst->id) selected @endif value="{{ $inst->id }}">
                                     {{ $inst->person->name . ' ' . $inst->person->surname }}</option>
                             @endforeach
                         </select>

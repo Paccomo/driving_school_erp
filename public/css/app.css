@@ -16,6 +16,6 @@
     width: 20%;
 }
 
-.clickable {
+.clickable, .fc-event {
     cursor: pointer;
 }

@@ -41,7 +41,6 @@
                                         {{ $inst->person->name . ' ' . $inst->person->surname }}</option>
                                 @endforeach
                             </select>
-                            {{-- <input type="date" name="birthdate"> --}}
                         </div>
                         <div class="col-auto">
                             <button type="submit" class="btn btn-outline-secondary {{ $self->fk_instructor ? 'disabled' : '' }}">Pasirinkti</button>

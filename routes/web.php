@@ -142,7 +142,10 @@ Route::post('/documents/save', [DocumentController::class, 'save'])->name('docum
 
 // Lessons
 Route::get('/lessons', [LessonController::class, 'clientLessons'])->name('lesson');
+Route::get('/lessons/upcoming', [LessonController::class, 'instLessons'])->name('lesson.upcoming');
+Route::get('/lessons/grades', [LessonController::class, 'gradeForm'])->name('lesson.grades');
+Route::post('/lessons/grades', [LessonController::class, 'grade'])->name('lesson.grades.save');
 Route::get('/lessons/reservation', [LessonController::class, 'reservation'])->name('lesson.reservation');
 Route::post('/lessons/reservation', [LessonController::class, 'reservationSave'])->name('lesson.reservation.save');
 Route::post('/lessons/instructor', [LessonController::class, 'assignInstructor'])->name('lesson.instructor');
-Route::post('/lessons/cancel/{id}', [LessonController::class, 'cancel'])->name('lesson.cancel');
+Route::get('/lessons/cancel/{id}', [LessonController::class, 'cancel'])->name('lesson.cancel');

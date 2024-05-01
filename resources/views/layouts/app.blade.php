@@ -23,7 +23,7 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    
+
     <script src="{{ asset('js/newUserDisplay.js') }}"></script>
     <script src="{{ asset('js/cardsListHeightNormalization.js') }}"></script>
     <script src="{{ asset('js/alertDismiss.js') }}"></script>
@@ -161,34 +161,10 @@
                                         </li>
 
                                         <li class="nav-item py-2 py-sm-0">
-                                            <a href="{{ route('register') }}"
-                                                class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
-                                                <i class="fs-6 fa fa-person-chalkboard"></i> <span
-                                                    class="fs-6 ms-2 d-none d-sm-inline">Paskaitos?</span>
-                                            </a>
-                                        </li>
-
-                                        <li class="nav-item py-2 py-sm-0">
                                             <a href="{{ route('lesson') }}"
                                                 class="nav-link text-white {{ request()->is('lesson*') == 1 ? 'active' : '' }}">
                                                 <i class="fs-6 fa fa-road"></i> <span
                                                     class="fs-6 ms-2 d-none d-sm-inline">Vairavimų pamokos</span>
-                                            </a>
-                                        </li>
-
-                                        <li class="nav-item py-2 py-sm-0">
-                                            <a href="{{ route('register') }}"
-                                                class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
-                                                <i class="fs-6 fa fa-credit-card"></i> <span
-                                                    class="fs-6 ms-2 d-none d-sm-inline">Apmokėjimai?</span>
-                                            </a>
-                                        </li>
-
-                                        <li class="nav-item py-2 py-sm-0">
-                                            <a href="{{ route('register') }}"
-                                                class="nav-link text-white {{ request()->is('register') == 1 ? 'active' : '' }}">
-                                                <i class="fs-6 fa fa-clipboard-question"></i> <span
-                                                    class="fs-6 ms-2 d-none d-sm-inline">Teorijos testai?</span>
                                             </a>
                                         </li>
 
@@ -209,6 +185,7 @@
                                             </a>
                                         </li>
                                     @endif
+
                                     @if (Auth::user()->role == 'director' || Auth::user()->role == 'instructor')
                                         <li class="nav-item py-2 py-sm-0">
                                             <a href="{{ route('slides.list') }}"
@@ -218,6 +195,25 @@
                                             </a>
                                         </li>
                                     @endif
+
+                                    @if (Auth::user()->role == 'instructor')
+                                        <li class="nav-item py-2 py-sm-0">
+                                            <a href="{{ route('lesson.upcoming') }}"
+                                                class="nav-link text-white {{ request()->is('lessons/upcoming') == 1 ? 'active' : '' }}">
+                                                <i class="fa-regular fa-calendar"></i> <span
+                                                    class="fs-6 ms-2 d-none d-sm-inline">Vairavimų tvarkaraštis</span>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item py-2 py-sm-0">
+                                            <a href="{{ route('lesson.grades') }}"
+                                                class="nav-link text-white {{ request()->is('lessons/grades') == 1 ? 'active' : '' }}">
+                                                <i class="fa-solid fa-pencil"></i><span
+                                                    class="fs-6 ms-2 d-none d-sm-inline">Įvykusių vairavimų įvertinimas</span>
+                                            </a>
+                                        </li>
+                                    @endif
+
                                     @if (Auth::user()->role == 'director' || Auth::user()->role == 'administrator')
                                         <li class="nav-item py-2 py-sm-0">
                                             <a href="{{ route('client.list') }}"
