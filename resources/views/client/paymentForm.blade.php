@@ -69,6 +69,25 @@
                                 </div>
                             </div>
 
+                            <div class="row mb-3">
+                                <label for="bank"
+                                    class="col-md-3 form-check-label text-md-end">{{ __('Atliktas bankinis pavedimas') }}</label>
+
+                                <div class="col-md-6 ">
+                                    <div class="form-check form-switch">
+                                        <input id="bank" type="checkbox" value="true" class="form-check-input"
+                                            role="switch" @error('bank') class="is-invalid @enderror"
+                                            name="bank">
+                                    </div>
+
+                                    @error('bank')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
                             <div class="row mb-0">
                                 <div class="col-md-6 offset-md-3">
                                     <button type="submit" class="btn btn-primary">

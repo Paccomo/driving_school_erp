@@ -210,10 +210,12 @@ class ClientsController extends Controller
         $payment = new Payment();
         $payment->id = $income->id;
         $payment->fk_CLIENTid = $request->id;
-        $payment->paid_in_office = true;
+        $payment->paid_in_office = $request->bank == null;
         $payment->save();
 
         $student = Client::with('person')->find($request->id);
+        $student->to_pay = (float)$student->to_pay - (float)$request->pay;
+        $student->save();
         $student = $student->person->name . " " . $student->person->surname;
 
         return view('client.displayCheck', [
