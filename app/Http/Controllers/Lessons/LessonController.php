@@ -68,6 +68,8 @@ class LessonController extends Controller
         $self = Client::find(Auth::user()->id);
         if ($self->fk_instructor == null)
             return redirect()->route('lesson')->with('fail', 'Jums nėra priskirto instruktoriaus');
+        if ((int)$self->lessons <= 0)
+            return redirect()->route('lesson')->with('fail', 'Pirma nusipirkite papildomų vairavimo pamokų');
 
         $possibleTimes = [];
         $weekDays = array_column(WeekDay::cases(), 'value');
@@ -138,6 +140,8 @@ class LessonController extends Controller
         $self = Client::find(Auth::user()->id);
         if ($self->fk_instructor == null)
             return redirect()->route('lesson')->with('fail', 'Jums nėra priskirto instruktoriaus');
+        if ((int)$self->lessons <= 0)
+            return redirect()->route('lesson')->with('fail', 'Pirma nusipirkite papildomų vairavimo pamokų');
 
         $request->validate([
             'start' => ['required', 'regex:/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/'],
@@ -157,6 +161,9 @@ class LessonController extends Controller
             $dl->fk_CLIENTid = $self->id;
             $dl->fk_EMPLOYEEid = $self->fk_instructor;
             $dl->save();
+
+            $self->lessons = (int)$self->lessons - 1;
+            $self->save();
 
             return redirect()->route('lesson')->with('success', 'Vairavimo pamokos rezervacija sėkminga');
         } else {

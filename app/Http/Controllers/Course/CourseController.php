@@ -88,6 +88,7 @@ class CourseController extends Controller
             'id' => ['integer', 'gt:0', 'exists:course,id'],
             'name' => ['required', 'string'],
             'description' => ['required', 'string'],
+            'pracLessons' => ['required', 'integer', 'gte:0']
         ]);
 
         unset($courseType);
@@ -100,6 +101,7 @@ class CourseController extends Controller
 
         $course->name = $request->name;
         $course->main_description = $request->description;
+        $course->practical_lessons = $request->pracLessons;
         $course->save();
         if (isset($courseType) && $courseType !== null)  {
             $courseType->id = $course->id;

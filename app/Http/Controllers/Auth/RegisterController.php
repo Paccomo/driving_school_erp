@@ -10,6 +10,7 @@ use App\Models\BranchCompetenceCourse;
 use App\Models\CategoricalCourse;
 use App\Models\Client;
 use App\Models\CompetenceCourse;
+use App\Models\Course;
 use App\Models\Employee;
 use App\Models\Person;
 use App\Constants\Role;
@@ -169,6 +170,9 @@ class RegisterController extends Controller
     }
 
     private function createClient(int $userID, float $prepaid, int $branchID, int $courseID, bool $withoutTheory = false, int $chosenGroupID = null, bool $extension): void {
+        $course = Course::find($courseID);
+        $lessonsAmount = $course->practical_lessons;
+
         $client = new Client();
         $client->id = $userID;
         $client->practical_lessons_permission = $extension;
@@ -176,6 +180,7 @@ class RegisterController extends Controller
         $client->to_pay = $this->calculateCoursePrice($branchID, $courseID, $withoutTheory, $extension) - $prepaid;
         $client->fk_COURSEid = $courseID;
         $client->fk_BRANCHid = $branchID;
+        $client->lessons = $lessonsAmount;
         if (!$withoutTheory)
             $client->fk_STUDENTS_GROUPid = $chosenGroupID !== null ? $chosenGroupID : $this->getViableStudentsGroup($branchID, $courseID);
         $client->save();

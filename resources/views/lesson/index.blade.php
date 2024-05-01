@@ -14,7 +14,7 @@
 
     <div style="padding: 0.2cm 0.4cm 1cm 0.4cm" class="d-flex align-items-left">
         <h1 style="margin-right: 0.4cm">Vairavimo pamokos</h1>
-        <a class="btn btn-secondary" href="{{ route('lesson.reservation') }}">
+        <a class="btn btn-secondary @if((int)$self->lessons <= 0) disabled @endif" href="{{ route('lesson.reservation') }}">
             Rezervuoti laiką
         </a>
     </div>

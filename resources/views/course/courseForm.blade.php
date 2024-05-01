@@ -56,6 +56,23 @@
                                 </div>
                             </div>
 
+                            <div class="row mb-3">
+                                <label for="pracLessons"
+                                    class="col-md-3 col-form-label text-md-end">{{ __('Vairavimų kiekis') }}<span class="text-danger">*</span></label>
+
+                                <div class="col-md-6">
+                                    <input id="pracLessons" type="number" step="1" min="0"
+                                        value="{{ isset($course) ? $course->practical_lessons : old('name') }}" class="form-control @error('pracLessons') is-invalid @enderror"
+                                        required name="pracLessons">
+
+                                    @error('pracLessons')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
                             @if (!isset($course))
                                 <div class="row mb-3">
                                     <label for="categorical"
