@@ -27,7 +27,7 @@
                     <div class="col-auto">
                         <select name="inst" id="instSelect" class="form-select" required>
                             @foreach ($allInstructors as $inst)
-                                <option @if($client->fk_instructor == $inst->id) selected @endif value="{{ $inst->id }}">
+                                <option @if ($client->fk_instructor == $inst->id) selected @endif value="{{ $inst->id }}">
                                     {{ $inst->person->name . ' ' . $inst->person->surname }}</option>
                             @endforeach
                         </select>
@@ -113,6 +113,26 @@
             </div>
         </div>
 
+        @if ($grades->isNotEmpty())
+            <h5 style="margin-top: 0.5cm; font-weight: bold;">Pažymiai</h5>
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th scope="col">Data</th>
+                        <th scope="col">Įvertinimas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($grades as $g)
+                        <tr>
+                            <td>{{ $g->date }}</td>
+                            <td>{{ $g->grade }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
+
         <h5 style="font-weight: bold;">Veiksmai</h5>
         <div class="row">
             <div class="col">
@@ -123,7 +143,8 @@
             <div class="col">
                 <a style="margin-right: 0.4cm; margin-bottom: 0.2cm; font-size: 14px"
                     href="{{ route('pw.form', $client->id) }}"
-                    class="btn btn-danger btn-sm btnResize @if ($client->currently_studying != 1) disabled @endif">Pakeisti slaptažodį</a>
+                    class="btn btn-danger btn-sm btnResize @if ($client->currently_studying != 1) disabled @endif">Pakeisti
+                    slaptažodį</a>
             </div>
             <div class="col">
                 <a style="margin-right: 0.4cm; margin-bottom: 0.2cm; font-size: 14px"

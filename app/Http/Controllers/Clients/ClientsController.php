@@ -12,6 +12,7 @@ use App\Models\Client;
 use App\Models\Contract;
 use App\Models\Course;
 use App\Models\Document;
+use App\Models\DrivingLesson;
 use App\Models\Employee;
 use App\Models\Income;
 use App\Models\Payment;
@@ -122,12 +123,18 @@ class ClientsController extends Controller
             ['valid_until', '>', Carbon::today()]
         ])->get();
 
+        $grades = DrivingLesson::where([
+            ['fk_CLIENTid', $client->id],
+            ['grade', '!=', null]
+        ])->get()->sortBy('date');
+
         return view('client.clientIndex', [
             'client' => $client,
             'instructor' => $instructor,
             'allInstructors' => $allInstructors,
             'contracts' => $contracts,
             'documents' => $documents,
+            'grades' => $grades,
         ]);
     }
 
