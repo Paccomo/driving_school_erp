@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Accounting\AccountingController;
 use App\Http\Controllers\Auth\PwController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Branch\BranchController;
@@ -153,3 +154,11 @@ Route::get('/lessons/reservation', [LessonController::class, 'reservation'])->na
 Route::post('/lessons/reservation', [LessonController::class, 'reservationSave'])->name('lesson.reservation.save');
 Route::post('/lessons/instructor', [LessonController::class, 'assignInstructor'])->name('lesson.instructor');
 Route::get('/lessons/cancel/{id}', [LessonController::class, 'cancel'])->name('lesson.cancel');
+
+// Accounting
+Route::get('/accounting/salaries', [AccountingController::class, 'salariesForm'])->name('accounting.salary');
+Route::post('/accounting/salaries', [AccountingController::class, 'salaries'])->name('accounting.salary.save');
+Route::get('/accounting/expense', [AccountingController::class, 'expenseForm'])->name('accounting.expense');
+Route::post('/accounting/expense', [AccountingController::class, 'expense'])->name('accounting.expense.save');
+Route::get('/accounting/income', [AccountingController::class, 'incomeForm'])->name('accounting.income');
+Route::post('/accounting/income', [AccountingController::class, 'income'])->name('accounting.income.save');

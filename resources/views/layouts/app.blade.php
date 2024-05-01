@@ -209,7 +209,8 @@
                                             <a href="{{ route('lesson.grades') }}"
                                                 class="nav-link text-white {{ request()->is('lessons/grades') == 1 ? 'active' : '' }}">
                                                 <i class="fa-solid fa-pencil"></i><span
-                                                    class="fs-6 ms-2 d-none d-sm-inline">Įvykusių vairavimų įvertinimas</span>
+                                                    class="fs-6 ms-2 d-none d-sm-inline">Įvykusių vairavimų
+                                                    įvertinimas</span>
                                             </a>
                                         </li>
                                     @endif
@@ -236,6 +237,16 @@
                                                 class="nav-link text-white {{ request()->is('add/contract') == 1 ? 'active' : '' }}">
                                                 <i class="fa-solid fa-file-arrow-up"></i><span
                                                     class="fs-6 ms-2 d-none d-sm-inline">Įkelti sutartį be užklausos</span>
+                                            </a>
+                                        </li>
+                                    @endif
+
+                                    @if (Auth::user()->role == 'director' || Auth::user()->role == 'accountant')
+                                        <li class="nav-item py-2 py-sm-0">
+                                            <a href="{{ route('accounting.salary') }}"
+                                                class="nav-link text-white {{ request()->is('accounting*') == 1 ? 'active' : '' }}">
+                                                <i class="fa-solid fa-wallet"></i><span
+                                                    class="fs-6 ms-2 d-none d-sm-inline">Suvesti atlyginimų išlaidas</span>
                                             </a>
                                         </li>
                                     @endif
