@@ -98,6 +98,9 @@ Route::get('/contracts', [ContractsController::class, "clientContracts"])->name(
 
 // Employee
 Route::get("/employee", [EmployeeController::class, "list"])->name("employee.list");
+Route::get("/employee/reservedTimes/{id}", [EmployeeController::class, "timesList"])->name('instructor.reserved.times');
+Route::delete("/employee/reservedTimes/{id}", [EmployeeController::class, "timeDestroy"])->name('employee.time.destroy');
+Route::post("/employee/reservedTimes/{id}", [EmployeeController::class, "timeAdd"])->name('employee.time.add');
 Route::put("/employee/save", [EmployeeController::class, "save"])->name("employee.save");
 Route::put("/employee/timetable", [EmployeeController::class, "timetableSave"])->name("employee.timetable.save");
 Route::get("/employee/{id}", [EmployeeController::class, "index"])->name("employee.index");

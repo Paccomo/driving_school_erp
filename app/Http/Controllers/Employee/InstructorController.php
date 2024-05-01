@@ -26,10 +26,6 @@ class InstructorController extends Controller
         return view('employee.instructorList', ["employees" => $employees, 'roleDirector' => Role::Director->value]);
     }
 
-    public function index() {
-        return view('lesson.index');
-    }
-
     private function getImage($imageName): string {
         if ($imageName != null && file_exists(storage_path('app/public/employees/' . $imageName))) {
             return url('storage/employees/' . $imageName);

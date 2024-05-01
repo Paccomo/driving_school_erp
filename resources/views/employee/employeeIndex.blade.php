@@ -15,6 +15,10 @@
                 </form>
                 <a style="margin-left: 0.4cm" href="{{ route('employee.timetable.form', $employee->id) }}"
                     class="btn btn-secondary">Koreguoti tvarkaraštį</a>
+                @if ($employee->account->role == 'instructor')
+                    <a style="margin-left: 0.4cm" href="{{ route('instructor.reserved.times', $employee->id) }}"
+                        class="btn btn-secondary">Teorijos paskaitų laikai</a>
+                @endif
                 <a style="margin-left: 0.4cm" href="{{ route('pw.form', $employee->id) }}"
                     class="btn btn-outline-secondary">Pakeisti slaptažodį</a>
             </div>
@@ -49,9 +53,9 @@
             @foreach ($timetable as $weekday => $time)
                 <tr>
                     <td>@lang('messages.' . $weekday)</td>
-                    <td>{{ isset($time['open']) ? $time['open'] : "--" }}</td>
-                    <td>{{ isset($time['close']) ? $time['close'] : "--" }}</td>
-                    <td>{{ isset($time['break']) ? $time['break'] : "--" }}</td>
+                    <td>{{ isset($time['open']) ? $time['open'] : '--' }}</td>
+                    <td>{{ isset($time['close']) ? $time['close'] : '--' }}</td>
+                    <td>{{ isset($time['break']) ? $time['break'] : '--' }}</td>
                 </tr>
             @endforeach
         </table>

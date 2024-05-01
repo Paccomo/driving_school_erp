@@ -11,6 +11,7 @@ use App\Models\Branch;
 use App\Models\DrivingLesson;
 use App\Models\Employee;
 use App\Models\InformationTemplate;
+use App\Models\instructorReservedTime;
 use App\Models\Person;
 use App\Models\TimetableTime;
 use App\Rules\timeAfter;
@@ -68,6 +69,40 @@ class EmployeeController extends Controller
         $branches = Branch::all();
 
         return view('employee.employeeForm', ['employee' => $employee, 'branches' => $branches, 'roles' => $roles]);
+    }
+
+    public function timesList(Request $request) {
+        $this->validateLocally($request->id);
+        $times = instructorReservedTime::where('fk_instructor', $request->id)->get();
+        $weekdays = array_column(WeekDay::cases(), 'value');
+        return view('employee.reservedTimes', ['times' => $times, 'weekdays' => $weekdays, 'employee' => $request->id]);
+    }
+
+    public function timeAdd(Request $request) {
+        $request->validate([
+            'weekday' => ['required', Rule::enum(WeekDay::class)],
+            'from' => 'required|date_format:H:i',
+            'to' => 'required|date_format:H:i|after:from',
+            'employee' => 'required|gte:0|exists:employee,id'
+        ]);
+
+        $irt = new InstructorReservedTime();
+        $irt->day = ($request->weekday);
+        $irt->from = ($request->from);
+        $irt->to = ($request->to);
+        $irt->fk_instructor = ($request->employee);
+        $irt->save();
+        return redirect()->route('instructor.reserved.times', [$request->employee])->with('success', 'Paskaitos laikas pridėtas');
+    }
+
+    public function timeDestroy(Request $request) {
+        $irt = InstructorReservedTime::find($request->id);
+        if ($irt != null) {
+            $fk = $irt->fk_instructor;
+            $irt->delete();
+            return redirect()->route('instructor.reserved.times', [$fk])->with('success', 'Paskaitos laikas pašalintas');
+        }
+        return redirect()->route('employee.list')->with('fail', 'Paskaitos laikas nerastas');
     }
 
     public function save(Request $request) {
