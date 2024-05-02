@@ -244,9 +244,33 @@
                                     @if (Auth::user()->role == 'director' || Auth::user()->role == 'accountant')
                                         <li class="nav-item py-2 py-sm-0">
                                             <a href="{{ route('accounting.salary') }}"
-                                                class="nav-link text-white {{ request()->is('accounting*') == 1 ? 'active' : '' }}">
+                                                class="nav-link text-white {{ request()->is('accounting/salaries') == 1 ? 'active' : '' }}">
                                                 <i class="fa-solid fa-wallet"></i><span
                                                     class="fs-6 ms-2 d-none d-sm-inline">Suvesti atlyginimų išlaidas</span>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item py-2 py-sm-0">
+                                            <a href="{{ route('accounting.income') }}"
+                                                class="nav-link text-white {{ request()->is('accounting/income') == 1 ? 'active' : '' }}">
+                                                <i class="fa-solid fa-cash-register"></i><span
+                                                    class="fs-6 ms-2 d-none d-sm-inline">Suvesti pajamas</span>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item py-2 py-sm-0">
+                                            <a href="{{ route('accounting.expense') }}"
+                                                class="nav-link text-white {{ request()->is('accounting/expense') == 1 ? 'active' : '' }}">
+                                                <i class="fa-solid fa-receipt"></i><span
+                                                    class="fs-6 ms-2 d-none d-sm-inline">Suvesti išlaidas</span>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item py-2 py-sm-0">
+                                            <a href="{{ route('accounting.report') }}"
+                                                class="nav-link text-white {{ request()->routeIs('accounting.report') ? 'active' : '' }}">
+                                                <i class="fa-solid fa-chart-simple"></i><span
+                                                    class="fs-6 ms-2 d-none d-sm-inline">Mėnesinė finansinė ataskaita</span>
                                             </a>
                                         </li>
                                     @endif

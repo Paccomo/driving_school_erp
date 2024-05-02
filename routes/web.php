@@ -162,3 +162,4 @@ Route::get('/accounting/expense', [AccountingController::class, 'expenseForm'])-
 Route::post('/accounting/expense', [AccountingController::class, 'expense'])->name('accounting.expense.save');
 Route::get('/accounting/income', [AccountingController::class, 'incomeForm'])->name('accounting.income');
 Route::post('/accounting/income', [AccountingController::class, 'income'])->name('accounting.income.save');
+Route::get('/accounting/{month?}', [AccountingController::class, 'report'])->name('accounting.report');

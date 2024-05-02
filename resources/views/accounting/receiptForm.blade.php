@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+    @if (session('success'))
+        <div class="alert alert-success auto-dismiss">
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-11">
@@ -8,15 +13,15 @@
                     <div class="card-header text-white bg-secondary">
                         {{ $title }}</div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route() }}">
+                        <form method="POST" action="{{ route($formRoute) }}">
                             @csrf
                             <div class="row mb-3">
                                 <label for="amount" class="col-md-3 col-form-label text-md-end">{{ __('Suma') }}<span
                                         class="text-danger">*</span></label>
 
                                 <div class="col-md-6">
-                                    <input type="number" id="amount" name="amount" min="0" required
-                                        class="form-control @error('amount') is-invalid @enderror"
+                                    <input type="number" id="amount" name="amount" min="0" step="0.01"
+                                        required class="form-control @error('amount') is-invalid @enderror"
                                         value="{{ old('amount') }}">
 
                                     @error('title')
@@ -28,7 +33,8 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="receiptDate" class="col-md-3 col-form-label text-md-end">{{ __('Data') }}<span
+                                <label for="receiptDate"
+                                    class="col-md-3 col-form-label text-md-end">{{ __('Data') }}<span
                                         class="text-danger">*</span></label>
 
                                 <div class="col-md-6">
@@ -50,8 +56,7 @@
                                         class="text-danger">*</span></label>
 
                                 <div class="col-md-6">
-                                    <textarea class="form-control @error('reason') is-invalid @enderror" id="reason" name="reason"
-                                        rows="5">{{ old('reason') }}</textarea>
+                                    <textarea class="form-control @error('reason') is-invalid @enderror" id="reason" name="reason" rows="5">{{ old('reason') }}</textarea>
 
                                     @error('reason')
                                         <span class="invalid-feedback" role="alert">
