@@ -187,6 +187,8 @@ class ContractsController extends Controller
 
         $cr->status = RequestStatus::Denied->value;
         $cr->save();
+
+        $reason = $request->reason;
         //TODO send email
         return redirect()->back()->with('success', "Užklausa atmesta");
     }

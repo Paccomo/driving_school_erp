@@ -85,22 +85,23 @@
             </div>
         </div>
 
-        <h5 style="margin-top: 1cm; font-weight: bold;">Komentaras</h5>
-        <div class="row">
-            <pre>{{ $contract->comment }}</pre>
-        </div>
+        @if ($contract->comment != null)
+            <h5 style="margin-top: 1cm; font-weight: bold;">Komentaras</h5>
+            <div class="row">
+                <pre>{{ $contract->comment }}</pre>
+            </div>
+        @endif
 
         <h5 style="margin-top: 1cm; font-weight: bold;">Veiksmai</h5>
         <div class="row">
             <div class="col">
                 <a style="margin-right: 0.4cm; margin-bottom: 0.2cm; font-size: 14px"
                     href="{{ route('contract.approve', $contract->id) }}"
-                    class="btn btn-success btn-sm btnResize @if($contract->status != 'unconfirmed') disabled @endif">
+                    class="btn btn-success btn-sm btnResize @if ($contract->status != 'unconfirmed') disabled @endif">
                     Patvirtinti
                 </a>
-                <a style="margin-right: 0.4cm; margin-bottom: 0.2cm; font-size: 14px"
-                    href="{{ route('contract.deny', $contract->id) }}"
-                    class="btn btn-danger btn-sm btnResize @if($contract->status != 'unconfirmed') disabled @endif">
+                <a id="denyContractBtn" style="margin-right: 0.4cm; margin-bottom: 0.2cm; font-size: 14px" 
+                    class="btn btn-danger btn-sm btnResize @if ($contract->status != 'unconfirmed') disabled @endif">
                     Atmesti
                 </a>
                 <a style="margin-right: 0.4cm; margin-bottom: 0.2cm; font-size: 14px"
@@ -112,22 +113,37 @@
         </div>
     </div>
 
+    <div id="denyContractModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Atmesti sutarties užklausą</h5>
+                </div>
+                <form id="denyContractForm" action="{{ route('contract.deny') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="id" value="{{ $contract->id }}">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="denyReason">Priežastis:</label>
+                            <textarea class="form-control" id="denyReason" name="reason" rows="3" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="cancelDeny">Atšaukti</button>
+                        <button type="submit" class="btn btn-danger">Atmesti</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
-        var buttons = document.querySelectorAll('.btnResize');
-        var maxWidth = 0;
-        var maxHeight = 0;
-        buttons.forEach(function(button) {
-            var rect = button.getBoundingClientRect();
-            var area = rect.width * rect.height;
-            if (area > maxWidth * maxHeight) {
-                console.log(area)
-                maxWidth = rect.width;
-                maxHeight = rect.height;
-            }
+        document.getElementById('denyContractBtn').addEventListener('click', function() {
+            $('#denyContractModal').modal('show');
         });
-        buttons.forEach(function(button) {
-            button.style.width = maxWidth + 'px';
-            button.style.height = maxHeight + 'px';
+
+        document.getElementById('cancelDeny').addEventListener('click', function() {
+            $('#denyContractModal').modal('hide');
         });
     </script>
 @endsection

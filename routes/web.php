@@ -92,7 +92,7 @@ Route::get('/add/contract', [ContractsController::class, "addWithoutRequest"])->
 Route::post('/add/contract', [ContractsController::class, "saveWithoutRequest"])->name('contract.saveRequestless');
 Route::get('/contract/{id}', [ContractsController::class, "index"])->name('contract.index');
 Route::get('/contract/{id}/approve', [ContractsController::class, "approve"])->name('contract.approve');
-Route::get('/contract/{id}/deny', [ContractsController::class, "deny"])->name('contract.deny');
+Route::post('/contract/deny', [ContractsController::class, "deny"])->name('contract.deny');
 Route::get('/contract/{id}/addContract', [ContractsController::class, "add"])->name('contract.add');
 Route::post('/contract/save', [ContractsController::class, "save"])->name('contract.save');
 Route::get('/contracts', [ContractsController::class, "clientContracts"])->name('contract.client');
