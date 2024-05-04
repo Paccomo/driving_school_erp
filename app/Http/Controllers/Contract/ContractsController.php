@@ -6,6 +6,8 @@ use App\Constants\ContractType;
 use App\Constants\RequestStatus;
 use App\Constants\Role;
 use App\Http\Controllers\Controller;
+use App\Mail\contractRequestApproved;
+use App\Mail\contractRequestDenied;
 use App\Models\Branch;
 use App\Models\Client;
 use App\Models\ClientContractRequest;
@@ -17,6 +19,7 @@ use App\Models\GuestContractRequest;
 use Auth;
 use DateTime;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -174,7 +177,20 @@ class ContractsController extends Controller
 
         $cr->status = RequestStatus::Approved->value;
         $cr->save();
-        //TODO send email
+
+        $email = $cr->guestReq != null ? $cr->guestReq->email : $cr->clientReq->client->account->email;
+        $types = $this->getRequestTypeNames();
+        $reqType = $types[$cr->type];
+        $init = str_replace('užklausa', 'iniciavimo procesas', $reqType);
+        $branch = Branch::find($cr->fk_BRANCHid);
+        
+        Mail::to($email)->send(new contractRequestApproved([
+            'reqType' => $reqType,
+            'date' => $cr->requested_on,
+            'init' => $init,
+            'addr' => $branch->address
+        ]));
+
         return redirect()->back()->with('success', "Užklausa priimta");
     }
 
@@ -188,8 +204,20 @@ class ContractsController extends Controller
         $cr->status = RequestStatus::Denied->value;
         $cr->save();
 
+        $branch = Branch::find($cr->fk_BRANCHid);
         $reason = $request->reason;
-        //TODO send email
+        $email = $cr->guestReq != null ? $cr->guestReq->email : $cr->clientReq->client->account->email;
+        $types = $this->getRequestTypeNames();
+        $reqType = $types[$cr->type];
+
+        Mail::to($email)->send(new contractRequestDenied([
+            'phoneNum' => $branch->phone_number,
+            'email' => $branch->email,
+            'reqType' => $reqType,
+            'date' => $cr->requested_on,
+            'reason' => $reason,
+        ]));
+        
         return redirect()->back()->with('success', "Užklausa atmesta");
     }
 

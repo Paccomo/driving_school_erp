@@ -114,7 +114,7 @@ class LessonController extends Controller
         }
 
         $reservations = [];
-        $currentDateTime = Carbon::now();
+        $currentDateTime = Carbon::now('Europe/Vilnius');
         $instructorLessons = DrivingLesson::where('fk_EMPLOYEEid', $self->fk_instructor)
         ->where('date', '>', $currentDateTime)
         ->where('status', '!=', DrivingStatus::Cancel->value)

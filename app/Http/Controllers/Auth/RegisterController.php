@@ -131,7 +131,7 @@ class RegisterController extends Controller
             $groups = StudentsGroup::select('students_group.*', "course.name")
             ->leftJoin('course', 'students_group.fk_COURSEid', '=', 'course.id')
             ->where([
-                ['date_start', '>', Carbon::now()]
+                ['date_start', '>', Carbon::now('Europe/Vilnius')]
             ])->get();
         }
         else {
@@ -139,7 +139,7 @@ class RegisterController extends Controller
             ->leftJoin('course', 'students_group.fk_COURSEid', '=', 'course.id')
             ->where([
                 ['fk_BRANCHid', Employee::find(Auth::user()->id)->fk_BRANCHid],
-                ['date_start', '>', Carbon::now()]
+                ['date_start', '>', Carbon::now('Europe/Vilnius')]
             ])->get();
         }
         $groups = $this->removeFullGroups($groups);
@@ -255,7 +255,7 @@ class RegisterController extends Controller
     }
 
     private function calculateGroupStartingDate(int $branchID): Carbon {
-        $startDate = Carbon::now()->addDays(14);
+        $startDate = Carbon::now('Europe/Vilnius')->addDays(14);
         for ($i = 0; $i < 7; $i++) {
             $weekDayTimetable = TimetableTime::where([
                 ['fk_BRANCHid', $branchID],

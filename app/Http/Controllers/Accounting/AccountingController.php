@@ -20,8 +20,8 @@ class AccountingController extends Controller
 
     public function salariesForm()
     {
-        $currentYear = Carbon::now()->year;
-        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now('Europe/Vilnius')->year;
+        $currentMonth = Carbon::now('Europe/Vilnius')->month;
         $salaries = Expense::where('reason', 'LIKE', "Darbo užmokestis už $currentYear metų $currentMonth mėnesį.%")->get();
         $salariesRegistered = $salaries->isNotEmpty();
 
@@ -49,8 +49,8 @@ class AccountingController extends Controller
         $request->validate($rules);
 
         $currentDate = Carbon::now('Europe/Vilnius');
-        $currentYear = Carbon::now()->year;
-        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now('Europe/Vilnius')->year;
+        $currentMonth = Carbon::now('Europe/Vilnius')->month;
         $reasonBegining = "Darbo užmokestis už $currentYear metų $currentMonth mėnesį.\n";
 
         $employees = Person::whereIn('id', $employeeIDs)->get()->keyBy('id')->toArray();
@@ -120,7 +120,7 @@ class AccountingController extends Controller
         $month = $request->month;
 
         if ($month == null || !preg_match('/^\d{4}-\d{2}$/', $month)) {
-            $month = Carbon::now();
+            $month = Carbon::now('Europe/Vilnius');
             $month = $month->subMonth();
         } else {
             $month = $month = Carbon::createFromFormat('Y-m', $month);
