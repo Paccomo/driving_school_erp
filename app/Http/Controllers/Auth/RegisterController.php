@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Constants\TimetableTimeType;
 use App\Http\Controllers\Controller;
+use App\Mail\registerInfo;
 use App\Models\Branch;
 use App\Models\BranchCategoricalCourse;
 use App\Models\BranchCompetenceCourse;
@@ -20,6 +21,8 @@ use App\Rules\validCourse;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
@@ -100,6 +103,9 @@ class RegisterController extends Controller
         $person->save();
 
         $createConcreteUser($request, $account->id, $branch);
+
+        $baseUrl = URL::to('/');
+        Mail::to($request->email)->send(new registerInfo($request->email, $password, $baseUrl));
 
         return view('auth.display', [
             'name' => $request->name,
