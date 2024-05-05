@@ -147,7 +147,6 @@ class EmployeeController extends Controller
         $employee = Employee::find($request->id);
         if ($employee !== null) {
             TimetableTime::where('fk_EMPLOYEEid', $request->id)->delete();
-            InformationTemplate::where('fk_EMPLOYEEid', $request->id)->delete();
             $lessons = DrivingLesson::where('fk_EMPLOYEEid', $request->id)->get();
             foreach ($lessons as $lesson) {
                 $lesson->fk_EMPLOYEEid = null;
