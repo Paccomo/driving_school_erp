@@ -187,8 +187,7 @@ class LessonController extends Controller
         if ($lesson == null)
             abort(Response::HTTP_NOT_FOUND,"Vairavimo pamoka nerasta");
 
-        if ((Auth::user()->role == Role::Client->value && $lesson->fk_CLIENTid != Auth::user()->id) || 
-            (Auth::user()->role == Role::Instructor->value && $lesson->fk_EMPLOYEEid != Auth::user()->id))
+        if ((Auth::user()->role != Role::Client->value || $lesson->fk_CLIENTid != Auth::user()->id))
         {
             abort(Response::HTTP_FORBIDDEN,"Access denied");
         }
@@ -200,6 +199,11 @@ class LessonController extends Controller
 
         $lesson->status = DrivingStatus::Cancel->value;
         $lesson->save();
+
+        $client = Client::find(Auth::user()->id);
+        $client->lessons = (int)$client->lessons + 1;
+        $client->save();
+
         return redirect()->back()->with('success', "Rezervacija atšaukta sėkmingai");
     }
 
@@ -316,6 +320,20 @@ class LessonController extends Controller
         }
 
         return $eventStruct;
+    }
+
+    public function assignInstructor(Request $request) {
+        if (Auth::guest() || Auth::user()->role != Role::Client->value)
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+
+        $request->validate([
+            "inst" => ['exists:employee,id']
+        ]);
+
+        $client = Client::find(Auth::user()->id);
+        $client->fk_instructor = $request->inst;
+        $client->save();
+        return redirect()->back();
     }
 
     private function validateClient() {

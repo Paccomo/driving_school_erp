@@ -8,8 +8,10 @@ use App\Models\Branch;
 use App\Models\BranchCategoricalCourse;
 use App\Models\BranchCompetenceCourse;
 use App\Models\CategoricalCourse;
+use Auth;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 use Redirect;
 
@@ -28,6 +30,9 @@ class PricingController extends Controller
     }
 
     public function edit(Request $request) {
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+
         $validator = validator()->make([
             'course' => $request->courseid,
             'branch' => $request->branchid,
@@ -76,6 +81,9 @@ class PricingController extends Controller
     }
 
     public function save(Request $request) {
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+        
         $request->validate([
             'id' => ['required', 'integer', 'gte:0'],
             'type' => 'required|in:categorical,competence',

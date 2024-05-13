@@ -30,6 +30,8 @@ use Route;
 class ContractsController extends Controller
 {
     public function guestRequest(Request $request) {
+        if (!Auth::guest())
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
         $request->validate([
             'course' => ['required', 'integer',  'gt:0', 'exists:course,id'],
             'branch' => ['required', 'integer',  'gt:0', 'exists:branch,id'],
@@ -70,7 +72,7 @@ class ContractsController extends Controller
     }
 
     public function clientReqSave(Request $request) {
-        if (Auth::user()->role != Role::Client->value)
+        if (Auth::guest() || Auth::user()->role != Role::Client->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
         $request->validate([
             'type' => ['required', Rule::enum(ContractType::class)],
@@ -96,7 +98,7 @@ class ContractsController extends Controller
     }
 
     public function clientContracts() {
-        if (Auth::user()->role != Role::Client->value)
+        if (Auth::guest() || Auth::user()->role != Role::Client->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
         $contracts = Contract::with('contractRequest')->where('fk_CLIENTid', Auth::user()->id)->get();
         $currentlyImprovement = false;
@@ -110,7 +112,7 @@ class ContractsController extends Controller
     }
 
     public function clientRequest() {
-        if (Auth::user()->role != Role::Client->value)
+        if (Auth::guest() || Auth::user()->role != Role::Client->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         if (Route::is('contract.termination')) {
@@ -140,7 +142,7 @@ class ContractsController extends Controller
         $contractReqQuery = ContractRequest::with(['guestReq', 'clientReq', 'contract']);
         if ($filter != null)
             $contractReqQuery->where('status', $filter);
-        if (Auth::user()->role == Role::Administrator->value)
+        if (Auth::guest() || Auth::user()->role == Role::Administrator->value)
             $contractReqQuery->where('fk_BRANCHid', Employee::find(Auth::user()->id)->fk_BRANCHid);
         $contractReqQuery->orderBy('requested_on', 'desc')
             ->chunk(100, function ($chunkContracts) use (&$contracts) {
@@ -255,7 +257,7 @@ class ContractsController extends Controller
         $this->authCheck();
 
         $clients = Client::with('person')->whereDoesntHave('contract');
-        if (Auth::user()->role == Role::Administrator->value) {
+        if (Auth::guest() || Auth::user()->role == Role::Administrator->value) {
             $clients->where('fk_BRANCHid', Employee::find(Auth::user()->id)->fk_BRANCHid);
         }
         $clients = $clients->get();
@@ -315,6 +317,9 @@ class ContractsController extends Controller
     }
 
     public function download(Request $request){
+        if (Auth::guest())
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+
         if (Auth::user()->role == Role::Client->value)
             return $this->clientDownload($request->id);
 
@@ -336,7 +341,7 @@ class ContractsController extends Controller
     }
 
     private function authCheck() {
-        if (Auth::user()->role != Role::Director->value && Auth::user()->role != Role::Administrator->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value && Auth::user()->role != Role::Administrator->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
     }
 

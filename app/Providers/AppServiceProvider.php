@@ -21,5 +21,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useBootstrap();
+        $this->app->bind('path.public', function() {
+            return base_path().'/../public_html';
+        });
     }
 }

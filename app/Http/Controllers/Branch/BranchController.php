@@ -66,7 +66,7 @@ class BranchController extends Controller
 
     public function edit(Request $request)
     {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         $branch = Branch::find($request->id);
@@ -114,7 +114,7 @@ class BranchController extends Controller
 
     public function add()
     {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest()  || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         $weekdays = array_column(WeekDay::cases(), 'value');
@@ -133,7 +133,7 @@ class BranchController extends Controller
 
     public function destroy(Request $request)
     {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         $branch = Branch::find($request->id);
@@ -166,7 +166,7 @@ class BranchController extends Controller
 
     public function save(Request $request)
     {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         $request->validate([
@@ -192,9 +192,9 @@ class BranchController extends Controller
         $rules = [];
         foreach ($request->courses as $courseId) {
             $rules["course{$courseId}_price"] = 'required_without:course' . $courseId . '_theory,course' . $courseId . '_practice,course' . $courseId . '_lesson|numeric|min:1';
-            $rules["course{$courseId}_theory"] = 'required_without:course' . $courseId . '_price|numeric|min:1';
-            $rules["course{$courseId}_practice"] = 'required_without:course' . $courseId . '_price|numeric|min:1';
-            $rules["course{$courseId}_lesson"] = 'required_without:course' . $courseId . '_price|numeric|min:1';
+            $rules["course{$courseId}_theory"] = 'required_without:course' . $courseId . '_price|numeric|min:0';
+            $rules["course{$courseId}_practice"] = 'required_without:course' . $courseId . '_price|numeric|min:0';
+            $rules["course{$courseId}_lesson"] = 'required_without:course' . $courseId . '_price|numeric|min:0';
         }
         $request->validate($rules);
 

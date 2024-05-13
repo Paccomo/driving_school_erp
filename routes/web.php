@@ -112,7 +112,7 @@ Route::get("/employee/{id}/timetable", [EmployeeController::class, "timetableFor
 // Slides
 Route::get("/slide", [SlidesController::class, "list"])->name("slides.list");
 Route::get("/slide/new", [SlidesController::class, "add"])->name("slides.add");
-Route::post("/slide/new", [SlidesController::class, "save"])->name("video.save");
+Route::post("/slide/new", [SlidesController::class, "save"])->name("slides.save");
 Route::put("/slide/new", [SlidesController::class, "save"])->name("slides.save");
 Route::delete("/slide/{id}", [SlidesController::class, "destroy"])->name("slides.destroy");
 Route::get("/slide/{id}", [SlidesController::class, "index"])->name("slides.index");
@@ -142,7 +142,7 @@ Route::get('/documents', [DocumentController::class, 'document'])->name('documen
 Route::get('/documents/addMed', [DocumentController::class, 'add'])->name('documents.addMed');
 Route::get('/documents/addTheory', [DocumentController::class, 'add'])->name('documents.addTheory');
 Route::get('/documents/download/{id}', [DocumentController::class, "download"])->name('documents.download');
-Route::get('/documents/destroy/{id}', [DocumentController::class, "destroy"])->name('documents.destroy');
+Route::delete('/documents/destroy/{id}', [DocumentController::class, "destroy"])->name('documents.destroy');
 Route::post('/documents/save', [DocumentController::class, 'save'])->name('documents.save');
 
 // Lessons

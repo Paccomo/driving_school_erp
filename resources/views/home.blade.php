@@ -10,16 +10,10 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header text-white bg-secondary">{{ __('Dashboard') }}</div>
+                    <div class="card-header text-white bg-secondary">{{ __('Pagrindinis puslapis') }}</div>
 
                     <div class="card-body">
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-
-                        {{ __('Main content') }}
+                        <img src="{{ asset('storage/M.jpg') }}" class="card-img-top" alt="Vairavimo mokykla">
                     </div>
                 </div>
             </div>

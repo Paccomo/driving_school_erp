@@ -7,7 +7,6 @@ enum Role: string {
     case Administrator = "administrator";
     case Instructor = "instructor";
     case Accountant = "accountant";
-    case ExaminationAccount = "examination_account";
     case Client = "client";
     case Other = "other";
 }

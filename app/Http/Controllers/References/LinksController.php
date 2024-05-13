@@ -22,7 +22,7 @@ class LinksController extends Controller
 
     public function add()
     {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         return view('references.linksForm');
@@ -30,7 +30,7 @@ class LinksController extends Controller
 
     public function save(Request $request)
     {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         $request->validate([
@@ -59,7 +59,7 @@ class LinksController extends Controller
 
     public function edit(Request $request)
     {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         $validator = validator()->make([
@@ -76,7 +76,7 @@ class LinksController extends Controller
     }
 
     public function destroy(Request $request) {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         $extLink = ExternalLink::find($request->id);

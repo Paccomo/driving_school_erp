@@ -102,53 +102,55 @@
                     <div class="no-print">
                         <div class="bg-secondary p-2">
                             <ul class="nav nav-pills flex-column mt-4">
-                                <li class="nav-item py-2 py-sm-0">
-                                    <a href="{{ route('branch.list') }}"
-                                        class="nav-link text-white {{ request()->is('branch*') == 1 ? 'active' : '' }}">
-                                        <i class="fs-6 fa fa-building"></i> <span
-                                            class="fs-6 ms-2 d-none d-sm-inline">Filialai</span>
-                                    </a>
-                                </li>
+                                @if (Auth::guest() || Auth::user()->role == 'director' || Auth::user()->role == 'administrator' || Auth::user()->role == 'client')
+                                    <li class="nav-item py-2 py-sm-0">
+                                        <a href="{{ route('branch.list') }}"
+                                            class="nav-link text-white {{ request()->is('branch*') == 1 ? 'active' : '' }}">
+                                            <i class="fs-6 fa fa-building"></i> <span
+                                                class="fs-6 ms-2 d-none d-sm-inline">Filialai</span>
+                                        </a>
+                                    </li>
 
-                                <li class="nav-item py-2 py-sm-0">
-                                    <a href="{{ route('pricing.list') }}"
-                                        class="nav-link text-white {{ request()->is('pricing*') == 1 ? 'active' : '' }}">
-                                        <i class="fs-6 fa fa-euro-sign"></i> <span
-                                            class="fs-6 ms-2 d-none d-sm-inline">Kainos</span>
-                                    </a>
-                                </li>
+                                    <li class="nav-item py-2 py-sm-0">
+                                        <a href="{{ route('pricing.list') }}"
+                                            class="nav-link text-white {{ request()->is('pricing*') == 1 ? 'active' : '' }}">
+                                            <i class="fs-6 fa fa-euro-sign"></i> <span
+                                                class="fs-6 ms-2 d-none d-sm-inline">Kainos</span>
+                                        </a>
+                                    </li>
 
-                                <li class="nav-item py-2 py-sm-0">
-                                    <a href="{{ route('course.list') }}"
-                                        class="nav-link text-white {{ request()->is('course*') == 1 ? 'active' : '' }}">
-                                        <i class="fs-6 fa fa-car-side"></i> <span
-                                            class="fs-6 ms-2 d-none d-sm-inline">Kursai</span>
-                                    </a>
-                                </li>
+                                    <li class="nav-item py-2 py-sm-0">
+                                        <a href="{{ route('course.list') }}"
+                                            class="nav-link text-white {{ request()->is('course*') == 1 ? 'active' : '' }}">
+                                            <i class="fs-6 fa fa-car-side"></i> <span
+                                                class="fs-6 ms-2 d-none d-sm-inline">Kursai</span>
+                                        </a>
+                                    </li>
 
-                                <li class="nav-item py-2 py-sm-0">
-                                    <a href="{{ route('instructor.list') }}"
-                                        class="nav-link text-white {{ request()->is('instructor*') == 1 ? 'active' : '' }}">
-                                        <i class="fs-6 fa fa-chalkboard-user"></i> <span
-                                            class="fs-6 ms-2 d-none d-sm-inline">Instruktoriai</span>
-                                    </a>
-                                </li>
+                                    <li class="nav-item py-2 py-sm-0">
+                                        <a href="{{ route('instructor.list') }}"
+                                            class="nav-link text-white {{ request()->is('instructor*') == 1 ? 'active' : '' }}">
+                                            <i class="fs-6 fa fa-chalkboard-user"></i> <span
+                                                class="fs-6 ms-2 d-none d-sm-inline">Instruktoriai</span>
+                                        </a>
+                                    </li>
 
-                                <li class="nav-item py-2 py-sm-0">
-                                    <a href="{{ route('video.list') }}"
-                                        class="nav-link text-white {{ request()->is('video*') == 1 ? 'active' : '' }}">
-                                        <i class="fs-6 fa fa-video"></i> <span
-                                            class="fs-6 ms-2 d-none d-sm-inline">Vaizdo įrašai</span>
-                                    </a>
-                                </li>
+                                    <li class="nav-item py-2 py-sm-0">
+                                        <a href="{{ route('video.list') }}"
+                                            class="nav-link text-white {{ request()->is('video*') == 1 ? 'active' : '' }}">
+                                            <i class="fs-6 fa fa-video"></i> <span
+                                                class="fs-6 ms-2 d-none d-sm-inline">Vaizdo įrašai</span>
+                                        </a>
+                                    </li>
 
-                                <li class="nav-item py-2 py-sm-0">
-                                    <a href="{{ route('link.list') }}"
-                                        class="nav-link text-white {{ request()->is('information*') == 1 ? 'active' : '' }}">
-                                        <i class="fs-6 fa fa-link"></i> <span
-                                            class="fs-6 ms-2 d-none d-sm-inline">Naudinga informacija</span>
-                                    </a>
-                                </li>
+                                    <li class="nav-item py-2 py-sm-0">
+                                        <a href="{{ route('link.list') }}"
+                                            class="nav-link text-white {{ request()->is('information*') == 1 ? 'active' : '' }}">
+                                            <i class="fs-6 fa fa-link"></i> <span
+                                                class="fs-6 ms-2 d-none d-sm-inline">Naudinga informacija</span>
+                                        </a>
+                                    </li>
+                                @endif
 
                                 @Auth
                                     @if (Auth::user()->role == 'client')
@@ -270,7 +272,8 @@
                                             <a href="{{ route('accounting.report') }}"
                                                 class="nav-link text-white {{ request()->routeIs('accounting.report') ? 'active' : '' }}">
                                                 <i class="fa-solid fa-chart-simple"></i><span
-                                                    class="fs-6 ms-2 d-none d-sm-inline">Mėnesinė finansinė ataskaita</span>
+                                                    class="fs-6 ms-2 d-none d-sm-inline">Mėnesinė finansinė
+                                                    ataskaita</span>
                                             </a>
                                         </li>
                                     @endif

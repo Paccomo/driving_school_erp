@@ -10,7 +10,7 @@
     <script>
         window.calendarEvents = @json($events);
     </script>
-    <script src="{{ mix('js/app.js') }}"></script>
+    @vite('resources/js/app.js')
 
     <style>
         .fc-event {

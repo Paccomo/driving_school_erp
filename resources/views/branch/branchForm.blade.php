@@ -182,7 +182,7 @@
                                             <div class="col additional-inputs">
                                                 <label
                                                     for="course{{ $course->id }}_theory">{{ __('Teorijos kaina') }}</label>
-                                                <input type="number" min="1" step="0.01"
+                                                <input type="number" min="0" step="0.01"
                                                     id="course{{ $course->id }}_theory"
                                                     name="course{{ $course->id }}_theory"
                                                     value="{{ isset($branch) && isset($coursePrices[$course->id]['theory']) ? $coursePrices[$course->id]['theory'] : old('course' . $course->id . '_theory') }}"
@@ -191,7 +191,7 @@
                                             <div class="col additional-inputs">
                                                 <label
                                                     for="course{{ $course->id }}_practice">{{ __('Praktikos kaina') }}</label>
-                                                <input type="number" min="1" step="0.01"
+                                                <input type="number" min="0" step="0.01"
                                                     id="course{{ $course->id }}_practice"
                                                     name="course{{ $course->id }}_practice"
                                                     value="{{ isset($branch) && isset($coursePrices[$course->id]['practice']) ? $coursePrices[$course->id]['practice'] : old('course' . $course->id . '_practice') }}"
@@ -200,7 +200,7 @@
                                             <div class="col additional-inputs">
                                                 <label
                                                     for="course{{ $course->id }}_lesson">{{ __('Papildomas važiavimas') }}</label>
-                                                <input type="number" min="1" step="0.01"
+                                                <input type="number" min="0" step="0.01"
                                                     id="course{{ $course->id }}_theory"
                                                     name="course{{ $course->id }}_lesson"
                                                     value="{{ isset($branch) && isset($coursePrices[$course->id]['lesson']) ? $coursePrices[$course->id]['lesson'] : old('course' . $course->id . '_lesson') }}"

@@ -28,7 +28,7 @@ class SlidesController extends Controller
 
     public function add(Request $request)
     {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
         return view('references.slidesForm');
     }
@@ -49,7 +49,7 @@ class SlidesController extends Controller
 
     public function save(Request $request)
     {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         $request->validate([
@@ -69,7 +69,7 @@ class SlidesController extends Controller
         }
 
         if ($request->hasFile('slideFile')) {
-            if (isset($link->link) && file_exists(storage_path('app/public/slides/' . $link->link))) {
+            if (isset($link->link) && $link->link != null && file_exists(storage_path('app/public/slides/' . $link->link))) {
                 unlink(storage_path('app/public/slides/' . $link->link));
             }
 
@@ -102,7 +102,7 @@ class SlidesController extends Controller
 
     public function edit(Request $request)
     {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         $validator = validator()->make([
@@ -127,7 +127,7 @@ class SlidesController extends Controller
         if ($slide != null) {
             $slide->delete();
             $link = Link::find($request->id);
-            if (file_exists(storage_path('app/public/slides/' . $link->link))) {
+            if (isset($link->link) && $link->link != null && file_exists(storage_path('app/public/slides/' . $link->link))) {
                 unlink(storage_path('app/public/slides/' . $link->link));
             }         
             return redirect()->route('slides.list')->with('success', 'Skaidrės sėkmingai ištrintos!');

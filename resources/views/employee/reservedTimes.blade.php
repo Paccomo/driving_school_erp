@@ -38,7 +38,7 @@
     @endif
 
     <h4 style="margin-top: 2cm;">Pridėti laiką:</h4>
-    <form action="{{ route('employee.time.destroy', $time->id) }}" method="POST" style="display: inline;">
+    <form action="{{ route('employee.time.add', $employee) }}" method="POST" style="display: inline;">
         @csrf
         <input type="hidden" name="employee", value="{{ $employee }}">
 

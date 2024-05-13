@@ -17,7 +17,7 @@ use Route;
 class DocumentController extends Controller
 {
     public function document() {
-        if (Auth::user()->role != Role::Client->value)
+        if (Auth::guest() || Auth::user()->role != Role::Client->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         $medCert = Document::where([
@@ -36,7 +36,7 @@ class DocumentController extends Controller
     }
 
     public function add() {
-        if (Auth::user()->role != Role::Client->value)
+        if (Auth::guest() || Auth::user()->role != Role::Client->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         if (Route::is('documents.addMed')) {
@@ -51,6 +51,8 @@ class DocumentController extends Controller
     }
 
     public function save(Request $request) {
+        if (Auth::guest() || Auth::user()->role != Role::Client->value)
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
         $request->validate([
             'id' => ['required', 'integer', "gte:0", "exists:client,id"],
             'docType' => ['required', Rule::enum(DocumentType::class)],
@@ -97,12 +99,16 @@ class DocumentController extends Controller
     }
 
     private function ensureDownloadAccess($fk) {
+        if (Auth::guest())
+            return false;
         if (Auth::user()->role == Role::Client->value && $fk == Auth::user()->id)
             return true;
         return $this->ensureNonClientAccess($fk);
     }
 
     private function ensureNonClientAccess($fk) {
+        if (Auth::guest())
+            return false;
         if (Auth::user()->role == Role::Administrator->value && Client::find($fk)->fk_BRANCHid == Auth::user()->employee->fk_BRANCHid)
             return true;
         if (Auth::user()->role == Role::Director->value)

@@ -12,12 +12,16 @@
         </div>
     @endif
 
+    
     <div style="padding: 0.2cm 0.4cm 1cm 0.4cm" class="d-flex align-items-left">
         <h1 style="margin-right: 0.4cm">Vairavimo pamokos</h1>
+        @if ($self->practical_lessons_permission == 1)
         <a class="btn btn-secondary @if((int)$self->lessons <= 0) disabled @endif" href="{{ route('lesson.reservation') }}">
             Rezervuoti laiką
         </a>
+        @endif
     </div>
+
 
     @if ($self->practical_lessons_permission != 1)
         <div class="alert alert-danger">
@@ -35,7 +39,7 @@
                     @csrf
                     <div class="row align-items-center">
                         <div class="col-auto">
-                            <select name="inst" id="instSelect" class="form-select" required {{ $self->fk_instructor ? 'disabled' : '' }}>
+                            <select name="inst" id="instSelect" class="form-select" required {{ $self->fk_instructor != null ? 'disabled' : '' }}>
                                 @foreach ($allInstructors as $inst)
                                     <option value="{{ $inst->id }}">
                                         {{ $inst->person->name . ' ' . $inst->person->surname }}</option>
@@ -43,7 +47,7 @@
                             </select>
                         </div>
                         <div class="col-auto">
-                            <button type="submit" class="btn btn-outline-secondary {{ $self->fk_instructor ? 'disabled' : '' }}">Pasirinkti</button>
+                            <button type="submit" class="btn btn-outline-secondary {{ $self->fk_instructor!= null ? 'disabled' : '' }}">Pasirinkti</button>
                         </div>
                     </div>
                 </form>

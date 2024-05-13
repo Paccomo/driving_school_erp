@@ -18,7 +18,7 @@ class RoleCheck
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
         if (!Auth::check())
-            return redirect('login');
+            return redirect('login', 302);
 
         if (!in_array(Auth::user()->role, $roles)) {
             throw new AuthorizationException('You are not authorized to access this resource.');

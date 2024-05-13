@@ -38,8 +38,10 @@ class PwController extends Controller
     }
 
     public function save(Request $request) {
-        if (!in_array(Auth::user()->role, [Role::Director->value, Role::Administrator->value])) {
-            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+        if ($request->id != null) {
+            if (!in_array(Auth::user()->role, [Role::Director->value, Role::Administrator->value])) {
+                abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+            }
         }
 
         $request->validate([

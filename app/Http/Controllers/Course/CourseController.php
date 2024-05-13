@@ -58,13 +58,13 @@ class CourseController extends Controller
     }
 
     public function add() {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
         return view('course.courseForm');
     }
 
     public function edit(Request $request) {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         $validator = validator()->make([
@@ -81,7 +81,7 @@ class CourseController extends Controller
     }
 
     public function save(Request $request) {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         $request->validate([
@@ -112,13 +112,12 @@ class CourseController extends Controller
     }
 
     public function destroy(Request $request) {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         $course = Course::find($request->id);
         if ($course !== null) {
             Description::where('fk_COURSEid', $request->id)->delete();
-            CourseQuestion::where('fk_COURSEid', $request->id)->delete();
             BranchCategoricalCourse::where('fk_CATEGORICAL_COURSEid', $request->id)->delete();
             BranchCompetenceCourse::where('fk_COMPETENCE_COURSEid', $request->id)->delete();
             CategoricalCourse::where('id', $request->id)->delete();
@@ -140,6 +139,9 @@ class CourseController extends Controller
     }
 
     public function register(Request $request) {
+        if (!Auth::guest())
+            abort(Response::HTTP_FORBIDDEN, 'Access denied.');
+
         $validator = validator()->make([
             'course' => $request->course,
             'branch' => $request->branch
@@ -184,7 +186,7 @@ class CourseController extends Controller
     }
 
     public function descList(Request $request) {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         $validator = validator()->make([
@@ -203,7 +205,7 @@ class CourseController extends Controller
     }
 
     public function descIndex(Request $request) {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         $validator = validator()->make([
@@ -220,7 +222,7 @@ class CourseController extends Controller
     }
 
     public function descAdd() {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         $courses = Course::all();
@@ -229,7 +231,7 @@ class CourseController extends Controller
     }
 
     public function descSave(Request $request) {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         $request->validate([
@@ -257,7 +259,7 @@ class CourseController extends Controller
     }
 
     public function descEdit(Request $request) {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         $validator = validator()->make([
@@ -274,7 +276,7 @@ class CourseController extends Controller
     }
 
     public function descDestroy(Request $request) {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         $desc = Description::find($request->id);

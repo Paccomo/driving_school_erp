@@ -29,7 +29,7 @@ class VideosController extends Controller
 
     public function add(Request $request)
     {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         if ($request->route()->named('video.add')) {
@@ -43,7 +43,7 @@ class VideosController extends Controller
 
     public function save(Request $request)
     {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         $request->validate([
@@ -94,7 +94,7 @@ class VideosController extends Controller
 
     public function edit(Request $request)
     {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         $validator = validator()->make([
@@ -116,7 +116,7 @@ class VideosController extends Controller
     }
 
     public function destroy(Request $request) {
-        if (Auth::user()->role != Role::Director->value)
+        if (Auth::guest() || Auth::user()->role != Role::Director->value)
             abort(Response::HTTP_FORBIDDEN, 'Access denied.');
 
         $video = EducationalVideo::find($request->id);
@@ -124,7 +124,7 @@ class VideosController extends Controller
             $video->delete();
             $link = Link::find($request->id);
             if (!(strpos($video->link->link, 'http://') === 0 || strpos($video->link->link, 'https://') === 0)) {
-                if (file_exists(storage_path('app/public/videos/' . $link->link))) {
+                if (file_exists(storage_path('app/public/videos/' . $link->link)) && is_file(storage_path('app/public/videos/' . $link->link))) {
                     unlink(storage_path('app/public/videos/' . $link->link));
                 }
             }            
