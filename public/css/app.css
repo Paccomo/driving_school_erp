@@ -19,3 +19,7 @@
 .clickable, .fc-event {
     cursor: pointer;
 }
+
+.form-check.form-switch input[type="checkbox"] {
+    cursor: pointer;
+}

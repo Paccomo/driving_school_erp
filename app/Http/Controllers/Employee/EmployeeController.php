@@ -10,7 +10,6 @@ use App\Models\Account;
 use App\Models\Branch;
 use App\Models\DrivingLesson;
 use App\Models\Employee;
-use App\Models\InformationTemplate;
 use App\Models\instructorReservedTime;
 use App\Models\Person;
 use App\Models\TimetableTime;

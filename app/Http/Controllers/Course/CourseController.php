@@ -11,7 +11,6 @@ use App\Models\CategoricalCourse;
 use App\Models\Client;
 use App\Models\CompetenceCourse;
 use App\Models\Course;
-use App\Models\CourseQuestion;
 use App\Models\Description;
 use App\Models\StudentsGroup;
 use App\Rules\branchCourseExists;
